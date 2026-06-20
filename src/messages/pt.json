@@ -1,0 +1,144 @@
+{
+  "common": {
+    "appName": "Backpackers Backoffice",
+    "loading": "A carregar…",
+    "save": "Guardar",
+    "saving": "A guardar…",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Criar",
+    "back": "Voltar",
+    "signOut": "Sair",
+    "signingOut": "A sair…",
+    "search": "Pesquisar…",
+    "filter": "Filtrar",
+    "noResults": "Sem resultados.",
+    "all": "Todos",
+    "required": "Obrigatório",
+    "optional": "Opcional",
+    "by": "por"
+  },
+  "metadata": {
+    "title": "Backpackers Backoffice",
+    "description": "Backoffice unificado do grupo Backpackers — Adventures, Synergy, Labs."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "crm": "CRM",
+    "operations": "Operações",
+    "documents": "Documentos",
+    "settings": "Definições"
+  },
+  "roles": {
+    "admin_grupo": "Admin grupo",
+    "admin_pilar": "Admin pilar",
+    "member": "Membro"
+  },
+  "auth": {
+    "brandTagline": "Sistema unificado de gestão do grupo Backpackers. Adventures · Synergy · Labs.",
+    "loginTitle": "Iniciar sessão",
+    "loginSubtitle": "Entrar no Backpackers Backoffice.",
+    "signupTitle": "Criar conta",
+    "signupSubtitle": "Backpackers Backoffice.",
+    "email": "E-mail",
+    "password": "Palavra-passe",
+    "fullName": "Nome completo",
+    "passwordHint": "Mínimo 8 caracteres.",
+    "signIn": "Entrar",
+    "signingIn": "A entrar…",
+    "signUp": "Criar conta",
+    "signingUp": "A criar conta…",
+    "noAccount": "Ainda não tens conta?",
+    "haveAccount": "Já tens conta?",
+    "createAccountLink": "Criar conta",
+    "enterLink": "Entrar",
+    "errors": {
+      "emailPasswordRequired": "E-mail e palavra-passe são obrigatórios.",
+      "passwordTooShort": "A palavra-passe tem de ter pelo menos 8 caracteres."
+    },
+    "signupConfirmation": "Conta criada. Verifica o teu e-mail para confirmar o registo antes de entrares."
+  },
+  "dashboard": {
+    "hello": "Olá, {name}",
+    "title": "Dashboard",
+    "greetings": {
+      "admin_grupo": "Acesso transversal a todo o grupo.",
+      "admin_pilar": "Acesso aos pilares atribuídos.",
+      "member": "Bem-vindo ao backoffice."
+    },
+    "sectionPillars": "Pilares",
+    "sectionModules": "Módulos",
+    "modulesCardTitle": "Próximos módulos",
+    "modulesCardDescription": "Os três módulos do v1 ficam acessíveis a partir do menu.",
+    "comingSoon": "em breve",
+    "modules": {
+      "crm": "CRM + Pipeline",
+      "ops": "Operações",
+      "docs": "Gestão Documental"
+    }
+  },
+  "crm": {
+    "title": "CRM",
+    "subtitle": "Contactos, leads e parceiros — transversal aos pilares.",
+    "newContact": "Novo contacto",
+    "contactsCount": "{count, plural, =0 {Sem contactos} one {1 contacto} other {# contactos}}",
+    "empty": "Ainda não existem contactos. Cria o primeiro.",
+    "table": {
+      "name": "Nome",
+      "type": "Tipo",
+      "stage": "Estado",
+      "pillar": "Pilar",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "owner": "Responsável",
+      "createdAt": "Criado"
+    },
+    "types": {
+      "lead": "Lead",
+      "customer": "Cliente",
+      "partner": "Parceiro",
+      "vendor": "Fornecedor"
+    },
+    "stages": {
+      "new": "Novo",
+      "qualified": "Qualificado",
+      "active": "Activo",
+      "on_hold": "Em pausa",
+      "closed_won": "Fechado (ganho)",
+      "closed_lost": "Fechado (perdido)"
+    },
+    "sources": {
+      "website": "Website",
+      "referral": "Referência",
+      "event": "Evento",
+      "inbound": "Inbound",
+      "cold": "Outreach",
+      "other": "Outra"
+    },
+    "form": {
+      "title": "Novo contacto",
+      "subtitle": "Adicionar pessoa ou empresa ao CRM.",
+      "fullName": "Nome completo",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "jobTitle": "Cargo",
+      "pillar": "Pilar",
+      "pillarHint": "A que pilar este contacto pertence.",
+      "type": "Tipo",
+      "stage": "Estado inicial",
+      "source": "Origem",
+      "notes": "Notas",
+      "selectPlaceholder": "Escolher…",
+      "create": "Criar contacto",
+      "creating": "A criar…",
+      "errors": {
+        "nameRequired": "O nome é obrigatório.",
+        "pillarRequired": "Tens de escolher um pilar.",
+        "emailInvalid": "E-mail inválido."
+      }
+    }
+  }
+}
