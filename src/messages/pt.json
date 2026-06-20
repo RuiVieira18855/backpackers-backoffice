@@ -148,5 +148,81 @@
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o contacto «{name}»? Esta acção não pode ser desfeita."
     }
+  },
+  "ops": {
+    "title": "Operações",
+    "subtitle": "Eventos, projectos e tarefas — agenda operacional do grupo.",
+    "comingSoon": "em breve",
+    "cards": {
+      "events": "Eventos",
+      "eventsDescription": "Tours, team buildings, workshops, retiros.",
+      "projects": "Projectos",
+      "projectsDescription": "Iniciativas em curso por pilar.",
+      "tasks": "Tarefas",
+      "tasksDescription": "To-dos e responsáveis.",
+      "open": "Abrir"
+    },
+    "upcomingEvents": "Próximos eventos",
+    "noUpcoming": "Sem eventos agendados nos próximos dias.",
+    "eventsTitle": "Eventos",
+    "eventsSubtitle": "Toda a actividade agendada do grupo.",
+    "eventsCount": "{count, plural, =0 {Sem eventos} one {1 evento} other {# eventos}}",
+    "eventsEmpty": "Ainda não existem eventos. Cria o primeiro.",
+    "newEvent": "Novo evento",
+    "table": {
+      "name": "Nome",
+      "type": "Tipo",
+      "status": "Estado",
+      "pillar": "Pilar",
+      "startAt": "Início",
+      "client": "Cliente"
+    },
+    "eventTypes": {
+      "tour": "Tour",
+      "team_building": "Team building",
+      "workshop": "Workshop",
+      "meeting": "Reunião",
+      "retreat": "Retiro",
+      "other": "Outro"
+    },
+    "eventStatuses": {
+      "draft": "Rascunho",
+      "scheduled": "Agendado",
+      "in_progress": "A decorrer",
+      "completed": "Concluído",
+      "cancelled": "Cancelado"
+    },
+    "form": {
+      "title": "Novo evento",
+      "subtitle": "Agendar um evento no grupo.",
+      "name": "Nome",
+      "pillar": "Pilar",
+      "type": "Tipo",
+      "status": "Estado",
+      "description": "Descrição",
+      "location": "Local",
+      "startAt": "Início",
+      "endAt": "Fim",
+      "capacity": "Capacidade",
+      "clientContact": "Cliente (contacto)",
+      "clientContactNone": "Sem cliente associado",
+      "clientContactHint": "Útil para team buildings Synergy com empresa cliente.",
+      "notes": "Notas",
+      "selectPlaceholder": "Escolher…",
+      "create": "Criar evento",
+      "creating": "A criar…",
+      "errors": {
+        "nameRequired": "O nome é obrigatório.",
+        "pillarRequired": "Tens de escolher um pilar."
+      }
+    },
+    "detail": {
+      "backToList": "Voltar aos eventos",
+      "save": "Guardar alterações",
+      "saving": "A guardar…",
+      "delete": "Eliminar evento",
+      "deleting": "A eliminar…",
+      "deleteConfirm": "Tens a certeza que queres eliminar o evento «{name}»? Esta acção não pode ser desfeita."
+    }
   }
 }

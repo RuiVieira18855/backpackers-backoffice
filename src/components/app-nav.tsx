@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/dashboard", key: "dashboard" as const },
   { href: "/crm", key: "crm" as const },
+  { href: "/ops", key: "operations" as const },
 ];
 
 export function AppNav() {
