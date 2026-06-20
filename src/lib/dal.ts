@@ -37,9 +37,11 @@ export const getCurrentProfile = cache(async () => {
   const user = await getAuthUser();
   if (!user) return null;
 
+  // Note: do NOT use Drizzle's relational query (`with: { defaultPillar }`)
+  // here — there's a bug in 0.45 where the LATERAL JOIN it generates fails
+  // on Supabase pooler. Fetch defaultPillar separately if/when needed.
   const result = await db.query.profiles.findFirst({
     where: eq(profiles.id, user.id),
-    with: { defaultPillar: true },
   });
   return result ?? null;
 });
@@ -78,6 +80,8 @@ export const getAllProfiles = cache(async () => {
       email: true,
       fullName: true,
       role: true,
+      pillarAccess: true,
+      defaultPillarId: true,
     },
   });
 });

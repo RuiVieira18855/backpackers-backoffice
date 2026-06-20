@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/dashboard", key: "dashboard" as const },
   { href: "/crm", key: "crm" as const },
   { href: "/ops", key: "operations" as const },
+  { href: "/docs", key: "documents" as const },
 ];
 
 export function AppNav() {

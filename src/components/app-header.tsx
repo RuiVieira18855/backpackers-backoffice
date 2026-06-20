@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AppNav } from "./app-nav";
-import { SignOutButton } from "./sign-out-button";
+import { UserMenu } from "./user-menu";
 
 type Props = {
   fullName: string | null;
@@ -27,15 +27,12 @@ export async function AppHeader({ fullName, email, role }: Props) {
           </Link>
           <AppNav />
         </div>
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:flex flex-col items-end leading-tight">
-            <span className="text-sm text-foreground">
-              {fullName || email}
-            </span>
-            <span className="text-xs text-muted-foreground">{roleLabel}</span>
-          </div>
-          <SignOutButton />
-        </div>
+        <UserMenu
+          fullName={fullName}
+          email={email}
+          roleLabel={roleLabel}
+          isAdminGrupo={role === "admin_grupo"}
+        />
       </div>
     </header>
   );

@@ -28,7 +28,8 @@
     "crm": "CRM",
     "operations": "Operações",
     "documents": "Documentos",
-    "settings": "Definições"
+    "settings": "Definições",
+    "admin": "Administração"
   },
   "roles": {
     "admin_grupo": "Admin grupo",
@@ -347,6 +348,92 @@
       "tasksDescription": "To-dos e responsáveis.",
       "open": "Abrir",
       "myOpen": "Tenho {count} por fazer →"
+    }
+  },
+  "docs": {
+    "title": "Documentos",
+    "subtitle": "Procedimentos, contratos, portfolio e ficheiros do grupo.",
+    "newDoc": "Carregar documento",
+    "empty": "Ainda não existem documentos. Carrega o primeiro.",
+    "count": "{count, plural, =0 {Sem documentos} one {1 documento} other {# documentos}}",
+    "table": {
+      "title": "Título",
+      "type": "Tipo",
+      "pillar": "Pilar",
+      "size": "Tamanho",
+      "uploadedAt": "Carregado em"
+    },
+    "types": {
+      "procedure": "Procedimento",
+      "contract": "Contrato",
+      "report": "Relatório",
+      "portfolio": "Portefólio",
+      "other": "Outro"
+    },
+    "form": {
+      "pageTitle": "Carregar documento",
+      "subtitle": "Adicionar ficheiro à gestão documental do grupo.",
+      "file": "Ficheiro",
+      "fileHint": "Máximo 4 MB nesta versão. Para ficheiros maiores diz-me e implementamos upload directo.",
+      "title": "Título",
+      "pillar": "Pilar",
+      "type": "Tipo",
+      "description": "Descrição",
+      "selectPlaceholder": "Escolher…",
+      "upload": "Carregar",
+      "uploading": "A carregar…",
+      "errors": {
+        "fileRequired": "Tens de seleccionar um ficheiro.",
+        "fileTooLarge": "Ficheiro maior que 4 MB. Reduz o tamanho ou contacta-me para subir o limite.",
+        "titleRequired": "O título é obrigatório.",
+        "pillarRequired": "Tens de escolher um pilar."
+      }
+    },
+    "detail": {
+      "backToList": "Voltar aos documentos",
+      "download": "Download",
+      "delete": "Eliminar documento",
+      "deleting": "A eliminar…",
+      "deleteConfirm": "Tens a certeza que queres eliminar o documento «{title}»? Esta acção não pode ser desfeita.",
+      "uploadedBy": "Carregado por {name} em {date}"
+    }
+  },
+  "settings": {
+    "title": "Definições",
+    "subtitle": "Os teus dados de perfil.",
+    "email": "E-mail",
+    "emailHint": "Não editável neste ecrã. Para mudar, contacta o admin.",
+    "role": "Papel",
+    "roleHint": "Apenas um admin do grupo pode alterar.",
+    "fullName": "Nome completo",
+    "save": "Guardar alterações",
+    "saving": "A guardar…",
+    "errors": {
+      "nameRequired": "O nome é obrigatório."
+    }
+  },
+  "admin": {
+    "title": "Administração",
+    "users": {
+      "title": "Utilizadores",
+      "subtitle": "Gerir papéis e acesso por pilar.",
+      "count": "{count, plural, =0 {Sem utilizadores} one {1 utilizador} other {# utilizadores}}",
+      "table": {
+        "name": "Nome",
+        "email": "E-mail",
+        "role": "Papel",
+        "pillarAccess": "Acesso a pilares"
+      },
+      "backToList": "Voltar aos utilizadores",
+      "email": "E-mail",
+      "role": "Papel",
+      "roleHint": "Admin grupo vê e edita tudo. Admin pilar gere só os pilares atribuídos. Membro tem acesso de leitura nos pilares atribuídos.",
+      "pillarAccess": "Acesso a pilares",
+      "pillarAccessHint": "Para admin pilar e membro: pilares onde têm acesso. Ignorado para admin grupo (vê tudo).",
+      "defaultPillar": "Pilar predefinido",
+      "noDefault": "Sem predefinição",
+      "allPillars": "Todos",
+      "isSelf": "Estás a editar a tua própria conta."
     }
   }
 }
