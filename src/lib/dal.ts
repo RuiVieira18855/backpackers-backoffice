@@ -69,3 +69,15 @@ export const getAllPillars = cache(async () => {
     orderBy: (pillars, { asc }) => [asc(pillars.name)],
   });
 });
+
+export const getAllProfiles = cache(async () => {
+  return await db.query.profiles.findMany({
+    orderBy: (p, { asc }) => [asc(p.fullName), asc(p.email)],
+    columns: {
+      id: true,
+      email: true,
+      fullName: true,
+      role: true,
+    },
+  });
+});

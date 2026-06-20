@@ -223,6 +223,130 @@
       "delete": "Eliminar evento",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o evento «{name}»? Esta acção não pode ser desfeita."
+    },
+    "projectStatuses": {
+      "planned": "Planeado",
+      "active": "Activo",
+      "on_hold": "Em pausa",
+      "completed": "Concluído",
+      "cancelled": "Cancelado"
+    },
+    "taskStatuses": {
+      "todo": "Por fazer",
+      "doing": "Em curso",
+      "blocked": "Bloqueada",
+      "done": "Concluída"
+    },
+    "taskPriorities": {
+      "low": "Baixa",
+      "normal": "Normal",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+    "projects": {
+      "title": "Projectos",
+      "subtitle": "Iniciativas em curso por pilar.",
+      "newProject": "Novo projecto",
+      "empty": "Ainda não existem projectos. Cria o primeiro.",
+      "count": "{count, plural, =0 {Sem projectos} one {1 projecto} other {# projectos}}",
+      "table": {
+        "name": "Nome",
+        "status": "Estado",
+        "pillar": "Pilar",
+        "targetDate": "Entrega prevista",
+        "client": "Cliente"
+      },
+      "form": {
+        "title": "Novo projecto",
+        "subtitle": "Criar uma iniciativa.",
+        "name": "Nome",
+        "pillar": "Pilar",
+        "status": "Estado",
+        "description": "Descrição",
+        "clientContact": "Cliente (contacto)",
+        "clientContactNone": "Sem cliente associado",
+        "startDate": "Início",
+        "targetDate": "Entrega prevista",
+        "notes": "Notas",
+        "selectPlaceholder": "Escolher…",
+        "create": "Criar projecto",
+        "creating": "A criar…",
+        "errors": {
+          "nameRequired": "O nome é obrigatório.",
+          "pillarRequired": "Tens de escolher um pilar."
+        }
+      },
+      "detail": {
+        "backToList": "Voltar aos projectos",
+        "save": "Guardar alterações",
+        "saving": "A guardar…",
+        "delete": "Eliminar projecto",
+        "deleting": "A eliminar…",
+        "deleteConfirm": "Tens a certeza que queres eliminar o projecto «{name}»? Todas as tarefas associadas serão também eliminadas.",
+        "tasksSectionTitle": "Tarefas do projecto",
+        "tasksCount": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
+        "addTask": "Adicionar tarefa",
+        "noTasks": "Ainda não existem tarefas neste projecto."
+      }
+    },
+    "tasks": {
+      "title": "Tarefas",
+      "subtitle": "To-dos do grupo — opcionalmente ligadas a projectos ou eventos.",
+      "newTask": "Nova tarefa",
+      "empty": "Ainda não existem tarefas. Cria a primeira.",
+      "count": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
+      "allTasks": "Todas",
+      "myTasks": "As minhas",
+      "table": {
+        "title": "Título",
+        "status": "Estado",
+        "priority": "Prioridade",
+        "pillar": "Pilar",
+        "assignee": "Responsável",
+        "dueDate": "Prazo",
+        "linked": "Ligada a"
+      },
+      "form": {
+        "title": "Nova tarefa",
+        "subtitle": "Criar to-do, opcionalmente ligada a projecto ou evento.",
+        "title_field": "Título",
+        "pillar": "Pilar",
+        "status": "Estado",
+        "priority": "Prioridade",
+        "description": "Descrição",
+        "assignee": "Responsável",
+        "assigneeNone": "Sem responsável",
+        "project": "Projecto",
+        "projectNone": "Sem projecto",
+        "event": "Evento",
+        "eventNone": "Sem evento",
+        "dueDate": "Prazo",
+        "selectPlaceholder": "Escolher…",
+        "create": "Criar tarefa",
+        "creating": "A criar…",
+        "errors": {
+          "titleRequired": "O título é obrigatório.",
+          "pillarRequired": "Tens de escolher um pilar."
+        }
+      },
+      "detail": {
+        "backToList": "Voltar às tarefas",
+        "save": "Guardar alterações",
+        "saving": "A guardar…",
+        "delete": "Eliminar tarefa",
+        "deleting": "A eliminar…",
+        "deleteConfirm": "Tens a certeza que queres eliminar a tarefa «{title}»?"
+      }
+    },
+    "cards": {
+      "events": "Eventos",
+      "eventsDescription": "Tours, team buildings, workshops, retiros.",
+      "projects": "Projectos",
+      "projectsDescription": "Iniciativas em curso por pilar.",
+      "tasks": "Tarefas",
+      "tasksDescription": "To-dos e responsáveis.",
+      "open": "Abrir",
+      "myOpen": "Tenho {count} por fazer →"
     }
   }
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Calendar, ClipboardList, ListTodo } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { sql, gte } from "drizzle-orm";
+import { sql, gte, eq } from "drizzle-orm";
 import {
   Card,
   CardContent,
@@ -16,17 +16,21 @@ import { requireProfile } from "@/lib/dal";
 
 export default async function OpsPage() {
   const t = await getTranslations("ops");
-  const tCommon = await getTranslations("common");
-  await requireProfile();
+  const profile = await requireProfile();
 
-  // Count active stuff per entity (lightweight aggregate queries)
-  const [eventsTotal, projectsTotal, tasksTotal] = await Promise.all([
-    db.select({ count: sql<number>`count(*)::int` }).from(events),
-    db.select({ count: sql<number>`count(*)::int` }).from(projects),
-    db.select({ count: sql<number>`count(*)::int` }).from(tasks),
-  ]);
+  const [eventsTotal, projectsTotal, tasksTotal, myOpenTasks] =
+    await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(events),
+      db.select({ count: sql<number>`count(*)::int` }).from(projects),
+      db.select({ count: sql<number>`count(*)::int` }).from(tasks),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(tasks)
+        .where(
+          sql`${tasks.assigneeId} = ${profile.id} AND ${tasks.status} != 'done'`,
+        ),
+    ]);
 
-  // Upcoming events (next 30 days)
   const today = new Date();
   const upcoming = await db.query.events.findMany({
     where: gte(events.startAt, today),
@@ -79,9 +83,9 @@ export default async function OpsPage() {
             <p className="text-3xl font-display text-foreground">
               {projectsTotal[0]?.count ?? 0}
             </p>
-            <p className="text-xs text-muted-foreground italic">
-              {t("comingSoon")}
-            </p>
+            <Button asChild variant="ghost" size="sm" className="-ml-3">
+              <Link href="/ops/projects">{t("cards.open")} →</Link>
+            </Button>
           </CardContent>
         </Card>
 
@@ -99,9 +103,18 @@ export default async function OpsPage() {
             <p className="text-3xl font-display text-foreground">
               {tasksTotal[0]?.count ?? 0}
             </p>
-            <p className="text-xs text-muted-foreground italic">
-              {t("comingSoon")}
-            </p>
+            <div className="flex gap-3">
+              <Button asChild variant="ghost" size="sm" className="-ml-3">
+                <Link href="/ops/tasks">{t("cards.open")} →</Link>
+              </Button>
+              {(myOpenTasks[0]?.count ?? 0) > 0 && (
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/ops/tasks?mine=1">
+                    {t("cards.myOpen", { count: myOpenTasks[0]?.count ?? 0 })}
+                  </Link>
+                </Button>
+              )}
+            </div>
           </CardContent>
         </Card>
       </section>
