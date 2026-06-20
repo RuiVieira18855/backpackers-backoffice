@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -28,6 +29,7 @@ const CONTACT_SOURCES = [
 ] as const;
 
 const schema = z.object({
+  id: z.string().uuid(),
   fullName: z.string().min(1),
   pillarId: z.string().uuid(),
   type: z.enum(CONTACT_TYPES),
@@ -40,7 +42,7 @@ const schema = z.object({
   notes: z.string().optional(),
 });
 
-export async function createContact(
+export async function updateContact(
   _prev: ContactFormState | undefined,
   formData: FormData,
 ): Promise<ContactFormState> {
@@ -48,6 +50,7 @@ export async function createContact(
   const tErrors = await getTranslations("crm.form.errors");
 
   const raw = {
+    id: String(formData.get("id") ?? ""),
     fullName: String(formData.get("fullName") ?? "").trim(),
     pillarId: String(formData.get("pillarId") ?? ""),
     type: formData.get("type") as string,
@@ -76,9 +79,16 @@ export async function createContact(
     };
   }
 
-  const [created] = await db
-    .insert(contacts)
-    .values({
+  const before = await db.query.contacts.findFirst({
+    where: eq(contacts.id, parsed.data.id),
+  });
+  if (!before) {
+    return { error: "Contacto não encontrado." };
+  }
+
+  const [updated] = await db
+    .update(contacts)
+    .set({
       fullName: parsed.data.fullName,
       pillarId: parsed.data.pillarId,
       type: parsed.data.type,
@@ -89,18 +99,42 @@ export async function createContact(
       company: parsed.data.company || null,
       jobTitle: parsed.data.jobTitle || null,
       notes: parsed.data.notes || null,
-      ownerId: profile.id,
     })
+    .where(eq(contacts.id, parsed.data.id))
     .returning();
 
   await logAudit({
     userId: profile.id,
-    pillarId: created.pillarId,
+    pillarId: updated.pillarId,
     entityType: "contact",
-    entityId: created.id,
-    action: "create",
-    diff: { snapshot: created },
+    entityId: updated.id,
+    action: "update",
+    diff: { before, after: updated },
   });
 
-  redirect(`/crm/contacts/${created.id}`);
+  redirect(`/crm/contacts/${updated.id}`);
+}
+
+export async function deleteContact(id: string): Promise<void> {
+  const profile = await requireRole("admin_grupo", "admin_pilar");
+
+  const before = await db.query.contacts.findFirst({
+    where: eq(contacts.id, id),
+  });
+  if (!before) {
+    redirect("/crm");
+  }
+
+  await db.delete(contacts).where(eq(contacts.id, id));
+
+  await logAudit({
+    userId: profile.id,
+    pillarId: before.pillarId,
+    entityType: "contact",
+    entityId: id,
+    action: "delete",
+    diff: { snapshot: before },
+  });
+
+  redirect("/crm");
 }

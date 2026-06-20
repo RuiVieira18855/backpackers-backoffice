@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getAllPillars, requireRole } from "@/lib/dal";
-import { ContactForm } from "./contact-form";
+import { ContactForm } from "@/components/contacts/contact-form";
+import { createContact } from "./actions";
 
 export default async function NewContactPage() {
   await requireRole("admin_grupo", "admin_pilar");
@@ -17,6 +18,7 @@ export default async function NewContactPage() {
       </div>
       <ContactForm
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
+        action={createContact}
       />
     </div>
   );

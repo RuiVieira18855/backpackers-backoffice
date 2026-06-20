@@ -139,6 +139,14 @@
         "pillarRequired": "Tens de escolher um pilar.",
         "emailInvalid": "E-mail inválido."
       }
+    },
+    "detail": {
+      "backToList": "Voltar ao CRM",
+      "save": "Guardar alterações",
+      "saving": "A guardar…",
+      "delete": "Eliminar contacto",
+      "deleting": "A eliminar…",
+      "deleteConfirm": "Tens a certeza que queres eliminar o contacto «{name}»? Esta acção não pode ser desfeita."
     }
   }
 }
