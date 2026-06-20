@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Backpackers Backoffice
 
-## Getting Started
+Sistema de gest&atilde;o unificada do grupo Backpackers (Adventures + Synergy + Labs).
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, React 19.2, Turbopack default)
+- **TypeScript**
+- **Tailwind CSS v4** + **shadcn/ui** (new-york style, slate base)
+- **Supabase** (Auth + Postgres + Storage)
+- **Drizzle ORM** (a configurar com DATABASE_URL)
+- **TanStack Query**, **Zod**, **lucide-react**
+
+## Setup local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aceder em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variaveis de ambiente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Ficheiro `.env.local` (n&atilde;o committed):
 
-## Learn More
+```
+NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
+SUPABASE_SERVICE_ROLE_KEY=<service role key>          # nunca expor ao cliente
+DATABASE_URL=postgresql://...                          # para Drizzle (em breve)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/               # rotas (App Router)
+  components/        # componentes UI + layout
+    ui/              # primitivos shadcn (gerados via npx shadcn add)
+  lib/
+    supabase/        # clientes browser/server + proxy helper
+    utils.ts         # cn() helper
+  proxy.ts           # auth optimistic + session refresh (Next 16: era middleware)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Padroes
 
-## Deploy on Vercel
+- **Cookies / headers / params sao async** (Next 16). Sempre `await`.
+- **Auth checks** centralizados em `src/lib/dal.ts` (a criar) com React `cache()`.
+- **Multi-tenant**: todos os records sao taggeados com `pillar_id` (adventures | synergy | labs | grupo). RLS Supabase aplica permissoes.
+- **Visual**: usa identidade Backpackers Labs (Trail Navy + Signal Cyan + Inter + Bebas Neue).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Adicionar componentes shadcn
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npx shadcn@latest add button input card dialog
+```
