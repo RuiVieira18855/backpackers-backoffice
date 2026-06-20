@@ -2,7 +2,8 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { LogOut, Settings, Shield } from "lucide-react";
+import { LogOut, Settings, Shield, Sun, Moon, Monitor, Check } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import {
   DropdownMenu,
@@ -10,6 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -18,13 +22,22 @@ import { signOut } from "@/app/(protected)/actions";
 type Props = {
   fullName: string | null;
   email: string;
+  avatarUrl: string | null;
   roleLabel: string;
   isAdminGrupo: boolean;
 };
 
-export function UserMenu({ fullName, email, roleLabel, isAdminGrupo }: Props) {
+export function UserMenu({
+  fullName,
+  email,
+  avatarUrl,
+  roleLabel,
+  isAdminGrupo,
+}: Props) {
   const t = useTranslations("common");
   const tNav = useTranslations("nav");
+  const tTheme = useTranslations("settings.theme");
+  const { theme, setTheme } = useTheme();
   const [pending, startTransition] = useTransition();
 
   function onSignOut() {
@@ -48,9 +61,18 @@ export function UserMenu({ fullName, email, roleLabel, isAdminGrupo }: Props) {
             <span className="text-sm text-foreground">{displayName}</span>
             <span className="text-xs text-muted-foreground">{roleLabel}</span>
           </span>
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground text-xs font-medium">
-            {initials || "?"}
-          </span>
+          {avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={avatarUrl}
+              alt=""
+              className="h-8 w-8 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground text-xs font-medium">
+              {initials || "?"}
+            </span>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -63,12 +85,46 @@ export function UserMenu({ fullName, email, roleLabel, isAdminGrupo }: Props) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+
         <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             {tNav("settings")}
           </Link>
         </DropdownMenuItem>
+
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            {theme === "dark" ? (
+              <Moon className="mr-2 h-4 w-4" />
+            ) : theme === "light" ? (
+              <Sun className="mr-2 h-4 w-4" />
+            ) : (
+              <Monitor className="mr-2 h-4 w-4" />
+            )}
+            {tTheme("section")}
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            {(["light", "dark", "system"] as const).map((opt) => (
+              <DropdownMenuItem
+                key={opt}
+                onClick={() => setTheme(opt)}
+                className="cursor-pointer"
+              >
+                {opt === "light" ? (
+                  <Sun className="mr-2 h-4 w-4" />
+                ) : opt === "dark" ? (
+                  <Moon className="mr-2 h-4 w-4" />
+                ) : (
+                  <Monitor className="mr-2 h-4 w-4" />
+                )}
+                <span className="flex-1">{tTheme(opt)}</span>
+                {theme === opt && <Check className="h-4 w-4 opacity-70" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+
         {isAdminGrupo && (
           <DropdownMenuItem asChild>
             <Link href="/admin/users" className="cursor-pointer">

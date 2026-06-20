@@ -6,10 +6,11 @@ import { UserMenu } from "./user-menu";
 type Props = {
   fullName: string | null;
   email: string;
+  avatarUrl: string | null;
   role: string;
 };
 
-export async function AppHeader({ fullName, email, role }: Props) {
+export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
   const tRoles = await getTranslations("roles");
   const roleLabel = tRoles.has(role as never) ? tRoles(role as never) : role;
 
@@ -30,6 +31,7 @@ export async function AppHeader({ fullName, email, role }: Props) {
         <UserMenu
           fullName={fullName}
           email={email}
+          avatarUrl={avatarUrl}
           roleLabel={roleLabel}
           isAdminGrupo={role === "admin_grupo"}
         />

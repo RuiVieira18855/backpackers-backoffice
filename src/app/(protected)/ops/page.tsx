@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calendar, ClipboardList, ListTodo } from "lucide-react";
+import { Calendar, CalendarDays, ClipboardList, ListTodo } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { sql, gte, eq } from "drizzle-orm";
 import {
@@ -41,11 +41,21 @@ export default async function OpsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-10">
-      <div>
-        <h1 className="font-display text-6xl text-foreground leading-none">
-          {t("title")}
-        </h1>
-        <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-6xl text-foreground leading-none">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
+            {t("subtitle")}
+          </p>
+        </div>
+        <Button asChild variant="outline">
+          <Link href="/ops/calendar">
+            <CalendarDays className="mr-2 h-4 w-4" />
+            {t("openCalendar")}
+          </Link>
+        </Button>
       </div>
 
       <section className="grid gap-4 md:grid-cols-3">

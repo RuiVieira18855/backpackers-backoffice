@@ -20,3 +20,4 @@ export const supabaseAdmin = createClient(
 );
 
 export const DOCUMENTS_BUCKET = "documents";
+export const AVATARS_BUCKET = "avatars";

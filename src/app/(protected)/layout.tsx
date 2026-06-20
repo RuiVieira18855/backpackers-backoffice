@@ -13,6 +13,7 @@ export default async function ProtectedLayout({
       <AppHeader
         fullName={profile.fullName}
         email={profile.email}
+        avatarUrl={profile.avatarUrl}
         role={profile.role}
       />
       <main className="flex-1">{children}</main>

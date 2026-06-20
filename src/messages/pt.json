@@ -153,6 +153,19 @@
   "ops": {
     "title": "Operações",
     "subtitle": "Eventos, projectos e tarefas — agenda operacional do grupo.",
+    "openCalendar": "Ver calendário",
+    "calendar": {
+      "title": "Calendário",
+      "subtitle": "Próximos eventos e tarefas com prazo.",
+      "backToOps": "Voltar a Operações",
+      "rangeLabel": "Período",
+      "range30": "Próximos 30 dias",
+      "range60": "Próximos 60 dias",
+      "range90": "Próximos 90 dias",
+      "empty": "Sem eventos nem tarefas neste período.",
+      "event": "Evento",
+      "task": "Tarefa"
+    },
     "comingSoon": "em breve",
     "cards": {
       "events": "Eventos",
@@ -400,16 +413,30 @@
   },
   "settings": {
     "title": "Definições",
-    "subtitle": "Os teus dados de perfil.",
+    "subtitle": "Os teus dados de perfil, preferências e aparência.",
     "email": "E-mail",
     "emailHint": "Não editável neste ecrã. Para mudar, contacta o admin.",
     "role": "Papel",
     "roleHint": "Apenas um admin do grupo pode alterar.",
     "fullName": "Nome completo",
+    "defaultPillar": "Pilar predefinido",
+    "noDefault": "Sem predefinição",
+    "defaultPillarHint": "Pilar onde aterras por defeito ao entrar.",
+    "avatar": "Avatar",
+    "avatarHint": "PNG, JPG, WEBP ou GIF, máximo 1 MB. Quadrado fica melhor.",
     "save": "Guardar alterações",
     "saving": "A guardar…",
     "errors": {
-      "nameRequired": "O nome é obrigatório."
+      "nameRequired": "O nome é obrigatório.",
+      "avatarType": "Formato inválido. Usa PNG, JPG, WEBP ou GIF.",
+      "avatarTooLarge": "Imagem maior que 1 MB. Comprime ou usa outra."
+    },
+    "theme": {
+      "section": "Tema",
+      "hint": "Aplica-se a este browser. Predefinição segue o sistema.",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
     }
   },
   "admin": {
