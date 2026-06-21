@@ -1,0 +1,496 @@
+{
+  "common": {
+    "appName": "Backpackers Backoffice",
+    "loading": "Cargando…",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "back": "Atrás",
+    "signOut": "Cerrar sesión",
+    "signingOut": "Cerrando sesión…",
+    "search": "Buscar…",
+    "filter": "Filtrar",
+    "noResults": "Sin resultados.",
+    "all": "Todos",
+    "required": "Obligatorio",
+    "optional": "Opcional",
+    "by": "por"
+  },
+  "metadata": {
+    "title": "Backpackers Backoffice",
+    "description": "Backoffice unificado del grupo Backpackers — Adventures, Synergy, Labs."
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "crm": "CRM",
+    "operations": "Operaciones",
+    "documents": "Documentos",
+    "settings": "Ajustes",
+    "admin": "Administración"
+  },
+  "locale": {
+    "section": "Idioma",
+    "current": "Idioma"
+  },
+  "roles": {
+    "super_user": "Super usuario",
+    "admin_grupo": "Admin grupo",
+    "admin_pilar": "Admin pilar",
+    "member": "Miembro"
+  },
+  "auth": {
+    "brandTagline": "Backoffice unificado del grupo Backpackers. Adventures · Synergy · Labs.",
+    "loginTitle": "Iniciar sesión",
+    "loginSubtitle": "Acceder a Backpackers Backoffice.",
+    "signupTitle": "Crear cuenta",
+    "signupSubtitle": "Backpackers Backoffice.",
+    "email": "Correo",
+    "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "passwordHint": "Mínimo 8 caracteres.",
+    "signIn": "Entrar",
+    "signingIn": "Entrando…",
+    "signUp": "Crear cuenta",
+    "signingUp": "Creando cuenta…",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "createAccountLink": "Crear cuenta",
+    "enterLink": "Entrar",
+    "errors": {
+      "emailPasswordRequired": "Correo y contraseña son obligatorios.",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres."
+    },
+    "signupConfirmation": "Cuenta creada. Revisa tu correo para confirmar el registro antes de entrar."
+  },
+  "dashboard": {
+    "hello": "Hola, {name}",
+    "title": "Panel",
+    "greetings": {
+      "super_user": "Acceso total como super usuario.",
+      "admin_grupo": "Acceso transversal al grupo.",
+      "admin_pilar": "Acceso a los pilares asignados.",
+      "member": "Bienvenido al backoffice."
+    },
+    "kpis": {
+      "contacts": "Contactos",
+      "leadsActive": "{count} leads activos",
+      "events": "Próximos eventos",
+      "upcomingEvents": "agendados a partir de hoy",
+      "tasks": "Tareas abiertas",
+      "openTasks": "aún por concluir",
+      "documents": "Documentos",
+      "documentsHint": "en el acervo del grupo"
+    },
+    "nextEvents": "Próximos eventos",
+    "nextEventsHint": "Los 4 eventos más cercanos.",
+    "nextEventsEmpty": "Sin eventos agendados.",
+    "myTasks": "Mis tareas ({count})",
+    "myTasksHint": "Asignadas a ti, aún abiertas.",
+    "myTasksEmpty": "No tienes tareas pendientes. Todo al día.",
+    "recentActivity": "Actividad reciente",
+    "recentActivityEmpty": "Sin actividad registrada aún.",
+    "sectionPillars": "Pilares",
+    "sectionModules": "Módulos",
+    "modulesCardTitle": "Próximos módulos",
+    "modulesCardDescription": "Los tres módulos del v1 están accesibles desde el menú.",
+    "comingSoon": "próximamente",
+    "modules": {
+      "crm": "CRM + Pipeline",
+      "ops": "Operaciones",
+      "docs": "Gestión documental"
+    }
+  },
+  "crm": {
+    "title": "CRM",
+    "subtitle": "Contactos, leads y socios — transversal a los pilares.",
+    "newContact": "Nuevo contacto",
+    "contactsCount": "{count, plural, =0 {Sin contactos} one {1 contacto} other {# contactos}}",
+    "empty": "Aún no hay contactos. Crea el primero.",
+    "openKanban": "Vista pipeline",
+    "table": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "stage": "Estado",
+      "pillar": "Pilar",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "company": "Empresa",
+      "owner": "Responsable",
+      "createdAt": "Creado"
+    },
+    "types": {
+      "lead": "Lead",
+      "customer": "Cliente",
+      "partner": "Socio",
+      "vendor": "Proveedor"
+    },
+    "stages": {
+      "new": "Nuevo",
+      "qualified": "Cualificado",
+      "active": "Activo",
+      "on_hold": "En pausa",
+      "closed_won": "Cerrado (ganado)",
+      "closed_lost": "Cerrado (perdido)"
+    },
+    "sources": {
+      "website": "Web",
+      "referral": "Referencia",
+      "event": "Evento",
+      "inbound": "Inbound",
+      "cold": "Outreach",
+      "other": "Otro"
+    },
+    "form": {
+      "title": "Nuevo contacto",
+      "subtitle": "Añadir persona o empresa al CRM.",
+      "fullName": "Nombre completo",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "company": "Empresa",
+      "jobTitle": "Cargo",
+      "pillar": "Pilar",
+      "pillarHint": "A qué pilar pertenece este contacto.",
+      "type": "Tipo",
+      "stage": "Estado inicial",
+      "source": "Origen",
+      "notes": "Notas",
+      "selectPlaceholder": "Elegir…",
+      "create": "Crear contacto",
+      "creating": "Creando…",
+      "errors": {
+        "nameRequired": "El nombre es obligatorio.",
+        "pillarRequired": "Tienes que elegir un pilar.",
+        "emailInvalid": "Correo no válido."
+      }
+    },
+    "detail": {
+      "backToList": "Volver al CRM",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "delete": "Eliminar contacto",
+      "deleting": "Eliminando…",
+      "deleteConfirm": "¿Seguro que quieres eliminar el contacto «{name}»? Esta acción no se puede deshacer."
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "subtitle": "Arrastra contactos entre estados.",
+      "backToList": "Volver a la lista",
+      "empty": "Sin contactos en este estado.",
+      "movedTo": "Movido a {stage}",
+      "totalContacts": "{count, plural, =0 {sin contactos} one {1 contacto} other {# contactos}}"
+    }
+  },
+  "ops": {
+    "title": "Operaciones",
+    "subtitle": "Eventos, proyectos y tareas — agenda operativa del grupo.",
+    "openCalendar": "Ver calendario",
+    "calendar": {
+      "title": "Calendario",
+      "subtitle": "Próximos eventos y tareas con vencimiento.",
+      "backToOps": "Volver a Operaciones",
+      "viewAgenda": "Agenda",
+      "viewGrid": "Cuadrícula",
+      "today": "Hoy",
+      "rangeLabel": "Periodo",
+      "range30": "Próximos 30 días",
+      "range60": "Próximos 60 días",
+      "range90": "Próximos 90 días",
+      "empty": "Sin eventos ni tareas en este periodo.",
+      "event": "Evento",
+      "task": "Tarea"
+    },
+    "comingSoon": "próximamente",
+    "cards": {
+      "events": "Eventos",
+      "eventsDescription": "Tours, team buildings, talleres, retiros.",
+      "projects": "Proyectos",
+      "projectsDescription": "Iniciativas en curso por pilar.",
+      "tasks": "Tareas",
+      "tasksDescription": "To-dos y responsables.",
+      "open": "Abrir",
+      "myOpen": "Tengo {count} pendientes →"
+    },
+    "upcomingEvents": "Próximos eventos",
+    "noUpcoming": "Sin eventos agendados en los próximos días.",
+    "eventsTitle": "Eventos",
+    "eventsSubtitle": "Toda la actividad agendada del grupo.",
+    "eventsCount": "{count, plural, =0 {Sin eventos} one {1 evento} other {# eventos}}",
+    "eventsEmpty": "Aún no hay eventos. Crea el primero.",
+    "newEvent": "Nuevo evento",
+    "table": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "status": "Estado",
+      "pillar": "Pilar",
+      "startAt": "Inicio",
+      "client": "Cliente"
+    },
+    "eventTypes": {
+      "tour": "Tour",
+      "team_building": "Team building",
+      "workshop": "Taller",
+      "meeting": "Reunión",
+      "retreat": "Retiro",
+      "other": "Otro"
+    },
+    "eventStatuses": {
+      "draft": "Borrador",
+      "scheduled": "Agendado",
+      "in_progress": "En curso",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "form": {
+      "title": "Nuevo evento",
+      "subtitle": "Agendar un evento del grupo.",
+      "name": "Nombre",
+      "pillar": "Pilar",
+      "type": "Tipo",
+      "status": "Estado",
+      "description": "Descripción",
+      "location": "Ubicación",
+      "startAt": "Inicio",
+      "endAt": "Fin",
+      "capacity": "Capacidad",
+      "clientContact": "Cliente (contacto)",
+      "clientContactNone": "Sin cliente asociado",
+      "clientContactHint": "Útil para team buildings Synergy con empresa cliente.",
+      "notes": "Notas",
+      "selectPlaceholder": "Elegir…",
+      "create": "Crear evento",
+      "creating": "Creando…",
+      "errors": {
+        "nameRequired": "El nombre es obligatorio.",
+        "pillarRequired": "Tienes que elegir un pilar."
+      }
+    },
+    "detail": {
+      "backToList": "Volver a eventos",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "delete": "Eliminar evento",
+      "deleting": "Eliminando…",
+      "deleteConfirm": "¿Seguro que quieres eliminar el evento «{name}»? Esta acción no se puede deshacer."
+    },
+    "projectStatuses": {
+      "planned": "Planeado",
+      "active": "Activo",
+      "on_hold": "En pausa",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "taskStatuses": {
+      "todo": "Por hacer",
+      "doing": "En curso",
+      "blocked": "Bloqueada",
+      "done": "Hecha"
+    },
+    "taskPriorities": {
+      "low": "Baja",
+      "normal": "Normal",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+    "projects": {
+      "title": "Proyectos",
+      "subtitle": "Iniciativas en curso por pilar.",
+      "newProject": "Nuevo proyecto",
+      "empty": "Aún no hay proyectos. Crea el primero.",
+      "count": "{count, plural, =0 {Sin proyectos} one {1 proyecto} other {# proyectos}}",
+      "table": {
+        "name": "Nombre",
+        "status": "Estado",
+        "pillar": "Pilar",
+        "targetDate": "Entrega prevista",
+        "client": "Cliente"
+      },
+      "form": {
+        "title": "Nuevo proyecto",
+        "subtitle": "Crear una iniciativa.",
+        "name": "Nombre",
+        "pillar": "Pilar",
+        "status": "Estado",
+        "description": "Descripción",
+        "clientContact": "Cliente (contacto)",
+        "clientContactNone": "Sin cliente asociado",
+        "startDate": "Inicio",
+        "targetDate": "Entrega prevista",
+        "notes": "Notas",
+        "selectPlaceholder": "Elegir…",
+        "create": "Crear proyecto",
+        "creating": "Creando…",
+        "errors": {
+          "nameRequired": "El nombre es obligatorio.",
+          "pillarRequired": "Tienes que elegir un pilar."
+        }
+      },
+      "detail": {
+        "backToList": "Volver a proyectos",
+        "save": "Guardar cambios",
+        "saving": "Guardando…",
+        "delete": "Eliminar proyecto",
+        "deleting": "Eliminando…",
+        "deleteConfirm": "¿Seguro que quieres eliminar el proyecto «{name}»? También se eliminarán todas las tareas asociadas.",
+        "tasksSectionTitle": "Tareas del proyecto",
+        "tasksCount": "{count, plural, =0 {Sin tareas} one {1 tarea} other {# tareas}}",
+        "addTask": "Añadir tarea",
+        "noTasks": "Aún no hay tareas en este proyecto."
+      }
+    },
+    "tasks": {
+      "title": "Tareas",
+      "subtitle": "To-dos del grupo — opcionalmente ligadas a proyectos o eventos.",
+      "newTask": "Nueva tarea",
+      "empty": "Aún no hay tareas. Crea la primera.",
+      "count": "{count, plural, =0 {Sin tareas} one {1 tarea} other {# tareas}}",
+      "allTasks": "Todas",
+      "myTasks": "Las mías",
+      "table": {
+        "title": "Título",
+        "status": "Estado",
+        "priority": "Prioridad",
+        "pillar": "Pilar",
+        "assignee": "Responsable",
+        "dueDate": "Vencimiento",
+        "linked": "Ligada a"
+      },
+      "form": {
+        "title": "Nueva tarea",
+        "subtitle": "Crear to-do, opcionalmente ligada a proyecto o evento.",
+        "title_field": "Título",
+        "pillar": "Pilar",
+        "status": "Estado",
+        "priority": "Prioridad",
+        "description": "Descripción",
+        "assignee": "Responsable",
+        "assigneeNone": "Sin responsable",
+        "project": "Proyecto",
+        "projectNone": "Sin proyecto",
+        "event": "Evento",
+        "eventNone": "Sin evento",
+        "dueDate": "Vencimiento",
+        "selectPlaceholder": "Elegir…",
+        "create": "Crear tarea",
+        "creating": "Creando…",
+        "errors": {
+          "titleRequired": "El título es obligatorio.",
+          "pillarRequired": "Tienes que elegir un pilar."
+        }
+      },
+      "detail": {
+        "backToList": "Volver a tareas",
+        "save": "Guardar cambios",
+        "saving": "Guardando…",
+        "delete": "Eliminar tarea",
+        "deleting": "Eliminando…",
+        "deleteConfirm": "¿Seguro que quieres eliminar la tarea «{title}»?"
+      }
+    }
+  },
+  "docs": {
+    "title": "Documentos",
+    "subtitle": "Procedimientos, contratos, portfolio y ficheros del grupo.",
+    "newDoc": "Subir documento",
+    "empty": "Aún no hay documentos. Sube el primero.",
+    "count": "{count, plural, =0 {Sin documentos} one {1 documento} other {# documentos}}",
+    "table": {
+      "title": "Título",
+      "type": "Tipo",
+      "pillar": "Pilar",
+      "size": "Tamaño",
+      "uploadedAt": "Subido en"
+    },
+    "types": {
+      "procedure": "Procedimiento",
+      "contract": "Contrato",
+      "report": "Informe",
+      "portfolio": "Portfolio",
+      "other": "Otro"
+    },
+    "form": {
+      "pageTitle": "Subir documento",
+      "subtitle": "Añadir fichero a la gestión documental del grupo.",
+      "file": "Fichero",
+      "fileHint": "Máximo 4 MB en esta versión. Para ficheros mayores avísame e implementamos subida directa.",
+      "title": "Título",
+      "pillar": "Pilar",
+      "type": "Tipo",
+      "description": "Descripción",
+      "selectPlaceholder": "Elegir…",
+      "upload": "Subir",
+      "uploading": "Subiendo…",
+      "errors": {
+        "fileRequired": "Tienes que seleccionar un fichero.",
+        "fileTooLarge": "Fichero mayor que 4 MB. Reduce el tamaño o contáctame para subir el límite.",
+        "titleRequired": "El título es obligatorio.",
+        "pillarRequired": "Tienes que elegir un pilar."
+      }
+    },
+    "detail": {
+      "backToList": "Volver a documentos",
+      "download": "Descargar",
+      "open": "Abrir",
+      "noPreview": "Vista previa no disponible para este tipo de fichero. Usa «Abrir» o «Descargar».",
+      "delete": "Eliminar documento",
+      "deleting": "Eliminando…",
+      "deleteConfirm": "¿Seguro que quieres eliminar el documento «{title}»? Esta acción no se puede deshacer.",
+      "uploadedBy": "Subido por {name} el {date}"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Tus datos de perfil, preferencias y apariencia.",
+    "email": "Correo",
+    "emailHint": "No editable aquí. Para cambiar, contacta con el admin.",
+    "role": "Papel",
+    "roleHint": "Solo un admin de grupo puede cambiarlo.",
+    "fullName": "Nombre completo",
+    "defaultPillar": "Pilar por defecto",
+    "noDefault": "Sin pilar por defecto",
+    "defaultPillarHint": "Pilar donde aterrizas por defecto al entrar.",
+    "avatar": "Avatar",
+    "avatarHint": "PNG, JPG, WEBP o GIF, máximo 1 MB. Cuadrado queda mejor.",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "errors": {
+      "nameRequired": "El nombre es obligatorio.",
+      "avatarType": "Formato no válido. Usa PNG, JPG, WEBP o GIF.",
+      "avatarTooLarge": "Imagen mayor que 1 MB. Comprime o usa otra."
+    },
+    "theme": {
+      "section": "Tema",
+      "hint": "Se aplica en este navegador. Por defecto sigue el sistema.",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    }
+  },
+  "admin": {
+    "title": "Administración",
+    "users": {
+      "title": "Usuarios",
+      "subtitle": "Gestionar papeles y acceso por pilar.",
+      "count": "{count, plural, =0 {Sin usuarios} one {1 usuario} other {# usuarios}}",
+      "table": {
+        "name": "Nombre",
+        "email": "Correo",
+        "role": "Papel",
+        "pillarAccess": "Acceso a pilares"
+      },
+      "backToList": "Volver a usuarios",
+      "email": "Correo",
+      "role": "Papel",
+      "roleHint": "Admin grupo ve y edita todo. Admin pilar gestiona solo los pilares asignados. Miembro tiene acceso de lectura en pilares asignados.",
+      "pillarAccess": "Acceso a pilares",
+      "pillarAccessHint": "Para admin pilar y miembro: pilares con acceso. Ignorado para admin grupo (ve todo).",
+      "defaultPillar": "Pilar por defecto",
+      "noDefault": "Sin pilar por defecto",
+      "allPillars": "Todos",
+      "isSelf": "Estás editando tu propia cuenta.",
+      "targetSuperUserLocked": "Este usuario es super usuario. Solo otro super usuario puede editarlo."
+    }
+  }
+}

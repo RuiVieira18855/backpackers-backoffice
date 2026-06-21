@@ -1,0 +1,496 @@
+{
+  "common": {
+    "appName": "Backpackers Backoffice",
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…",
+    "search": "Search…",
+    "filter": "Filter",
+    "noResults": "No results.",
+    "all": "All",
+    "required": "Required",
+    "optional": "Optional",
+    "by": "by"
+  },
+  "metadata": {
+    "title": "Backpackers Backoffice",
+    "description": "Unified backoffice for the Backpackers group — Adventures, Synergy, Labs."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "crm": "CRM",
+    "operations": "Operations",
+    "documents": "Documents",
+    "settings": "Settings",
+    "admin": "Admin"
+  },
+  "locale": {
+    "section": "Language",
+    "current": "Language"
+  },
+  "roles": {
+    "super_user": "Super user",
+    "admin_grupo": "Group admin",
+    "admin_pilar": "Pillar admin",
+    "member": "Member"
+  },
+  "auth": {
+    "brandTagline": "Unified backoffice for the Backpackers group. Adventures · Synergy · Labs.",
+    "loginTitle": "Sign in",
+    "loginSubtitle": "Sign in to Backpackers Backoffice.",
+    "signupTitle": "Create account",
+    "signupSubtitle": "Backpackers Backoffice.",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "passwordHint": "Minimum 8 characters.",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "signUp": "Create account",
+    "signingUp": "Creating account…",
+    "noAccount": "Don't have an account yet?",
+    "haveAccount": "Already have an account?",
+    "createAccountLink": "Create account",
+    "enterLink": "Sign in",
+    "errors": {
+      "emailPasswordRequired": "Email and password are required.",
+      "passwordTooShort": "Password must be at least 8 characters."
+    },
+    "signupConfirmation": "Account created. Check your email to confirm registration before signing in."
+  },
+  "dashboard": {
+    "hello": "Hello, {name}",
+    "title": "Dashboard",
+    "greetings": {
+      "super_user": "Full access as super user.",
+      "admin_grupo": "Cross-group access.",
+      "admin_pilar": "Access to assigned pillars.",
+      "member": "Welcome to the backoffice."
+    },
+    "kpis": {
+      "contacts": "Contacts",
+      "leadsActive": "{count} active leads",
+      "events": "Upcoming events",
+      "upcomingEvents": "scheduled from today",
+      "tasks": "Open tasks",
+      "openTasks": "still to complete",
+      "documents": "Documents",
+      "documentsHint": "in the group's library"
+    },
+    "nextEvents": "Upcoming events",
+    "nextEventsHint": "The 4 closest events.",
+    "nextEventsEmpty": "No events scheduled.",
+    "myTasks": "My tasks ({count})",
+    "myTasksHint": "Assigned to you, still open.",
+    "myTasksEmpty": "No pending tasks. All caught up.",
+    "recentActivity": "Recent activity",
+    "recentActivityEmpty": "No activity recorded yet.",
+    "sectionPillars": "Pillars",
+    "sectionModules": "Modules",
+    "modulesCardTitle": "Coming modules",
+    "modulesCardDescription": "The three v1 modules are accessible from the menu.",
+    "comingSoon": "coming soon",
+    "modules": {
+      "crm": "CRM + Pipeline",
+      "ops": "Operations",
+      "docs": "Document management"
+    }
+  },
+  "crm": {
+    "title": "CRM",
+    "subtitle": "Contacts, leads and partners — across pillars.",
+    "newContact": "New contact",
+    "contactsCount": "{count, plural, =0 {No contacts} one {1 contact} other {# contacts}}",
+    "empty": "No contacts yet. Create the first one.",
+    "openKanban": "Pipeline view",
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "stage": "Stage",
+      "pillar": "Pillar",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "owner": "Owner",
+      "createdAt": "Created"
+    },
+    "types": {
+      "lead": "Lead",
+      "customer": "Customer",
+      "partner": "Partner",
+      "vendor": "Vendor"
+    },
+    "stages": {
+      "new": "New",
+      "qualified": "Qualified",
+      "active": "Active",
+      "on_hold": "On hold",
+      "closed_won": "Closed (won)",
+      "closed_lost": "Closed (lost)"
+    },
+    "sources": {
+      "website": "Website",
+      "referral": "Referral",
+      "event": "Event",
+      "inbound": "Inbound",
+      "cold": "Outreach",
+      "other": "Other"
+    },
+    "form": {
+      "title": "New contact",
+      "subtitle": "Add a person or company to the CRM.",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "jobTitle": "Job title",
+      "pillar": "Pillar",
+      "pillarHint": "Which pillar this contact belongs to.",
+      "type": "Type",
+      "stage": "Initial stage",
+      "source": "Source",
+      "notes": "Notes",
+      "selectPlaceholder": "Choose…",
+      "create": "Create contact",
+      "creating": "Creating…",
+      "errors": {
+        "nameRequired": "Name is required.",
+        "pillarRequired": "You must choose a pillar.",
+        "emailInvalid": "Invalid email."
+      }
+    },
+    "detail": {
+      "backToList": "Back to CRM",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "delete": "Delete contact",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Are you sure you want to delete contact \"{name}\"? This action cannot be undone."
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "subtitle": "Drag contacts between stages.",
+      "backToList": "Back to list",
+      "empty": "No contacts in this stage.",
+      "movedTo": "Moved to {stage}",
+      "totalContacts": "{count, plural, =0 {no contacts} one {1 contact} other {# contacts}}"
+    }
+  },
+  "ops": {
+    "title": "Operations",
+    "subtitle": "Events, projects and tasks — group operational agenda.",
+    "openCalendar": "Open calendar",
+    "calendar": {
+      "title": "Calendar",
+      "subtitle": "Upcoming events and tasks with due date.",
+      "backToOps": "Back to Operations",
+      "viewAgenda": "Agenda",
+      "viewGrid": "Grid",
+      "today": "Today",
+      "rangeLabel": "Range",
+      "range30": "Next 30 days",
+      "range60": "Next 60 days",
+      "range90": "Next 90 days",
+      "empty": "No events or tasks in this period.",
+      "event": "Event",
+      "task": "Task"
+    },
+    "comingSoon": "coming soon",
+    "cards": {
+      "events": "Events",
+      "eventsDescription": "Tours, team buildings, workshops, retreats.",
+      "projects": "Projects",
+      "projectsDescription": "Initiatives in progress by pillar.",
+      "tasks": "Tasks",
+      "tasksDescription": "To-dos and assignees.",
+      "open": "Open",
+      "myOpen": "{count} pending for me →"
+    },
+    "upcomingEvents": "Upcoming events",
+    "noUpcoming": "No events scheduled in the next few days.",
+    "eventsTitle": "Events",
+    "eventsSubtitle": "All scheduled group activity.",
+    "eventsCount": "{count, plural, =0 {No events} one {1 event} other {# events}}",
+    "eventsEmpty": "No events yet. Create the first one.",
+    "newEvent": "New event",
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "status": "Status",
+      "pillar": "Pillar",
+      "startAt": "Start",
+      "client": "Client"
+    },
+    "eventTypes": {
+      "tour": "Tour",
+      "team_building": "Team building",
+      "workshop": "Workshop",
+      "meeting": "Meeting",
+      "retreat": "Retreat",
+      "other": "Other"
+    },
+    "eventStatuses": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "form": {
+      "title": "New event",
+      "subtitle": "Schedule a group event.",
+      "name": "Name",
+      "pillar": "Pillar",
+      "type": "Type",
+      "status": "Status",
+      "description": "Description",
+      "location": "Location",
+      "startAt": "Start",
+      "endAt": "End",
+      "capacity": "Capacity",
+      "clientContact": "Client (contact)",
+      "clientContactNone": "No client linked",
+      "clientContactHint": "Useful for Synergy team buildings with a corporate client.",
+      "notes": "Notes",
+      "selectPlaceholder": "Choose…",
+      "create": "Create event",
+      "creating": "Creating…",
+      "errors": {
+        "nameRequired": "Name is required.",
+        "pillarRequired": "You must choose a pillar."
+      }
+    },
+    "detail": {
+      "backToList": "Back to events",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "delete": "Delete event",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Are you sure you want to delete event \"{name}\"? This action cannot be undone."
+    },
+    "projectStatuses": {
+      "planned": "Planned",
+      "active": "Active",
+      "on_hold": "On hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "taskStatuses": {
+      "todo": "To do",
+      "doing": "In progress",
+      "blocked": "Blocked",
+      "done": "Done"
+    },
+    "taskPriorities": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Initiatives in progress by pillar.",
+      "newProject": "New project",
+      "empty": "No projects yet. Create the first one.",
+      "count": "{count, plural, =0 {No projects} one {1 project} other {# projects}}",
+      "table": {
+        "name": "Name",
+        "status": "Status",
+        "pillar": "Pillar",
+        "targetDate": "Target date",
+        "client": "Client"
+      },
+      "form": {
+        "title": "New project",
+        "subtitle": "Create an initiative.",
+        "name": "Name",
+        "pillar": "Pillar",
+        "status": "Status",
+        "description": "Description",
+        "clientContact": "Client (contact)",
+        "clientContactNone": "No client linked",
+        "startDate": "Start",
+        "targetDate": "Target date",
+        "notes": "Notes",
+        "selectPlaceholder": "Choose…",
+        "create": "Create project",
+        "creating": "Creating…",
+        "errors": {
+          "nameRequired": "Name is required.",
+          "pillarRequired": "You must choose a pillar."
+        }
+      },
+      "detail": {
+        "backToList": "Back to projects",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "delete": "Delete project",
+        "deleting": "Deleting…",
+        "deleteConfirm": "Are you sure you want to delete project \"{name}\"? All associated tasks will also be deleted.",
+        "tasksSectionTitle": "Project tasks",
+        "tasksCount": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
+        "addTask": "Add task",
+        "noTasks": "No tasks in this project yet."
+      }
+    },
+    "tasks": {
+      "title": "Tasks",
+      "subtitle": "Group to-dos — optionally linked to projects or events.",
+      "newTask": "New task",
+      "empty": "No tasks yet. Create the first one.",
+      "count": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
+      "allTasks": "All",
+      "myTasks": "Mine",
+      "table": {
+        "title": "Title",
+        "status": "Status",
+        "priority": "Priority",
+        "pillar": "Pillar",
+        "assignee": "Assignee",
+        "dueDate": "Due date",
+        "linked": "Linked to"
+      },
+      "form": {
+        "title": "New task",
+        "subtitle": "Create a to-do, optionally linked to a project or event.",
+        "title_field": "Title",
+        "pillar": "Pillar",
+        "status": "Status",
+        "priority": "Priority",
+        "description": "Description",
+        "assignee": "Assignee",
+        "assigneeNone": "No assignee",
+        "project": "Project",
+        "projectNone": "No project",
+        "event": "Event",
+        "eventNone": "No event",
+        "dueDate": "Due date",
+        "selectPlaceholder": "Choose…",
+        "create": "Create task",
+        "creating": "Creating…",
+        "errors": {
+          "titleRequired": "Title is required.",
+          "pillarRequired": "You must choose a pillar."
+        }
+      },
+      "detail": {
+        "backToList": "Back to tasks",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "delete": "Delete task",
+        "deleting": "Deleting…",
+        "deleteConfirm": "Are you sure you want to delete task \"{title}\"?"
+      }
+    }
+  },
+  "docs": {
+    "title": "Documents",
+    "subtitle": "Procedures, contracts, portfolio and group files.",
+    "newDoc": "Upload document",
+    "empty": "No documents yet. Upload the first one.",
+    "count": "{count, plural, =0 {No documents} one {1 document} other {# documents}}",
+    "table": {
+      "title": "Title",
+      "type": "Type",
+      "pillar": "Pillar",
+      "size": "Size",
+      "uploadedAt": "Uploaded at"
+    },
+    "types": {
+      "procedure": "Procedure",
+      "contract": "Contract",
+      "report": "Report",
+      "portfolio": "Portfolio",
+      "other": "Other"
+    },
+    "form": {
+      "pageTitle": "Upload document",
+      "subtitle": "Add a file to the group's document management.",
+      "file": "File",
+      "fileHint": "Maximum 4 MB in this version. For larger files let me know and I'll implement direct upload.",
+      "title": "Title",
+      "pillar": "Pillar",
+      "type": "Type",
+      "description": "Description",
+      "selectPlaceholder": "Choose…",
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "errors": {
+        "fileRequired": "You must select a file.",
+        "fileTooLarge": "File larger than 4 MB. Reduce the size or contact me to raise the limit.",
+        "titleRequired": "Title is required.",
+        "pillarRequired": "You must choose a pillar."
+      }
+    },
+    "detail": {
+      "backToList": "Back to documents",
+      "download": "Download",
+      "open": "Open",
+      "noPreview": "Preview unavailable for this file type. Use \"Open\" or \"Download\".",
+      "delete": "Delete document",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Are you sure you want to delete document \"{title}\"? This action cannot be undone.",
+      "uploadedBy": "Uploaded by {name} on {date}"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Your profile data, preferences and appearance.",
+    "email": "Email",
+    "emailHint": "Not editable here. Contact an admin to change.",
+    "role": "Role",
+    "roleHint": "Only a group admin can change this.",
+    "fullName": "Full name",
+    "defaultPillar": "Default pillar",
+    "noDefault": "No default",
+    "defaultPillarHint": "Pillar where you land by default on entry.",
+    "avatar": "Avatar",
+    "avatarHint": "PNG, JPG, WEBP or GIF, max 1 MB. Square looks best.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "errors": {
+      "nameRequired": "Name is required.",
+      "avatarType": "Invalid format. Use PNG, JPG, WEBP or GIF.",
+      "avatarTooLarge": "Image larger than 1 MB. Compress or use another."
+    },
+    "theme": {
+      "section": "Theme",
+      "hint": "Applies to this browser. Default follows your system.",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "users": {
+      "title": "Users",
+      "subtitle": "Manage roles and pillar access.",
+      "count": "{count, plural, =0 {No users} one {1 user} other {# users}}",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "pillarAccess": "Pillar access"
+      },
+      "backToList": "Back to users",
+      "email": "Email",
+      "role": "Role",
+      "roleHint": "Group admin sees and edits everything. Pillar admin manages only assigned pillars. Member has read access in assigned pillars.",
+      "pillarAccess": "Pillar access",
+      "pillarAccessHint": "For pillar admin and member: pillars they can access. Ignored for group admin (sees all).",
+      "defaultPillar": "Default pillar",
+      "noDefault": "No default",
+      "allPillars": "All",
+      "isSelf": "You're editing your own account.",
+      "targetSuperUserLocked": "This user is a super user. Only another super user can edit them."
+    }
+  }
+}

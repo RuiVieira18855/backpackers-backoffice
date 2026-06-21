@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { LayoutGrid, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, desc, eq, type SQL } from "drizzle-orm";
 import {
@@ -69,19 +69,27 @@ export default async function CrmPage({
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-6xl text-foreground leading-none">
+          <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none">
             {t("title")}
           </h1>
           <p className="mt-2 text-base text-muted-foreground">
             {t("subtitle")}
           </p>
         </div>
-        <Button asChild>
-          <Link href="/crm/contacts/new">
-            <Plus className="mr-2 h-4 w-4" />
-            {t("newContact")}
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link href="/crm/pipeline">
+              <LayoutGrid className="mr-2 h-4 w-4" />
+              {t("openKanban")}
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link href="/crm/contacts/new">
+              <Plus className="mr-2 h-4 w-4" />
+              {t("newContact")}
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Filters: pure HTML <form method="get"> -> no JS needed */}

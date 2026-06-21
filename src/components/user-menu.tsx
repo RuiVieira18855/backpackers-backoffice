@@ -2,9 +2,18 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { LogOut, Settings, Shield, Sun, Moon, Monitor, Check } from "lucide-react";
+import {
+  Check,
+  Globe,
+  LogOut,
+  Monitor,
+  Moon,
+  Settings,
+  Shield,
+  Sun,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useTranslations } from "next-intl";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +26,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/app/(protected)/actions";
+import { signOut, setLocale } from "@/app/(protected)/actions";
+import {
+  LOCALES,
+  LOCALE_LABELS,
+  LOCALE_FLAGS,
+  type Locale,
+} from "@/i18n/locales";
 
 type Props = {
   fullName: string | null;
@@ -37,11 +52,19 @@ export function UserMenu({
   const t = useTranslations("common");
   const tNav = useTranslations("nav");
   const tTheme = useTranslations("settings.theme");
+  const tLocale = useTranslations("locale");
+  const currentLocale = useLocale() as Locale;
   const { theme, setTheme } = useTheme();
-  const [pending, startTransition] = useTransition();
+  const [signOutPending, startSignOutTransition] = useTransition();
+  const [localePending, startLocaleTransition] = useTransition();
 
   function onSignOut() {
-    startTransition(() => signOut());
+    startSignOutTransition(() => signOut());
+  }
+
+  function onLocaleChange(loc: Locale) {
+    if (loc === currentLocale) return;
+    startLocaleTransition(() => setLocale(loc));
   }
 
   const displayName = fullName ?? email;
@@ -93,6 +116,7 @@ export function UserMenu({
           </Link>
         </DropdownMenuItem>
 
+        {/* Theme submenu */}
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             {theme === "dark" ? (
@@ -125,6 +149,30 @@ export function UserMenu({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
 
+        {/* Locale submenu */}
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Globe className="mr-2 h-4 w-4" />
+            {tLocale("section")}
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            {LOCALES.map((loc) => (
+              <DropdownMenuItem
+                key={loc}
+                onClick={() => onLocaleChange(loc)}
+                disabled={localePending}
+                className="cursor-pointer"
+              >
+                <span className="mr-2 text-base">{LOCALE_FLAGS[loc]}</span>
+                <span className="flex-1">{LOCALE_LABELS[loc]}</span>
+                {currentLocale === loc && (
+                  <Check className="h-4 w-4 opacity-70" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+
         {isAdminGrupo && (
           <DropdownMenuItem asChild>
             <Link href="/admin/users" className="cursor-pointer">
@@ -136,11 +184,11 @@ export function UserMenu({
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={onSignOut}
-          disabled={pending}
+          disabled={signOutPending}
           className="cursor-pointer text-destructive focus:text-destructive"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          {pending ? t("signingOut") : t("signOut")}
+          {signOutPending ? t("signingOut") : t("signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

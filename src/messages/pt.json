@@ -31,6 +31,10 @@
     "settings": "Definições",
     "admin": "Administração"
   },
+  "locale": {
+    "section": "Idioma",
+    "current": "Idioma"
+  },
   "roles": {
     "super_user": "Super-utilizador",
     "admin_grupo": "Admin grupo",
@@ -105,6 +109,7 @@
     "newContact": "Novo contacto",
     "contactsCount": "{count, plural, =0 {Sem contactos} one {1 contacto} other {# contactos}}",
     "empty": "Ainda não existem contactos. Cria o primeiro.",
+    "openKanban": "Vista pipeline",
     "table": {
       "name": "Nome",
       "type": "Tipo",
@@ -168,6 +173,14 @@
       "delete": "Eliminar contacto",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o contacto «{name}»? Esta acção não pode ser desfeita."
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "subtitle": "Arrasta contactos entre estados.",
+      "backToList": "Voltar à lista",
+      "empty": "Sem contactos neste estado.",
+      "movedTo": "Movido para {stage}",
+      "totalContacts": "{count, plural, =0 {sem contactos} one {1 contacto} other {# contactos}}"
     }
   },
   "ops": {
