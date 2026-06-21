@@ -1,5 +1,6 @@
 import { requireProfile } from "@/lib/dal";
 import { AppHeader } from "@/components/app-header";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export default async function ProtectedLayout({
   children,
@@ -16,7 +17,10 @@ export default async function ProtectedLayout({
         avatarUrl={profile.avatarUrl}
         role={profile.role}
       />
-      <main className="flex-1">{children}</main>
+      <div className="flex-1 flex min-h-0">
+        <AppSidebar />
+        <main className="flex-1 min-w-0 overflow-x-hidden">{children}</main>
+      </div>
     </div>
   );
 }

@@ -35,6 +35,15 @@
     "section": "Language",
     "current": "Language"
   },
+  "sidebar": {
+    "title": "Menu",
+    "pillarsLabel": "By pillar",
+    "contacts": "Contacts",
+    "events": "Events",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "documents": "Documents"
+  },
   "roles": {
     "super_user": "Super user",
     "admin_grupo": "Group admin",
