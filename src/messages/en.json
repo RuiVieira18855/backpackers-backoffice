@@ -17,7 +17,22 @@
     "all": "All",
     "required": "Required",
     "optional": "Optional",
-    "by": "by"
+    "by": "by",
+    "exportCsv": "Export CSV"
+  },
+  "search": {
+    "placeholder": "Search…",
+    "description": "Search across contacts, events, projects, tasks and documents.",
+    "typeToStart": "Type to search (min 2 characters).",
+    "searching": "Searching…",
+    "noResults": "No results.",
+    "groups": {
+      "contact": "Contacts",
+      "event": "Events",
+      "project": "Projects",
+      "task": "Tasks",
+      "document": "Documents"
+    }
   },
   "metadata": {
     "title": "Backpackers Backoffice",

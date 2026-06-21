@@ -24,6 +24,13 @@ import {
   tasks,
 } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import {
+  contactsTrend,
+  eventsTrend,
+  tasksTrend,
+  documentsTrend,
+} from "@/lib/trends";
+import { ActivityTrend } from "@/components/charts/activity-trend";
 
 const ENTITY_LABEL: Record<string, string> = {
   contact: "Contacto",
@@ -56,6 +63,10 @@ export default async function DashboardPage() {
     recentAudit,
     nextEvents,
     myTasks,
+    contactsT,
+    eventsT,
+    tasksT,
+    documentsT,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)::int` }).from(contacts),
     db
@@ -94,6 +105,10 @@ export default async function DashboardPage() {
       with: { pillar: true, project: true, event: true },
       limit: 5,
     }),
+    contactsTrend(30),
+    eventsTrend(30),
+    tasksTrend(30),
+    documentsTrend(30),
   ]);
 
   const kpis = [
@@ -103,6 +118,8 @@ export default async function DashboardPage() {
       value: contactsCount[0]?.count ?? 0,
       hint: t("kpis.leadsActive", { count: leadCount[0]?.count ?? 0 }),
       href: "/crm",
+      trend: contactsT,
+      color: "#A8E6E2",
     },
     {
       key: "events" as const,
@@ -110,6 +127,8 @@ export default async function DashboardPage() {
       value: upcomingEventsCount[0]?.count ?? 0,
       hint: t("kpis.upcomingEvents"),
       href: "/ops/events",
+      trend: eventsT,
+      color: "#0E2A44",
     },
     {
       key: "tasks" as const,
@@ -117,6 +136,8 @@ export default async function DashboardPage() {
       value: openTasksCount[0]?.count ?? 0,
       hint: t("kpis.openTasks"),
       href: "/ops/tasks",
+      trend: tasksT,
+      color: "#A8E6E2",
     },
     {
       key: "documents" as const,
@@ -124,6 +145,8 @@ export default async function DashboardPage() {
       value: docsCount[0]?.count ?? 0,
       hint: t("kpis.documentsHint"),
       href: "/docs",
+      trend: documentsT,
+      color: "#0E2A44",
     },
   ];
 
@@ -160,6 +183,13 @@ export default async function DashboardPage() {
                     {k.value}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">{k.hint}</p>
+                  <div className="mt-3">
+                    <ActivityTrend
+                      data={k.trend}
+                      color={k.color}
+                      label={k.key}
+                    />
+                  </div>
                 </CardContent>
               </Card>
             </Link>

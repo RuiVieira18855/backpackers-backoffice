@@ -1,20 +1,25 @@
 import Link from "next/link";
 import { LayoutGrid, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, desc, eq, type SQL } from "drizzle-orm";
+import { and, eq, type SQL } from "drizzle-orm";
 import {
   Card,
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { contacts, pillars as pillarsTable } from "@/lib/db/schema";
+import { contacts } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import { resolveSort } from "@/lib/sort";
+import { SortableHeader } from "@/components/sortable-header";
+import { ExportButton } from "@/components/export-button";
 
 type SearchParams = Promise<{
-  pillar?: string; // slug
+  pillar?: string;
   stage?: string;
   type?: string;
+  sort?: string;
+  dir?: string;
 }>;
 
 const STAGES = [
@@ -26,6 +31,15 @@ const STAGES = [
   "closed_lost",
 ] as const;
 const TYPES = ["lead", "customer", "partner", "vendor"] as const;
+
+const SORTABLE = {
+  fullName: contacts.fullName,
+  type: contacts.type,
+  stage: contacts.stage,
+  company: contacts.company,
+  email: contacts.email,
+  createdAt: contacts.createdAt,
+};
 
 export default async function CrmPage({
   searchParams,
@@ -39,6 +53,13 @@ export default async function CrmPage({
   await requireProfile();
 
   const sp = await searchParams;
+  const spForHeaders = {
+    pillar: sp.pillar,
+    stage: sp.stage,
+    type: sp.type,
+    sort: sp.sort,
+    dir: sp.dir,
+  };
   const allPillars = await getAllPillars();
 
   const pillarBySlug = sp.pillar
@@ -58,10 +79,24 @@ export default async function CrmPage({
   const where = filters.some(Boolean) ? and(...filters) : undefined;
   const hasActiveFilters = Boolean(sp.pillar || sp.stage || sp.type);
 
+  // Default: most recent first; override via ?sort=&dir=
+  const orderBy = resolveSort(
+    SORTABLE,
+    sp.sort,
+    sp.dir,
+    SORTABLE.createdAt,
+  );
+  const orderExpr =
+    sp.sort && SORTABLE[sp.sort as keyof typeof SORTABLE]
+      ? sp.dir === "asc"
+        ? (await import("drizzle-orm")).asc(orderBy as never)
+        : (await import("drizzle-orm")).desc(orderBy as never)
+      : (await import("drizzle-orm")).desc(contacts.createdAt);
+
   const rows = await db.query.contacts.findMany({
     with: { pillar: true, owner: true },
     where,
-    orderBy: [desc(contacts.createdAt)],
+    orderBy: [orderExpr],
     limit: 200,
   });
 
@@ -77,6 +112,7 @@ export default async function CrmPage({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <ExportButton href="/api/export/contacts" />
           <Button asChild variant="outline">
             <Link href="/crm/pipeline">
               <LayoutGrid className="mr-2 h-4 w-4" />
@@ -92,12 +128,14 @@ export default async function CrmPage({
         </div>
       </div>
 
-      {/* Filters: pure HTML <form method="get"> -> no JS needed */}
       <form
         action="/crm"
         method="get"
         className="flex flex-wrap items-end gap-3 border-y border-border py-4"
       >
+        {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
+        {sp.dir && <input type="hidden" name="dir" value={sp.dir} />}
+
         <div className="flex flex-col gap-1">
           <label className="text-xs text-muted-foreground uppercase tracking-wider">
             {t("table.pillar")}
@@ -186,22 +224,52 @@ export default async function CrmPage({
                 <thead className="border-b border-border bg-muted/30">
                   <tr className="text-left">
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.name")}
+                      <SortableHeader
+                        basePath="/crm"
+                        searchParams={spForHeaders}
+                        column="fullName"
+                      >
+                        {t("table.name")}
+                      </SortableHeader>
                     </th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.type")}
+                      <SortableHeader
+                        basePath="/crm"
+                        searchParams={spForHeaders}
+                        column="type"
+                      >
+                        {t("table.type")}
+                      </SortableHeader>
                     </th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.stage")}
+                      <SortableHeader
+                        basePath="/crm"
+                        searchParams={spForHeaders}
+                        column="stage"
+                      >
+                        {t("table.stage")}
+                      </SortableHeader>
                     </th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
                       {t("table.pillar")}
                     </th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.company")}
+                      <SortableHeader
+                        basePath="/crm"
+                        searchParams={spForHeaders}
+                        column="company"
+                      >
+                        {t("table.company")}
+                      </SortableHeader>
                     </th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.email")}
+                      <SortableHeader
+                        basePath="/crm"
+                        searchParams={spForHeaders}
+                        column="email"
+                      >
+                        {t("table.email")}
+                      </SortableHeader>
                     </th>
                   </tr>
                 </thead>

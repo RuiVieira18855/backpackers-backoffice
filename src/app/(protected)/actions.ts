@@ -6,11 +6,18 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { LOCALE_COOKIE } from "@/i18n/request";
 import { isLocale } from "@/i18n/locales";
+import { requireProfile } from "@/lib/dal";
+import { globalSearch, type SearchHit } from "@/lib/search";
 
 export async function signOut() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
   redirect("/login");
+}
+
+export async function searchAll(query: string): Promise<SearchHit[]> {
+  await requireProfile();
+  return globalSearch(query);
 }
 
 /**

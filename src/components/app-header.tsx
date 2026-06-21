@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { AppNav } from "./app-nav";
 import { AppSidebar } from "./app-sidebar";
 import { AppSidebarTrigger } from "./app-sidebar-trigger";
+import { GlobalSearch } from "./global-search";
 import { UserMenu } from "./user-menu";
 
 type Props = {
@@ -36,13 +37,16 @@ export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
           </Link>
           <AppNav />
         </div>
-        <UserMenu
-          fullName={fullName}
-          email={email}
-          avatarUrl={avatarUrl}
-          roleLabel={roleLabel}
-          isAdminGrupo={role === "admin_grupo" || role === "super_user"}
-        />
+        <div className="flex items-center gap-2">
+          <GlobalSearch />
+          <UserMenu
+            fullName={fullName}
+            email={email}
+            avatarUrl={avatarUrl}
+            roleLabel={roleLabel}
+            isAdminGrupo={role === "admin_grupo" || role === "super_user"}
+          />
+        </div>
       </div>
     </header>
   );

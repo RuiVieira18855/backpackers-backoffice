@@ -17,7 +17,22 @@
     "all": "Todos",
     "required": "Obligatorio",
     "optional": "Opcional",
-    "by": "por"
+    "by": "por",
+    "exportCsv": "Exportar CSV"
+  },
+  "search": {
+    "placeholder": "Buscar…",
+    "description": "Busca en contactos, eventos, proyectos, tareas y documentos.",
+    "typeToStart": "Escribe para buscar (mínimo 2 caracteres).",
+    "searching": "Buscando…",
+    "noResults": "Sin resultados.",
+    "groups": {
+      "contact": "Contactos",
+      "event": "Eventos",
+      "project": "Proyectos",
+      "task": "Tareas",
+      "document": "Documentos"
+    }
   },
   "metadata": {
     "title": "Backpackers Backoffice",
