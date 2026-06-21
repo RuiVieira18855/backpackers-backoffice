@@ -32,6 +32,7 @@
     "admin": "Administração"
   },
   "roles": {
+    "super_user": "Super-utilizador",
     "admin_grupo": "Admin grupo",
     "admin_pilar": "Admin pilar",
     "member": "Membro"
@@ -64,10 +65,29 @@
     "hello": "Olá, {name}",
     "title": "Dashboard",
     "greetings": {
+      "super_user": "Acesso total como super-utilizador.",
       "admin_grupo": "Acesso transversal a todo o grupo.",
       "admin_pilar": "Acesso aos pilares atribuídos.",
       "member": "Bem-vindo ao backoffice."
     },
+    "kpis": {
+      "contacts": "Contactos",
+      "leadsActive": "{count} leads activas",
+      "events": "Próximos eventos",
+      "upcomingEvents": "agendados a partir de hoje",
+      "tasks": "Tarefas abertas",
+      "openTasks": "ainda por concluir",
+      "documents": "Documentos",
+      "documentsHint": "no acervo do grupo"
+    },
+    "nextEvents": "Próximos eventos",
+    "nextEventsHint": "Os 4 eventos mais próximos.",
+    "nextEventsEmpty": "Sem eventos agendados.",
+    "myTasks": "As minhas tarefas ({count})",
+    "myTasksHint": "Atribuídas a ti, ainda por concluir.",
+    "myTasksEmpty": "Não tens tarefas pendentes. Tudo em dia.",
+    "recentActivity": "Actividade recente",
+    "recentActivityEmpty": "Sem actividade registada ainda.",
     "sectionPillars": "Pilares",
     "sectionModules": "Módulos",
     "modulesCardTitle": "Próximos módulos",
@@ -158,6 +178,9 @@
       "title": "Calendário",
       "subtitle": "Próximos eventos e tarefas com prazo.",
       "backToOps": "Voltar a Operações",
+      "viewAgenda": "Agenda",
+      "viewGrid": "Grelha",
+      "today": "Hoje",
       "rangeLabel": "Período",
       "range30": "Próximos 30 dias",
       "range60": "Próximos 60 dias",
@@ -405,6 +428,8 @@
     "detail": {
       "backToList": "Voltar aos documentos",
       "download": "Download",
+      "open": "Abrir",
+      "noPreview": "Pré-visualização indisponível para este tipo de ficheiro. Usa «Abrir» ou «Download».",
       "delete": "Eliminar documento",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o documento «{title}»? Esta acção não pode ser desfeita.",
@@ -460,7 +485,8 @@
       "defaultPillar": "Pilar predefinido",
       "noDefault": "Sem predefinição",
       "allPillars": "Todos",
-      "isSelf": "Estás a editar a tua própria conta."
+      "isSelf": "Estás a editar a tua própria conta.",
+      "targetSuperUserLocked": "Este utilizador é super-utilizador. Só outro super-utilizador o pode editar."
     }
   }
 }

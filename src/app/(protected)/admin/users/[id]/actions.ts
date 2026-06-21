@@ -13,7 +13,7 @@ export type AdminUserState = {
   fieldErrors?: Record<string, string>;
 };
 
-const ROLES = ["admin_grupo", "admin_pilar", "member"] as const;
+const ROLES = ["super_user", "admin_grupo", "admin_pilar", "member"] as const;
 
 const schema = z.object({
   id: z.string().uuid(),
@@ -26,9 +26,9 @@ export async function adminUpdateUser(
   _prev: AdminUserState | undefined,
   formData: FormData,
 ): Promise<AdminUserState> {
+  // admin_grupo OR super_user can edit users (requireRole accepts super_user implicitly)
   const actor = await requireRole("admin_grupo");
 
-  // pillarAccess comes through as multiple form entries (checkbox name="pillarAccess")
   const pillarAccess = formData.getAll("pillarAccess").map(String);
   const defaultRaw = String(formData.get("defaultPillarId") ?? "");
 
@@ -48,27 +48,58 @@ export async function adminUpdateUser(
     };
   }
 
-  // Safety: prevent removing the last admin_grupo (lockout protection)
-  if (parsed.data.role !== "admin_grupo") {
-    const currentAdmins = await db.query.profiles.findMany({
-      where: eq(profiles.role, "admin_grupo"),
-    });
-    if (
-      currentAdmins.length === 1 &&
-      currentAdmins[0].id === parsed.data.id
-    ) {
-      return {
-        error:
-          "Não podes remover o papel de admin_grupo ao último admin do grupo.",
-      };
-    }
-  }
-
   const before = await db.query.profiles.findFirst({
     where: eq(profiles.id, parsed.data.id),
   });
   if (!before) {
     return { error: "Utilizador não encontrado." };
+  }
+
+  // ----- Privilege rules -----
+  const isActorSuper = actor.role === "super_user";
+  const isTargetSuper = before.role === "super_user";
+  const isPromotingToSuper = parsed.data.role === "super_user";
+
+  // Only super_user can promote OR demote a super_user.
+  if (isPromotingToSuper && !isActorSuper) {
+    return {
+      error: "Só um super-utilizador pode promover outros a super-utilizador.",
+    };
+  }
+  if (isTargetSuper && !isActorSuper) {
+    return {
+      error:
+        "Não podes editar um super-utilizador. Só outro super-utilizador o pode fazer.",
+    };
+  }
+
+  // Lockout: cannot demote the LAST super_user.
+  if (isTargetSuper && !isPromotingToSuper) {
+    const supers = await db.query.profiles.findMany({
+      where: eq(profiles.role, "super_user"),
+    });
+    if (supers.length <= 1) {
+      return {
+        error:
+          "Não podes despromover o último super-utilizador. Promove primeiro outro user a super-utilizador.",
+      };
+    }
+  }
+
+  // Lockout: cannot demote the LAST admin_grupo (kept for backward safety).
+  if (before.role === "admin_grupo" && parsed.data.role !== "admin_grupo") {
+    const admins = await db.query.profiles.findMany({
+      where: eq(profiles.role, "admin_grupo"),
+    });
+    const supers = await db.query.profiles.findMany({
+      where: eq(profiles.role, "super_user"),
+    });
+    if (admins.length <= 1 && supers.length === 0) {
+      return {
+        error:
+          "Não podes remover o papel de admin_grupo ao último admin sem nenhum super-utilizador no sistema.",
+      };
+    }
   }
 
   const [updated] = await db

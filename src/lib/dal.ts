@@ -52,14 +52,15 @@ export const requireProfile = cache(async () => {
   return profile;
 });
 
-export type Role = "admin_grupo" | "admin_pilar" | "member";
+export type Role = "super_user" | "admin_grupo" | "admin_pilar" | "member";
 
 /**
  * Redirects to /dashboard if the user does not have any of the required
- * roles. Use in pages/actions that must be restricted.
+ * roles. super_user implicitly satisfies any role check.
  */
 export async function requireRole(...roles: Role[]) {
   const profile = await requireProfile();
+  if (profile.role === "super_user") return profile;
   if (!roles.includes(profile.role)) {
     redirect("/dashboard");
   }

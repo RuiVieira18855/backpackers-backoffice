@@ -29,6 +29,13 @@
       "when": 1781998656416,
       "tag": "0003_graceful_micromax",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782001603955,
+      "tag": "0004_furry_puppet_master",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Download, FileText } from "lucide-react";
+import { ChevronLeft, Download, ExternalLink, FileText } from "lucide-react";
 import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -45,7 +45,12 @@ export default async function DocumentDetailPage({ params }: Props) {
   const { data: signed } = await supabaseAdmin.storage
     .from(DOCUMENTS_BUCKET)
     .createSignedUrl(doc.storagePath, 600);
-  const downloadUrl = signed?.signedUrl;
+  const url = signed?.signedUrl;
+
+  const isImage = doc.mimeType?.startsWith("image/") ?? false;
+  const isPdf = doc.mimeType === "application/pdf";
+  const isVideo = doc.mimeType?.startsWith("video/") ?? false;
+  const canInline = isImage || isPdf || isVideo;
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -77,7 +82,7 @@ export default async function DocumentDetailPage({ params }: Props) {
 
       <Card>
         <CardContent className="p-6 space-y-4">
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-4 flex-wrap">
             <FileText className="h-10 w-10 text-muted-foreground shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="font-medium text-foreground break-all">
@@ -101,17 +106,63 @@ export default async function DocumentDetailPage({ params }: Props) {
                 </p>
               )}
             </div>
-            {downloadUrl && (
-              <Button asChild>
-                <a href={downloadUrl} download={doc.fileName}>
-                  <Download className="mr-2 h-4 w-4" />
-                  {t("download")}
-                </a>
-              </Button>
+            {url && (
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button asChild variant="outline">
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    {t("open")}
+                  </a>
+                </Button>
+                <Button asChild>
+                  <a href={url} download={doc.fileName}>
+                    <Download className="mr-2 h-4 w-4" />
+                    {t("download")}
+                  </a>
+                </Button>
+              </div>
             )}
           </div>
         </CardContent>
       </Card>
+
+      {/* Inline preview for supported types */}
+      {canInline && url && (
+        <Card>
+          <CardContent className="p-0 overflow-hidden">
+            {isImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={url}
+                alt={doc.title}
+                className="w-full max-h-[80vh] object-contain bg-muted/30"
+              />
+            )}
+            {isPdf && (
+              <iframe
+                src={url}
+                title={doc.title}
+                className="w-full h-[80vh] bg-muted/30"
+              />
+            )}
+            {isVideo && (
+              <video
+                src={url}
+                controls
+                className="w-full max-h-[80vh] bg-black"
+              >
+                Browser não suporta vídeo HTML5.
+              </video>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {!canInline && (
+        <p className="text-sm text-muted-foreground italic">
+          {t("noPreview")}
+        </p>
+      )}
     </div>
   );
 }

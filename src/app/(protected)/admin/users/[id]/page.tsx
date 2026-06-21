@@ -12,6 +12,7 @@ import { UserForm } from "./user-form";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function AdminUserDetailPage({ params }: Props) {
+  // admin_grupo OR super_user can open this (requireRole accepts super_user)
   const actor = await requireRole("admin_grupo");
   const { id } = await params;
   const t = await getTranslations("admin.users");
@@ -47,6 +48,8 @@ export default async function AdminUserDetailPage({ params }: Props) {
         defaultPillarId={user.defaultPillarId}
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
         isSelf={user.id === actor.id}
+        actorIsSuperUser={actor.role === "super_user"}
+        targetIsSuperUser={user.role === "super_user"}
       />
     </div>
   );

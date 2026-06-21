@@ -13,12 +13,15 @@ import { relations } from "drizzle-orm";
 // ---------- Enums ----------
 
 /**
- * User role hierarchy:
- * - admin_grupo : full access across all pilares (founder/owner)
+ * User role hierarchy (top → bottom):
+ * - super_user  : full access; protected — only super_user can demote super_user,
+ *                 and the LAST super_user can never be demoted (lockout safe)
+ * - admin_grupo : full access across all pilares (delegated admin)
  * - admin_pilar : full access within their assigned pilar(es)
  * - member      : limited access within their assigned pilar(es)
  */
 export const userRoleEnum = pgEnum("user_role", [
+  "super_user",
   "admin_grupo",
   "admin_pilar",
   "member",
