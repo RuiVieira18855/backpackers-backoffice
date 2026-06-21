@@ -51,6 +51,8 @@ type Mode = "create" | "edit";
 type Props = {
   pillars: Pillar[];
   contact?: ContactPrefill;
+  /** Pre-fill type when creating (e.g. ?type=lead) */
+  defaultType?: (typeof TYPES)[number];
   action: (
     state: ContactFormState | undefined,
     formData: FormData,
@@ -59,7 +61,12 @@ type Props = {
 
 const initialState: ContactFormState = {};
 
-export function ContactForm({ pillars, contact, action }: Props) {
+export function ContactForm({
+  pillars,
+  contact,
+  defaultType,
+  action,
+}: Props) {
   const t = useTranslations("crm.form");
   const tTypes = useTranslations("crm.types");
   const tStages = useTranslations("crm.stages");
@@ -126,7 +133,7 @@ export function ContactForm({ pillars, contact, action }: Props) {
           <select
             id="type"
             name="type"
-            defaultValue={contact?.type ?? "lead"}
+            defaultValue={contact?.type ?? defaultType ?? "lead"}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
           >
             {TYPES.map((tp) => (

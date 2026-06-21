@@ -3,10 +3,24 @@ import { getAllPillars, requireRole } from "@/lib/dal";
 import { ContactForm } from "@/components/contacts/contact-form";
 import { createContact } from "./actions";
 
-export default async function NewContactPage() {
+const VALID_TYPES = ["lead", "customer", "partner", "vendor"] as const;
+
+type SearchParams = Promise<{ type?: string }>;
+
+export default async function NewContactPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   await requireRole("admin_grupo", "admin_pilar");
   const t = await getTranslations("crm.form");
+  const sp = await searchParams;
   const pillars = await getAllPillars();
+
+  const defaultType =
+    sp.type && (VALID_TYPES as readonly string[]).includes(sp.type)
+      ? (sp.type as (typeof VALID_TYPES)[number])
+      : undefined;
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -18,6 +32,7 @@ export default async function NewContactPage() {
       </div>
       <ContactForm
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
+        defaultType={defaultType}
         action={createContact}
       />
     </div>

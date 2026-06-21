@@ -6,9 +6,30 @@ import { getAllPillars, requireRole } from "@/lib/dal";
 import { EventForm } from "@/components/events/event-form";
 import { createEvent } from "./actions";
 
-export default async function NewEventPage() {
+const VALID_TYPES = [
+  "tour",
+  "team_building",
+  "workshop",
+  "meeting",
+  "retreat",
+  "other",
+] as const;
+
+type SearchParams = Promise<{ type?: string }>;
+
+export default async function NewEventPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   await requireRole("admin_grupo", "admin_pilar");
   const t = await getTranslations("ops.form");
+  const sp = await searchParams;
+
+  const defaultType =
+    sp.type && (VALID_TYPES as readonly string[]).includes(sp.type)
+      ? (sp.type as (typeof VALID_TYPES)[number])
+      : undefined;
 
   const [pillars, allContacts] = await Promise.all([
     getAllPillars(),
@@ -33,6 +54,7 @@ export default async function NewEventPage() {
           fullName: c.fullName,
           company: c.company,
         }))}
+        defaultType={defaultType}
         action={createEvent}
       />
     </div>

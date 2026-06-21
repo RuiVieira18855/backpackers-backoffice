@@ -53,6 +53,8 @@ type Props = {
   pillars: Pillar[];
   contacts: Contact[];
   event?: EventPrefill;
+  /** Pre-fill type when creating a new event (e.g. ?type=meeting) */
+  defaultType?: (typeof TYPES)[number];
   action: (
     state: EventFormState | undefined,
     formData: FormData,
@@ -69,7 +71,13 @@ function toDatetimeLocal(d: Date | null): string {
   )}:${pad(d.getMinutes())}`;
 }
 
-export function EventForm({ pillars, contacts, event, action }: Props) {
+export function EventForm({
+  pillars,
+  contacts,
+  event,
+  defaultType,
+  action,
+}: Props) {
   const t = useTranslations("ops.form");
   const tTypes = useTranslations("ops.eventTypes");
   const tStatuses = useTranslations("ops.eventStatuses");
@@ -132,7 +140,7 @@ export function EventForm({ pillars, contacts, event, action }: Props) {
           <select
             id="type"
             name="type"
-            defaultValue={event?.type ?? "other"}
+            defaultValue={event?.type ?? defaultType ?? "other"}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
           >
             {TYPES.map((tp) => (
