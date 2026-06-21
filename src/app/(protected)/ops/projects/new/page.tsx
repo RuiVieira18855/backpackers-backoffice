@@ -6,9 +6,17 @@ import { getAllPillars, requireRole } from "@/lib/dal";
 import { ProjectForm } from "@/components/projects/project-form";
 import { createProject } from "./actions";
 
-export default async function NewProjectPage() {
+type SearchParams = Promise<{ client?: string }>;
+
+export default async function NewProjectPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   await requireRole("admin_grupo", "admin_pilar");
   const t = await getTranslations("ops.projects.form");
+  const sp = await searchParams;
+  const defaultClientContactId = sp.client || undefined;
 
   const [pillars, allContacts] = await Promise.all([
     getAllPillars(),
@@ -33,6 +41,7 @@ export default async function NewProjectPage() {
           fullName: c.fullName,
           company: c.company,
         }))}
+        defaultClientContactId={defaultClientContactId}
         action={createProject}
       />
     </div>

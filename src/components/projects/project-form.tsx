@@ -39,6 +39,8 @@ type Props = {
   pillars: Pillar[];
   contacts: Contact[];
   project?: ProjectPrefill;
+  /** Pre-fill client contact when creating (e.g. ?client=contactId) */
+  defaultClientContactId?: string;
   action: (
     state: ProjectFormState | undefined,
     formData: FormData,
@@ -47,7 +49,13 @@ type Props = {
 
 const initialState: ProjectFormState = {};
 
-export function ProjectForm({ pillars, contacts, project, action }: Props) {
+export function ProjectForm({
+  pillars,
+  contacts,
+  project,
+  defaultClientContactId,
+  action,
+}: Props) {
   const t = useTranslations("ops.projects.form");
   const tStatuses = useTranslations("ops.projectStatuses");
   const tCommon = useTranslations("common");
@@ -145,7 +153,7 @@ export function ProjectForm({ pillars, contacts, project, action }: Props) {
           <select
             id="clientContactId"
             name="clientContactId"
-            defaultValue={project?.clientContactId ?? ""}
+            defaultValue={project?.clientContactId ?? defaultClientContactId ?? ""}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
           >
             <option value="">{t("clientContactNone")}</option>

@@ -55,6 +55,8 @@ type Props = {
   event?: EventPrefill;
   /** Pre-fill type when creating a new event (e.g. ?type=meeting) */
   defaultType?: (typeof TYPES)[number];
+  /** Pre-fill client contact when creating (e.g. ?client=contactId) */
+  defaultClientContactId?: string;
   action: (
     state: EventFormState | undefined,
     formData: FormData,
@@ -76,6 +78,7 @@ export function EventForm({
   contacts,
   event,
   defaultType,
+  defaultClientContactId,
   action,
 }: Props) {
   const t = useTranslations("ops.form");
@@ -212,7 +215,7 @@ export function EventForm({
           <select
             id="clientContactId"
             name="clientContactId"
-            defaultValue={event?.clientContactId ?? ""}
+            defaultValue={event?.clientContactId ?? defaultClientContactId ?? ""}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
           >
             <option value="">{t("clientContactNone")}</option>

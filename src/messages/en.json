@@ -49,6 +49,8 @@
     "uploadDocument": "Upload document",
     "crmLabel": "CRM",
     "contacts": "Contacts",
+    "leads": "Leads",
+    "customers": "Customers",
     "pipeline": "Pipeline",
     "operationsLabel": "Operations",
     "events": "Events",
@@ -206,6 +208,16 @@
       "empty": "No contacts in this stage.",
       "movedTo": "Moved to {stage}",
       "totalContacts": "{count, plural, =0 {no contacts} one {1 contact} other {# contacts}}"
+    },
+    "history": {
+      "eventsTitle": "Related events",
+      "eventsCount": "{count, plural, =0 {No events} one {1 event} other {# events}} where this contact is the client",
+      "addEvent": "Schedule for this contact",
+      "noEvents": "No events for this contact yet.",
+      "projectsTitle": "Related projects",
+      "projectsCount": "{count, plural, =0 {No projects} one {1 project} other {# projects}} where this contact is the client",
+      "addProject": "Add project for this contact",
+      "noProjects": "No projects for this contact yet."
     }
   },
   "ops": {

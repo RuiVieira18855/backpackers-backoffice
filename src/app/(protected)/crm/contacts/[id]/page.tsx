@@ -1,12 +1,19 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
-import { eq } from "drizzle-orm";
+import { CalendarPlus, ChevronLeft, FolderPlus } from "lucide-react";
+import { desc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
-import { contacts } from "@/lib/db/schema";
+import { contacts, events, projects } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ContactForm } from "@/components/contacts/contact-form";
 import { updateContact } from "./actions";
 import { DeleteContactButton } from "./delete-button";
@@ -17,6 +24,9 @@ export default async function ContactDetailPage({ params }: Props) {
   await requireProfile();
   const { id } = await params;
   const t = await getTranslations("crm.detail");
+  const tHistory = await getTranslations("crm.history");
+  const tEventStatuses = await getTranslations("ops.eventStatuses");
+  const tProjectStatuses = await getTranslations("ops.projectStatuses");
 
   const contact = await db.query.contacts.findFirst({
     where: eq(contacts.id, id),
@@ -27,7 +37,22 @@ export default async function ContactDetailPage({ params }: Props) {
     notFound();
   }
 
-  const pillars = await getAllPillars();
+  // Fetch related events + projects in parallel
+  const [pillars, relatedEvents, relatedProjects] = await Promise.all([
+    getAllPillars(),
+    db.query.events.findMany({
+      where: eq(events.clientContactId, contact.id),
+      with: { pillar: true },
+      orderBy: [desc(events.startAt), desc(events.createdAt)],
+      limit: 50,
+    }),
+    db.query.projects.findMany({
+      where: eq(projects.clientContactId, contact.id),
+      with: { pillar: true },
+      orderBy: [desc(projects.createdAt)],
+      limit: 50,
+    }),
+  ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -72,6 +97,122 @@ export default async function ContactDetailPage({ params }: Props) {
         }}
         action={updateContact}
       />
+
+      {/* Related events */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <CardTitle>{tHistory("eventsTitle")}</CardTitle>
+              <CardDescription>
+                {tHistory("eventsCount", { count: relatedEvents.length })}
+              </CardDescription>
+            </div>
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/ops/events/new?client=${contact.id}`}>
+                <CalendarPlus className="mr-2 h-4 w-4" />
+                {tHistory("addEvent")}
+              </Link>
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {relatedEvents.length === 0 ? (
+            <p className="px-6 pb-6 text-sm text-muted-foreground italic">
+              {tHistory("noEvents")}
+            </p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {relatedEvents.map((e) => (
+                <li key={e.id}>
+                  <Link
+                    href={`/ops/events/${e.id}`}
+                    className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center rounded-full bg-accent/40 px-2 py-0.5 text-xs text-foreground">
+                          {tEventStatuses(e.status as never)}
+                        </span>
+                        <span className="text-sm font-medium text-foreground truncate">
+                          {e.name}
+                        </span>
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {e.pillar?.name ?? ""}
+                        {e.location ? ` · ${e.location}` : ""}
+                      </div>
+                    </div>
+                    <div className="text-xs text-muted-foreground shrink-0">
+                      {e.startAt
+                        ? new Intl.DateTimeFormat("pt-PT", {
+                            dateStyle: "short",
+                            timeStyle: "short",
+                          }).format(e.startAt)
+                        : "—"}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Related projects */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <CardTitle>{tHistory("projectsTitle")}</CardTitle>
+              <CardDescription>
+                {tHistory("projectsCount", { count: relatedProjects.length })}
+              </CardDescription>
+            </div>
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/ops/projects/new?client=${contact.id}`}>
+                <FolderPlus className="mr-2 h-4 w-4" />
+                {tHistory("addProject")}
+              </Link>
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {relatedProjects.length === 0 ? (
+            <p className="px-6 pb-6 text-sm text-muted-foreground italic">
+              {tHistory("noProjects")}
+            </p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {relatedProjects.map((p) => (
+                <li key={p.id}>
+                  <Link
+                    href={`/ops/projects/${p.id}`}
+                    className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center rounded-full bg-accent/40 px-2 py-0.5 text-xs text-foreground">
+                          {tProjectStatuses(p.status as never)}
+                        </span>
+                        <span className="text-sm font-medium text-foreground truncate">
+                          {p.name}
+                        </span>
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {p.pillar?.name ?? ""}
+                      </div>
+                    </div>
+                    <div className="text-xs text-muted-foreground shrink-0">
+                      {p.targetDate ?? "—"}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

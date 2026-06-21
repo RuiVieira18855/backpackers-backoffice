@@ -83,6 +83,12 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
         <SidebarLink href="/crm" icon={Users}>
           {t("contacts")}
         </SidebarLink>
+        <SidebarLink href="/crm?type=lead" icon={Target}>
+          {t("leads")}
+        </SidebarLink>
+        <SidebarLink href="/crm?type=customer" icon={UserPlus}>
+          {t("customers")}
+        </SidebarLink>
         <SidebarLink href="/crm/pipeline" icon={LayoutGrid}>
           {t("pipeline")}
         </SidebarLink>

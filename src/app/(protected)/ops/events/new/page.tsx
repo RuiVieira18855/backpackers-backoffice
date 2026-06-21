@@ -15,7 +15,7 @@ const VALID_TYPES = [
   "other",
 ] as const;
 
-type SearchParams = Promise<{ type?: string }>;
+type SearchParams = Promise<{ type?: string; client?: string }>;
 
 export default async function NewEventPage({
   searchParams,
@@ -30,6 +30,8 @@ export default async function NewEventPage({
     sp.type && (VALID_TYPES as readonly string[]).includes(sp.type)
       ? (sp.type as (typeof VALID_TYPES)[number])
       : undefined;
+
+  const defaultClientContactId = sp.client || undefined;
 
   const [pillars, allContacts] = await Promise.all([
     getAllPillars(),
@@ -55,6 +57,7 @@ export default async function NewEventPage({
           company: c.company,
         }))}
         defaultType={defaultType}
+        defaultClientContactId={defaultClientContactId}
         action={createEvent}
       />
     </div>
