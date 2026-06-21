@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LayoutGrid, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, eq, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, type SQL } from "drizzle-orm";
 import {
   Card,
   CardContent,
@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
-import { resolveSort } from "@/lib/sort";
 import { SortableHeader } from "@/components/sortable-header";
 import { ExportButton } from "@/components/export-button";
 
@@ -80,18 +79,14 @@ export default async function CrmPage({
   const hasActiveFilters = Boolean(sp.pillar || sp.stage || sp.type);
 
   // Default: most recent first; override via ?sort=&dir=
-  const orderBy = resolveSort(
-    SORTABLE,
-    sp.sort,
-    sp.dir,
-    SORTABLE.createdAt,
-  );
-  const orderExpr =
-    sp.sort && SORTABLE[sp.sort as keyof typeof SORTABLE]
-      ? sp.dir === "asc"
-        ? (await import("drizzle-orm")).asc(orderBy as never)
-        : (await import("drizzle-orm")).desc(orderBy as never)
-      : (await import("drizzle-orm")).desc(contacts.createdAt);
+  const sortCol = sp.sort
+    ? SORTABLE[sp.sort as keyof typeof SORTABLE]
+    : undefined;
+  const orderExpr = sortCol
+    ? sp.dir === "asc"
+      ? asc(sortCol)
+      : desc(sortCol)
+    : desc(contacts.createdAt);
 
   const rows = await db.query.contacts.findMany({
     with: { pillar: true, owner: true },
