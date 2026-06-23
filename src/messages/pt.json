@@ -87,7 +87,7 @@
   },
   "finance": {
     "title": "Finanças",
-    "subtitle": "Receitas, despesas e fluxo de caixa do grupo. Acesso restrito ao super-utilizador.",
+    "subtitle": "Receitas, despesas e fluxo de caixa. Acesso atribuído pela skill «finance».",
     "addIncome": "Receita",
     "addExpense": "Despesa",
     "addTransaction": "Novo movimento",
@@ -96,6 +96,12 @@
     "ytdNet": "Resultado (ano)",
     "ytdHint": "Apenas pago",
     "mtdHint": "Este mês: +{income} / −{expense}",
+    "monthFilter": "Mês",
+    "cashflowTitle": "Cashflow mensal",
+    "cashflowSubtitle": "Últimos 12 meses, apenas movimentos pagos.",
+    "topExpenseCategories": "Top categorias de despesa",
+    "topIncomeCategories": "Top categorias de receita",
+    "noCategories": "Sem dados suficientes para agrupar.",
     "count": "{count, plural, =0 {Sem movimentos} one {1 movimento} other {# movimentos}}",
     "empty": "Ainda não existem movimentos.",
     "types": {
@@ -114,8 +120,11 @@
       "type": "Tipo",
       "status": "Estado",
       "pillar": "Pilar",
-      "amount": "Valor"
+      "amount": "Valor",
+      "linked": "Ligado a"
     },
+    "eventBadge": "Evento: {name}",
+    "projectBadge": "Projecto: {name}",
     "form": {
       "pageTitle": "Novo movimento",
       "subtitle": "Registar receita ou despesa.",
@@ -129,6 +138,10 @@
       "dueDate": "Data de vencimento",
       "pillar": "Pilar",
       "pillarNone": "Grupo (sem pilar)",
+      "event": "Evento (opcional)",
+      "eventNone": "Nenhum evento",
+      "project": "Projecto (opcional)",
+      "projectNone": "Nenhum projecto",
       "invoiceNumber": "Nº de fatura",
       "vendor": "Cliente / Fornecedor",
       "vendorPlaceholder": "Ex: ACME Lda.",
@@ -147,6 +160,14 @@
       "delete": "Eliminar movimento",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar «{label}»? Esta acção não pode ser desfeita."
+    },
+    "linked": {
+      "title": "Finanças",
+      "count": "{count, plural, =0 {Sem movimentos associados} one {1 movimento associado} other {# movimentos associados}}",
+      "addIncome": "Receita",
+      "addExpense": "Despesa",
+      "net": "Resultado",
+      "empty": "Ainda não há movimentos associados. Adiciona uma despesa ou receita acima."
     }
   },
   "roles": {
@@ -305,6 +326,11 @@
       "projectsCount": "{count, plural, =0 {Sem projectos} one {1 projecto} other {# projectos}} onde este contacto é o cliente",
       "addProject": "Adicionar projecto para este contacto",
       "noProjects": "Ainda não existem projectos para este contacto."
+    },
+    "channels": {
+      "email": "Enviar e-mail",
+      "call": "Ligar",
+      "whatsapp": "WhatsApp"
     }
   },
   "ops": {
@@ -642,6 +668,25 @@
         "docs": "Carregar e ver documentos.",
         "finance": "Ver e gerir movimentos financeiros (receitas/despesas).",
         "admin": "Gerir utilizadores, roles, skills e acesso a pilares."
+      }
+    },
+    "invite": {
+      "title": "Convidar utilizador",
+      "subtitle": "Cria a conta e atribui papel, skills e acesso por pilar. O utilizador recebe um e-mail para definir a palavra-passe.",
+      "backToList": "Voltar aos utilizadores",
+      "createCta": "Convidar utilizador",
+      "email": "E-mail",
+      "fullName": "Nome completo",
+      "role": "Papel",
+      "sendInvite": "Enviar convite por e-mail",
+      "sendInviteHint": "Se marcado, o Supabase envia um e-mail com link de definição de palavra-passe. Se desmarcado, a conta é criada já confirmada — defines a palavra-passe depois via recuperação.",
+      "create": "Criar utilizador",
+      "creating": "A criar…",
+      "errors": {
+        "emailInvalid": "E-mail inválido.",
+        "roleInvalid": "Papel inválido.",
+        "cannotGrantSuperUser": "Só super-utilizadores podem atribuir o papel super-utilizador.",
+        "inviteFailed": "Não foi possível criar o utilizador. Verifica que o e-mail não está já registado."
       }
     }
   }

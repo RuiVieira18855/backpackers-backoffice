@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ContactForm } from "@/components/contacts/contact-form";
+import { ContactChannels } from "@/components/contacts/contact-channels";
 import { updateContact } from "./actions";
 import { DeleteContactButton } from "./delete-button";
 
@@ -77,6 +78,9 @@ export default async function ContactDetailPage({ params }: Props) {
             contactId={contact.id}
             contactName={contact.fullName}
           />
+        </div>
+        <div className="mt-4">
+          <ContactChannels email={contact.email} phone={contact.phone} />
         </div>
       </div>
 

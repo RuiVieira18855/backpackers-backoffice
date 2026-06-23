@@ -16,6 +16,8 @@ export type TransactionFormState = {
 };
 
 type Pillar = { id: string; name: string };
+type LinkedEvent = { id: string; name: string };
+type LinkedProject = { id: string; name: string };
 
 type TransactionPrefill = {
   id: string;
@@ -30,13 +32,24 @@ type TransactionPrefill = {
   status: (typeof STATUSES)[number];
   dueDate: string | null;
   pillarId: string | null;
+  eventId: string | null;
+  projectId: string | null;
   notes: string | null;
 };
 
 type Props = {
   pillars: Pillar[];
+  events?: LinkedEvent[];
+  projects?: LinkedProject[];
   transaction?: TransactionPrefill;
   defaultType?: (typeof TYPES)[number];
+  defaultEventId?: string;
+  defaultProjectId?: string;
+  defaultPillarId?: string;
+  /** Locks the pillar/event/project fields (when invoked from event/project detail) */
+  lockContext?: boolean;
+  /** When set, the server action redirects here on success instead of /finance/:id */
+  returnTo?: string;
   action: (
     state: TransactionFormState | undefined,
     formData: FormData,
@@ -47,8 +60,15 @@ const initialState: TransactionFormState = {};
 
 export function TransactionForm({
   pillars,
+  events = [],
+  projects = [],
   transaction,
   defaultType,
+  defaultEventId,
+  defaultProjectId,
+  defaultPillarId,
+  lockContext,
+  returnTo,
   action,
 }: Props) {
   const t = useTranslations("finance.form");
@@ -70,6 +90,9 @@ export function TransactionForm({
   return (
     <form action={formAction} className="space-y-6 max-w-2xl">
       {transaction && <input type="hidden" name="id" value={transaction.id} />}
+      {returnTo && (
+        <input type="hidden" name="returnTo" value={returnTo} />
+      )}
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -188,8 +211,11 @@ export function TransactionForm({
           <select
             id="pillarId"
             name="pillarId"
-            defaultValue={transaction?.pillarId ?? ""}
-            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
+            defaultValue={
+              transaction?.pillarId ?? defaultPillarId ?? ""
+            }
+            disabled={lockContext && !!defaultPillarId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
           >
             <option value="">{t("pillarNone")}</option>
             {pillars.map((p) => (
@@ -207,6 +233,42 @@ export function TransactionForm({
             name="invoiceNumber"
             defaultValue={transaction?.invoiceNumber ?? ""}
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="eventId">{t("event")}</Label>
+          <select
+            id="eventId"
+            name="eventId"
+            defaultValue={transaction?.eventId ?? defaultEventId ?? ""}
+            disabled={lockContext && !!defaultEventId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
+          >
+            <option value="">{t("eventNone")}</option>
+            {events.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="projectId">{t("project")}</Label>
+          <select
+            id="projectId"
+            name="projectId"
+            defaultValue={transaction?.projectId ?? defaultProjectId ?? ""}
+            disabled={lockContext && !!defaultProjectId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
+          >
+            <option value="">{t("projectNone")}</option>
+            {projects.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-2 sm:col-span-2">

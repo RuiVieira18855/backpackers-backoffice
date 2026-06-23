@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProjectForm } from "@/components/projects/project-form";
+import { LinkedFinanceCard } from "@/components/finance/linked-finance-card";
 import { updateProject } from "./actions";
 import { DeleteProjectButton } from "./delete-button";
 
@@ -149,6 +150,8 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
         </CardContent>
       </Card>
+
+      <LinkedFinanceCard projectId={project.id} />
     </div>
   );
 }

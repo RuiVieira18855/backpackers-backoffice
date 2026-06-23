@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { UserPlus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getAllPillars, getAllProfiles, requireRole } from "@/lib/dal";
 
@@ -7,6 +9,7 @@ export default async function AdminUsersPage() {
   await requireRole("admin_grupo");
   const t = await getTranslations("admin.users");
   const tRoles = await getTranslations("roles");
+  const tInvite = await getTranslations("admin.invite");
 
   const [users, pillars] = await Promise.all([
     getAllProfiles(),
@@ -17,11 +20,21 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
-      <div>
-        <h1 className="font-display text-6xl text-foreground leading-none">
-          {t("title")}
-        </h1>
-        <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-6xl text-foreground leading-none">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
+            {t("subtitle")}
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/admin/users/new">
+            <UserPlus className="mr-2 h-4 w-4" />
+            {tInvite("createCta")}
+          </Link>
+        </Button>
       </div>
 
       <p className="text-sm text-muted-foreground">

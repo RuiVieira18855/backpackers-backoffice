@@ -26,6 +26,8 @@ const schema = z.object({
   status: z.enum(STATUSES),
   dueDate: z.string().nullable(),
   pillarId: z.string().uuid().nullable(),
+  eventId: z.string().uuid().nullable(),
+  projectId: z.string().uuid().nullable(),
   notes: z.string().optional(),
 });
 
@@ -49,8 +51,11 @@ export async function updateTransaction(
     status: formData.get("status") as string,
     dueDate: String(formData.get("dueDate") ?? "") || null,
     pillarId: String(formData.get("pillarId") ?? "") || null,
+    eventId: String(formData.get("eventId") ?? "") || null,
+    projectId: String(formData.get("projectId") ?? "") || null,
     notes: String(formData.get("notes") ?? "").trim(),
   };
+  const returnTo = String(formData.get("returnTo") ?? "").trim();
 
   if (!raw.amount || !/^\d+(\.\d{1,2})?$/.test(raw.amount)) {
     return { fieldErrors: { amount: tErrors("amountInvalid") } };
@@ -97,6 +102,8 @@ export async function updateTransaction(
       status: parsed.data.status,
       dueDate: parsed.data.dueDate,
       pillarId: parsed.data.pillarId,
+      eventId: parsed.data.eventId,
+      projectId: parsed.data.projectId,
       notes: parsed.data.notes || null,
       paidAt,
     })
@@ -112,6 +119,9 @@ export async function updateTransaction(
     diff: { before, after: updated },
   });
 
+  if (returnTo.startsWith("/")) {
+    redirect(returnTo);
+  }
   redirect(`/finance/${updated.id}`);
 }
 

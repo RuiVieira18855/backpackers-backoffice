@@ -87,7 +87,7 @@
   },
   "finance": {
     "title": "Finance",
-    "subtitle": "Group income, expenses and cash flow. Super user only.",
+    "subtitle": "Income, expenses and cash flow. Access granted via the \"finance\" skill.",
     "addIncome": "Income",
     "addExpense": "Expense",
     "addTransaction": "New transaction",
@@ -96,6 +96,12 @@
     "ytdNet": "Net (YTD)",
     "ytdHint": "Paid only",
     "mtdHint": "This month: +{income} / −{expense}",
+    "monthFilter": "Month",
+    "cashflowTitle": "Monthly cashflow",
+    "cashflowSubtitle": "Last 12 months — paid transactions only.",
+    "topExpenseCategories": "Top expense categories",
+    "topIncomeCategories": "Top income categories",
+    "noCategories": "Not enough data to group.",
     "count": "{count, plural, =0 {No transactions} one {1 transaction} other {# transactions}}",
     "empty": "No transactions yet.",
     "types": {
@@ -114,8 +120,11 @@
       "type": "Type",
       "status": "Status",
       "pillar": "Pillar",
-      "amount": "Amount"
+      "amount": "Amount",
+      "linked": "Linked to"
     },
+    "eventBadge": "Event: {name}",
+    "projectBadge": "Project: {name}",
     "form": {
       "pageTitle": "New transaction",
       "subtitle": "Record income or expense.",
@@ -129,6 +138,10 @@
       "dueDate": "Due date",
       "pillar": "Pillar",
       "pillarNone": "Group (no pillar)",
+      "event": "Event (optional)",
+      "eventNone": "No event",
+      "project": "Project (optional)",
+      "projectNone": "No project",
       "invoiceNumber": "Invoice #",
       "vendor": "Client / Vendor",
       "vendorPlaceholder": "e.g. ACME Ltd.",
@@ -147,6 +160,14 @@
       "delete": "Delete transaction",
       "deleting": "Deleting…",
       "deleteConfirm": "Are you sure you want to delete \"{label}\"? This cannot be undone."
+    },
+    "linked": {
+      "title": "Finance",
+      "count": "{count, plural, =0 {No linked transactions} one {1 linked transaction} other {# linked transactions}}",
+      "addIncome": "Income",
+      "addExpense": "Expense",
+      "net": "Net",
+      "empty": "No linked transactions yet. Add an income or expense above."
     }
   },
   "roles": {
@@ -305,6 +326,11 @@
       "projectsCount": "{count, plural, =0 {No projects} one {1 project} other {# projects}} where this contact is the client",
       "addProject": "Add project for this contact",
       "noProjects": "No projects for this contact yet."
+    },
+    "channels": {
+      "email": "Send email",
+      "call": "Call",
+      "whatsapp": "WhatsApp"
     }
   },
   "ops": {
@@ -633,6 +659,25 @@
         "docs": "Upload and view documents.",
         "finance": "View and manage financial transactions (income/expense).",
         "admin": "Manage users, roles, skills and pillar access."
+      }
+    },
+    "invite": {
+      "title": "Invite user",
+      "subtitle": "Create an account and assign role, skills and pillar access. The user receives an email to set their password.",
+      "backToList": "Back to users",
+      "createCta": "Invite user",
+      "email": "Email",
+      "fullName": "Full name",
+      "role": "Role",
+      "sendInvite": "Send invite email",
+      "sendInviteHint": "If checked, Supabase sends an email with a password-setup link. If unchecked, the account is created already confirmed — set the password later via password recovery.",
+      "create": "Create user",
+      "creating": "Creating…",
+      "errors": {
+        "emailInvalid": "Invalid email.",
+        "roleInvalid": "Invalid role.",
+        "cannotGrantSuperUser": "Only super users can grant the super user role.",
+        "inviteFailed": "Could not create the user. Make sure the email isn't already registered."
       }
     }
   }

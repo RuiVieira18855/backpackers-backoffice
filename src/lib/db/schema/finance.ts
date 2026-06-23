@@ -10,6 +10,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { pillars, profiles } from "./foundations";
+import { events, projects } from "./ops";
 
 // ---------- Enums ----------
 
@@ -43,6 +44,12 @@ export const transactions = pgTable(
     pillarId: uuid("pillar_id").references(() => pillars.id, {
       onDelete: "set null",
     }),
+    eventId: uuid("event_id").references(() => events.id, {
+      onDelete: "set null",
+    }),
+    projectId: uuid("project_id").references(() => projects.id, {
+      onDelete: "set null",
+    }),
     type: transactionTypeEnum("type").notNull(),
     category: text("category"),
     amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
@@ -71,6 +78,8 @@ export const transactions = pgTable(
   },
   (t) => [
     index("transactions_pillar_idx").on(t.pillarId),
+    index("transactions_event_idx").on(t.eventId),
+    index("transactions_project_idx").on(t.projectId),
     index("transactions_type_idx").on(t.type),
     index("transactions_status_idx").on(t.status),
     index("transactions_date_idx").on(t.date.desc()),
@@ -83,6 +92,14 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   pillar: one(pillars, {
     fields: [transactions.pillarId],
     references: [pillars.id],
+  }),
+  event: one(events, {
+    fields: [transactions.eventId],
+    references: [events.id],
+  }),
+  project: one(projects, {
+    fields: [transactions.projectId],
+    references: [projects.id],
   }),
   createdByProfile: one(profiles, {
     fields: [transactions.createdBy],

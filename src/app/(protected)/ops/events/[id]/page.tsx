@@ -8,6 +8,7 @@ import { contacts, events } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { EventForm } from "@/components/events/event-form";
+import { LinkedFinanceCard } from "@/components/finance/linked-finance-card";
 import { updateEvent } from "./actions";
 import { DeleteEventButton } from "./delete-button";
 
@@ -79,6 +80,8 @@ export default async function EventDetailPage({ params }: Props) {
         }}
         action={updateEvent}
       />
+
+      <LinkedFinanceCard eventId={event.id} />
     </div>
   );
 }

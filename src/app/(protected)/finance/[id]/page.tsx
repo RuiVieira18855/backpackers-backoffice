@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
-import { transactions } from "@/lib/db/schema";
+import { events, projects, transactions } from "@/lib/db/schema";
 import { getAllPillars, requireSkill } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { TransactionForm } from "@/components/finance/transaction-form";
@@ -25,7 +25,19 @@ export default async function TransactionDetailPage({ params }: Props) {
 
   if (!tx) notFound();
 
-  const pillars = await getAllPillars();
+  const [pillars, allEvents, allProjects] = await Promise.all([
+    getAllPillars(),
+    db.query.events.findMany({
+      orderBy: [asc(events.name)],
+      limit: 500,
+      columns: { id: true, name: true },
+    }),
+    db.query.projects.findMany({
+      orderBy: [asc(projects.name)],
+      limit: 500,
+      columns: { id: true, name: true },
+    }),
+  ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -57,6 +69,8 @@ export default async function TransactionDetailPage({ params }: Props) {
 
       <TransactionForm
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
+        events={allEvents}
+        projects={allProjects}
         transaction={{
           id: tx.id,
           type: tx.type,
@@ -70,6 +84,8 @@ export default async function TransactionDetailPage({ params }: Props) {
           status: tx.status,
           dueDate: tx.dueDate,
           pillarId: tx.pillarId,
+          eventId: tx.eventId,
+          projectId: tx.projectId,
           notes: tx.notes,
         }}
         action={updateTransaction}
