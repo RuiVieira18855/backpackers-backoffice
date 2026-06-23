@@ -4,12 +4,12 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
-import { requireRole } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import { supabaseAdmin, DOCUMENTS_BUCKET } from "@/lib/supabase/admin";
 
 export async function deleteDocument(id: string): Promise<void> {
-  const profile = await requireRole("admin_grupo", "admin_pilar");
+  const profile = await requireSkill("docs");
 
   const before = await db.query.documents.findFirst({
     where: eq(documents.id, id),

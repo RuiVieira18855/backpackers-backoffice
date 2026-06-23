@@ -47,6 +47,7 @@
     "crm": "CRM",
     "operations": "Operaciones",
     "documents": "Documentos",
+    "finance": "Finanzas",
     "settings": "Ajustes",
     "admin": "Administración"
   },
@@ -217,8 +218,27 @@
       "tasks": "Tareas abiertas",
       "openTasks": "aún por concluir",
       "documents": "Documentos",
-      "documentsHint": "en el acervo del grupo"
+      "documentsHint": "en el acervo del grupo",
+      "finance": "Resultado (mes)",
+      "mtdNet": "Pagado este mes: +{income} / −{expense}"
     },
+    "quick": {
+      "newContact": "Nuevo contacto",
+      "newEvent": "Nuevo evento",
+      "newProject": "Nuevo proyecto",
+      "newTask": "Nueva tarea",
+      "newDoc": "Subir documento",
+      "newExpense": "Gasto",
+      "newIncome": "Ingreso"
+    },
+    "thisWeek": "Esta semana",
+    "thisWeekHint": "Eventos que empiezan y tareas que vencen en los próximos 7 días.",
+    "thisWeekEmpty": "Sin eventos ni tareas para los próximos 7 días.",
+    "noDueDate": "sin plazo",
+    "pipelineTitle": "Pipeline CRM",
+    "pipelineHint": "Distribución de {total} contactos por fase.",
+    "pipelineEmpty": "Sin contactos para mostrar.",
+    "recentDocs": "Últimos documentos",
     "nextEvents": "Próximos eventos",
     "nextEventsHint": "Los 4 eventos más cercanos.",
     "nextEventsEmpty": "Sin eventos agendados.",
@@ -569,6 +589,10 @@
       "pillar": "Pilar",
       "type": "Tipo",
       "description": "Descripción",
+      "event": "Evento (opcional)",
+      "eventNone": "Ningún evento",
+      "project": "Proyecto (opcional)",
+      "projectNone": "Ningún proyecto",
       "selectPlaceholder": "Elegir…",
       "upload": "Subir",
       "uploading": "Subiendo…",
@@ -578,6 +602,12 @@
         "titleRequired": "El título es obligatorio.",
         "pillarRequired": "Tienes que elegir un pilar."
       }
+    },
+    "linked": {
+      "title": "Documentos",
+      "count": "{count, plural, =0 {Sin documentos vinculados} one {1 documento vinculado} other {# documentos vinculados}}",
+      "addDocument": "Subir documento",
+      "empty": "Aún no hay documentos vinculados. Sube el primero arriba."
     },
     "detail": {
       "backToList": "Volver a documentos",

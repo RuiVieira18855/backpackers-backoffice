@@ -47,6 +47,7 @@
     "crm": "CRM",
     "operations": "Operações",
     "documents": "Documentos",
+    "finance": "Finanças",
     "settings": "Definições",
     "admin": "Administração"
   },
@@ -217,8 +218,27 @@
       "tasks": "Tarefas abertas",
       "openTasks": "ainda por concluir",
       "documents": "Documentos",
-      "documentsHint": "no acervo do grupo"
+      "documentsHint": "no acervo do grupo",
+      "finance": "Resultado (mês)",
+      "mtdNet": "Pago este mês: +{income} / −{expense}"
     },
+    "quick": {
+      "newContact": "Novo contacto",
+      "newEvent": "Novo evento",
+      "newProject": "Novo projecto",
+      "newTask": "Nova tarefa",
+      "newDoc": "Carregar documento",
+      "newExpense": "Despesa",
+      "newIncome": "Receita"
+    },
+    "thisWeek": "Esta semana",
+    "thisWeekHint": "Eventos a começar e tarefas a vencer nos próximos 7 dias.",
+    "thisWeekEmpty": "Sem eventos nem tarefas para os próximos 7 dias.",
+    "noDueDate": "sem prazo",
+    "pipelineTitle": "Pipeline CRM",
+    "pipelineHint": "Distribuição de {total} contactos por fase.",
+    "pipelineEmpty": "Sem contactos para mostrar.",
+    "recentDocs": "Últimos documentos",
     "nextEvents": "Próximos eventos",
     "nextEventsHint": "Os 4 eventos mais próximos.",
     "nextEventsEmpty": "Sem eventos agendados.",
@@ -578,6 +598,10 @@
       "pillar": "Pilar",
       "type": "Tipo",
       "description": "Descrição",
+      "event": "Evento (opcional)",
+      "eventNone": "Nenhum evento",
+      "project": "Projecto (opcional)",
+      "projectNone": "Nenhum projecto",
       "selectPlaceholder": "Escolher…",
       "upload": "Carregar",
       "uploading": "A carregar…",
@@ -597,6 +621,12 @@
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o documento «{title}»? Esta acção não pode ser desfeita.",
       "uploadedBy": "Carregado por {name} em {date}"
+    },
+    "linked": {
+      "title": "Documentos",
+      "count": "{count, plural, =0 {Sem documentos associados} one {1 documento associado} other {# documentos associados}}",
+      "addDocument": "Carregar documento",
+      "empty": "Ainda não há documentos associados. Carrega o primeiro acima."
     }
   },
   "settings": {

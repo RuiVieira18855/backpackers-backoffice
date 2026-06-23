@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { AppNav } from "./app-nav";
+import { hasSkill } from "@/lib/dal";
+import { AppNav, type NavItem } from "./app-nav";
 import { AppSidebar } from "./app-sidebar";
 import { AppSidebarTrigger } from "./app-sidebar-trigger";
 import { GlobalSearch } from "./global-search";
@@ -18,6 +19,24 @@ export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
   const tRoles = await getTranslations("roles");
   const tSidebar = await getTranslations("sidebar");
   const roleLabel = tRoles.has(role as never) ? tRoles(role as never) : role;
+
+  // Build the nav list based on skills. Dashboard is always shown.
+  const [hasCrm, hasOps, hasDocs, hasFinance, hasAdmin] = await Promise.all([
+    hasSkill("crm"),
+    hasSkill("ops"),
+    hasSkill("docs"),
+    hasSkill("finance"),
+    hasSkill("admin"),
+  ]);
+
+  const items: NavItem[] = [
+    { href: "/dashboard", key: "dashboard" },
+    ...(hasCrm ? [{ href: "/crm", key: "crm" as const }] : []),
+    ...(hasOps ? [{ href: "/ops", key: "operations" as const }] : []),
+    ...(hasDocs ? [{ href: "/docs", key: "documents" as const }] : []),
+    ...(hasFinance ? [{ href: "/finance", key: "finance" as const }] : []),
+    ...(hasAdmin ? [{ href: "/admin", key: "admin" as const }] : []),
+  ];
 
   return (
     <header className="border-b border-border bg-background sticky top-0 z-30">
@@ -37,7 +56,7 @@ export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
               <span className="sm:hidden">Outpost</span>
             </span>
           </Link>
-          <AppNav />
+          <AppNav items={items} />
         </div>
         <div className="flex items-center gap-2">
           <GlobalSearch />

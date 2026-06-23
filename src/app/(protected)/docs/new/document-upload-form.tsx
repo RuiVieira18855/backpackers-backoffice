@@ -14,10 +14,32 @@ import {
 const TYPES = ["procedure", "contract", "report", "portfolio", "other"] as const;
 
 type Pillar = { id: string; name: string };
+type LinkedEvent = { id: string; name: string };
+type LinkedProject = { id: string; name: string };
+
+type Props = {
+  pillars: Pillar[];
+  events?: LinkedEvent[];
+  projects?: LinkedProject[];
+  defaultEventId?: string;
+  defaultProjectId?: string;
+  defaultPillarId?: string;
+  lockContext?: boolean;
+  returnTo?: string;
+};
 
 const initialState: UploadDocumentState = {};
 
-export function DocumentUploadForm({ pillars }: { pillars: Pillar[] }) {
+export function DocumentUploadForm({
+  pillars,
+  events = [],
+  projects = [],
+  defaultEventId,
+  defaultProjectId,
+  defaultPillarId,
+  lockContext,
+  returnTo,
+}: Props) {
   const t = useTranslations("docs.form");
   const tTypes = useTranslations("docs.types");
   const tCommon = useTranslations("common");
@@ -36,6 +58,8 @@ export function DocumentUploadForm({ pillars }: { pillars: Pillar[] }) {
 
   return (
     <form action={formAction} className="space-y-6 max-w-2xl">
+      {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+
       <div className="space-y-2">
         <Label htmlFor="file">
           {t("file")} <span className="text-destructive">*</span>
@@ -68,8 +92,9 @@ export function DocumentUploadForm({ pillars }: { pillars: Pillar[] }) {
             id="pillarId"
             name="pillarId"
             required
-            defaultValue=""
-            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
+            defaultValue={defaultPillarId ?? ""}
+            disabled={lockContext && !!defaultPillarId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
           >
             <option value="" disabled>
               {t("selectPlaceholder")}
@@ -99,6 +124,42 @@ export function DocumentUploadForm({ pillars }: { pillars: Pillar[] }) {
           </select>
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="eventId">{t("event")}</Label>
+          <select
+            id="eventId"
+            name="eventId"
+            defaultValue={defaultEventId ?? ""}
+            disabled={lockContext && !!defaultEventId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
+          >
+            <option value="">{t("eventNone")}</option>
+            {events.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="projectId">{t("project")}</Label>
+          <select
+            id="projectId"
+            name="projectId"
+            defaultValue={defaultProjectId ?? ""}
+            disabled={lockContext && !!defaultProjectId}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs disabled:opacity-60"
+          >
+            <option value="">{t("projectNone")}</option>
+            {projects.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="description">{t("description")}</Label>
           <textarea
@@ -121,7 +182,7 @@ export function DocumentUploadForm({ pillars }: { pillars: Pillar[] }) {
           {pending ? t("uploading") : t("upload")}
         </Button>
         <Button asChild variant="ghost">
-          <Link href="/docs">{tCommon("cancel")}</Link>
+          <Link href={returnTo ?? "/docs"}>{tCommon("cancel")}</Link>
         </Button>
       </div>
     </form>

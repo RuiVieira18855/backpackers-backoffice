@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
-import { requireRole, SKILLS, type Skill } from "@/lib/dal";
+import { requireSkill, SKILLS, type Skill } from "@/lib/dal";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { logAudit } from "@/lib/audit";
 
@@ -21,8 +21,8 @@ export async function inviteUser(
   _prev: InviteUserState | undefined,
   formData: FormData,
 ): Promise<InviteUserState> {
-  // Only super_user OR admin_grupo can create users
-  const actor = await requireRole("admin_grupo");
+  // Skill-gated. Role check below prevents super_user grant by non-super_user.
+  const actor = await requireSkill("admin");
   const t = await getTranslations("admin.invite.errors");
 
   const email = String(formData.get("email") ?? "").trim().toLowerCase();

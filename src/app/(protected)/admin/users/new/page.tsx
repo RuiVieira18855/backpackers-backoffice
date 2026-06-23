@@ -2,11 +2,11 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
-import { getAllPillars, requireRole } from "@/lib/dal";
+import { getAllPillars, requireSkill } from "@/lib/dal";
 import { InviteUserForm } from "./invite-form";
 
 export default async function NewUserPage() {
-  const actor = await requireRole("admin_grupo");
+  const actor = await requireSkill("admin");
   const t = await getTranslations("admin.invite");
 
   const pillars = await getAllPillars();

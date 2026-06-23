@@ -9,6 +9,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { pillars, profiles } from "./foundations";
+import { events, projects } from "./ops";
 
 export const documentTypeEnum = pgEnum("document_type", [
   "procedure",
@@ -35,6 +36,12 @@ export const documents = pgTable(
     uploadedBy: uuid("uploaded_by").references(() => profiles.id, {
       onDelete: "set null",
     }),
+    eventId: uuid("event_id").references(() => events.id, {
+      onDelete: "set null",
+    }),
+    projectId: uuid("project_id").references(() => projects.id, {
+      onDelete: "set null",
+    }),
     tags: text("tags")
       .array()
       .notNull()
@@ -50,6 +57,8 @@ export const documents = pgTable(
     index("documents_pillar_idx").on(t.pillarId),
     index("documents_type_idx").on(t.type),
     index("documents_uploaded_by_idx").on(t.uploadedBy),
+    index("documents_event_idx").on(t.eventId),
+    index("documents_project_idx").on(t.projectId),
     index("documents_created_at_idx").on(t.createdAt.desc()),
   ],
 );
@@ -62,6 +71,14 @@ export const documentsRelations = relations(documents, ({ one }) => ({
   uploadedByProfile: one(profiles, {
     fields: [documents.uploadedBy],
     references: [profiles.id],
+  }),
+  event: one(events, {
+    fields: [documents.eventId],
+    references: [events.id],
+  }),
+  project: one(projects, {
+    fields: [documents.projectId],
+    references: [projects.id],
   }),
 }));
 

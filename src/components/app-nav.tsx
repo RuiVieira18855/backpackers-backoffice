@@ -5,20 +5,27 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-  { href: "/dashboard", key: "dashboard" as const },
-  { href: "/crm", key: "crm" as const },
-  { href: "/ops", key: "operations" as const },
-  { href: "/docs", key: "documents" as const },
-];
+type NavKey =
+  | "dashboard"
+  | "crm"
+  | "operations"
+  | "documents"
+  | "finance"
+  | "admin";
 
-export function AppNav() {
+export type NavItem = { href: string; key: NavKey };
+
+type Props = {
+  items: NavItem[];
+};
+
+export function AppNav({ items }: Props) {
   const t = useTranslations("nav");
   const pathname = usePathname();
 
   return (
     <nav className="hidden md:flex items-center gap-1">
-      {NAV_ITEMS.map((item) => {
+      {items.map((item) => {
         const isActive =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
         return (

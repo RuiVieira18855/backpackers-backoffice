@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
-import { requireRole } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import { supabaseAdmin, DOCUMENTS_BUCKET } from "@/lib/supabase/admin";
 
@@ -30,6 +30,8 @@ const schema = z.object({
   pillarId: z.string().uuid(),
   type: z.enum(TYPES),
   description: z.string().optional(),
+  eventId: z.string().uuid().nullable(),
+  projectId: z.string().uuid().nullable(),
 });
 
 function sanitizeFileName(name: string): string {
@@ -44,7 +46,7 @@ export async function uploadDocument(
   _prev: UploadDocumentState | undefined,
   formData: FormData,
 ): Promise<UploadDocumentState> {
-  const profile = await requireRole("admin_grupo", "admin_pilar");
+  const profile = await requireSkill("docs");
   const tErrors = await getTranslations("docs.form.errors");
 
   const file = formData.get("file");
@@ -61,7 +63,10 @@ export async function uploadDocument(
     pillarId: String(formData.get("pillarId") ?? ""),
     type: formData.get("type") as string,
     description: String(formData.get("description") ?? "").trim(),
+    eventId: String(formData.get("eventId") ?? "") || null,
+    projectId: String(formData.get("projectId") ?? "") || null,
   };
+  const returnTo = String(formData.get("returnTo") ?? "").trim();
 
   if (!raw.title) return { fieldErrors: { title: tErrors("titleRequired") } };
   if (!raw.pillarId) return { fieldErrors: { pillarId: tErrors("pillarRequired") } };
@@ -107,6 +112,8 @@ export async function uploadDocument(
       fileSize: file.size,
       mimeType: file.type || null,
       uploadedBy: profile.id,
+      eventId: parsed.data.eventId,
+      projectId: parsed.data.projectId,
     })
     .returning();
 
@@ -119,5 +126,8 @@ export async function uploadDocument(
     diff: { snapshot: created },
   });
 
+  if (returnTo.startsWith("/")) {
+    redirect(returnTo);
+  }
   redirect(`/docs/${created.id}`);
 }

@@ -5,15 +5,15 @@ import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
-import { getAllPillars, requireRole } from "@/lib/dal";
+import { getAllPillars, requireSkill } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { UserForm } from "./user-form";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function AdminUserDetailPage({ params }: Props) {
-  // admin_grupo OR super_user can open this (requireRole accepts super_user)
-  const actor = await requireRole("admin_grupo");
+  // Skill-gated; the actor.role drives super_user-only fields inside the form.
+  const actor = await requireSkill("admin");
   const { id } = await params;
   const t = await getTranslations("admin.users");
 

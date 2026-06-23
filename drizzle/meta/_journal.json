@@ -57,6 +57,13 @@
       "when": 1782251728399,
       "tag": "0007_workable_serpent_society",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1782253823900,
+      "tag": "0008_freezing_mephistopheles",
+      "breakpoints": true
     }
   ]
 }

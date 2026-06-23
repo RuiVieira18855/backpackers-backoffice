@@ -3,10 +3,10 @@ import { UserPlus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { getAllPillars, getAllProfiles, requireRole } from "@/lib/dal";
+import { getAllPillars, getAllProfiles, requireSkill } from "@/lib/dal";
 
 export default async function AdminUsersPage() {
-  await requireRole("admin_grupo");
+  await requireSkill("admin");
   const t = await getTranslations("admin.users");
   const tRoles = await getTranslations("roles");
   const tInvite = await getTranslations("admin.invite");

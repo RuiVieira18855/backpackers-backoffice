@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { requireRole } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 
 export default async function AdminIndexPage() {
-  await requireRole("admin_grupo");
+  await requireSkill("admin");
   redirect("/admin/users");
 }
