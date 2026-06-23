@@ -24,6 +24,7 @@ import {
   isNull,
   isNotNull,
   desc,
+  inArray,
 } from "drizzle-orm";
 import {
   Card,
@@ -39,6 +40,8 @@ import {
   contacts,
   documents,
   events,
+  profiles,
+  projects,
   tasks,
   transactions,
 } from "@/lib/db/schema";
@@ -142,10 +145,12 @@ export default async function DashboardPage() {
     .from(tasks)
     .where(ne(tasks.status, "done"));
   const qDocsCount = db.select({ count: sql<number>`count(*)::int` }).from(documents);
+  // NOTE: avoid `with: {...}` (relational query) — Drizzle 0.45 generates
+  // LATERAL JOINs that fail on the Supabase transaction pooler. We fetch raw
+  // rows and join in JS using lookup maps further down.
   const qRecentAudit = db.query.auditLog.findMany({
     orderBy: [desc(auditLog.createdAt)],
     limit: 8,
-    with: { user: true, pillar: true },
   });
   const qWeekEvents = db.query.events.findMany({
     where: and(
@@ -154,7 +159,6 @@ export default async function DashboardPage() {
       lt(events.startAt, weekEnd),
     ),
     orderBy: (e, { asc }) => [asc(e.startAt)],
-    with: { pillar: true },
     limit: 20,
   });
   const qWeekTasks = db.query.tasks.findMany({
@@ -166,7 +170,6 @@ export default async function DashboardPage() {
       ),
     ),
     orderBy: (tk, { asc }) => [asc(tk.dueDate), asc(tk.createdAt)],
-    with: { pillar: true, project: true, event: true, assignee: true },
     limit: 20,
   });
   const qContactsByStage = db
@@ -179,7 +182,6 @@ export default async function DashboardPage() {
   const qRecentDocs = db.query.documents.findMany({
     orderBy: [desc(documents.createdAt)],
     limit: 5,
-    with: { pillar: true },
   });
   const qMtdAgg = db
     .select({
@@ -253,6 +255,66 @@ export default async function DashboardPage() {
 
   const stageCounts = new Map(contactsByStage.map((r) => [r.stage, r.count]));
   const stageTotal = contactsByStage.reduce((s, r) => s + r.count, 0);
+
+  // Build lookup maps for JS-side joins (avoids drizzle LATERAL JOIN bug on
+  // the Supabase pooler). Resolve IDs referenced by week tasks + audit log,
+  // then fetch them with a simple WHERE IN and index by id.
+  const pillarById = new Map(pillars.map((p) => [p.id, p]));
+
+  const refProfileIds = new Set<string>();
+  const refProjectIds = new Set<string>();
+  const refEventIds = new Set<string>();
+  for (const tk of weekTasks) {
+    if (tk.assigneeId) refProfileIds.add(tk.assigneeId);
+    if (tk.projectId) refProjectIds.add(tk.projectId);
+    if (tk.eventId) refEventIds.add(tk.eventId);
+  }
+  for (const a of recentAudit) {
+    if (a.userId) refProfileIds.add(a.userId);
+  }
+
+  const [refProfiles, refProjects, refEvents] = await Promise.all([
+    refProfileIds.size > 0
+      ? safe(
+          "refProfiles",
+          db
+            .select({
+              id: profiles.id,
+              fullName: profiles.fullName,
+              email: profiles.email,
+            })
+            .from(profiles)
+            .where(inArray(profiles.id, Array.from(refProfileIds))),
+          [] as Array<{ id: string; fullName: string | null; email: string }>,
+        )
+      : Promise.resolve(
+          [] as Array<{ id: string; fullName: string | null; email: string }>,
+        ),
+    refProjectIds.size > 0
+      ? safe(
+          "refProjects",
+          db
+            .select({ id: projects.id, name: projects.name })
+            .from(projects)
+            .where(inArray(projects.id, Array.from(refProjectIds))),
+          [] as Array<{ id: string; name: string }>,
+        )
+      : Promise.resolve([] as Array<{ id: string; name: string }>),
+    refEventIds.size > 0
+      ? safe(
+          "refEvents",
+          db
+            .select({ id: events.id, name: events.name })
+            .from(events)
+            .where(inArray(events.id, Array.from(refEventIds))),
+          [] as Array<{ id: string; name: string }>,
+        )
+      : Promise.resolve([] as Array<{ id: string; name: string }>),
+  ]);
+
+  const profileById = new Map(refProfiles.map((p) => [p.id, p]));
+  const projectById = new Map(refProjects.map((p) => [p.id, p]));
+  const eventById = new Map(refEvents.map((e) => [e.id, e]));
 
   // KPI list — finance replaces documents when user has finance skill
   type Kpi = {
@@ -460,61 +522,73 @@ export default async function DashboardPage() {
               </p>
             ) : (
               <ul className="divide-y divide-border">
-                {weekEvents.map((e) => (
-                  <li key={`ev-${e.id}`}>
-                    <Link
-                      href={`/ops/events/${e.id}`}
-                      className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
-                    >
-                      <div className="min-w-0 flex items-center gap-2">
-                        <Calendar className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <div className="text-sm font-medium text-foreground truncate">
-                            {e.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {e.pillar?.name ?? ""}
-                            {e.location ? ` · ${e.location}` : ""}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground shrink-0">
-                        {e.startAt
-                          ? new Intl.DateTimeFormat("pt-PT", {
-                              weekday: "short",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }).format(e.startAt)
-                          : "—"}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-                {weekTasks.map((tk) => (
-                  <li key={`tk-${tk.id}`}>
-                    <Link
-                      href={`/ops/tasks/${tk.id}`}
-                      className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
-                    >
-                      <div className="min-w-0 flex items-center gap-2">
-                        <ListTodo className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <div className="text-sm font-medium text-foreground truncate">
-                            {tk.title}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {tk.assignee?.fullName ?? tk.assignee?.email ?? "—"}
-                            {tk.project ? ` · ${tk.project.name}` : ""}
-                            {tk.event ? ` · ${tk.event.name}` : ""}
+                {weekEvents.map((e) => {
+                  const pil = pillarById.get(e.pillarId);
+                  return (
+                    <li key={`ev-${e.id}`}>
+                      <Link
+                        href={`/ops/events/${e.id}`}
+                        className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
+                      >
+                        <div className="min-w-0 flex items-center gap-2">
+                          <Calendar className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                          <div className="min-w-0">
+                            <div className="text-sm font-medium text-foreground truncate">
+                              {e.name}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {pil?.name ?? ""}
+                              {e.location ? ` · ${e.location}` : ""}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground shrink-0">
-                        {tk.dueDate ?? t("noDueDate")}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
+                        <div className="text-xs text-muted-foreground shrink-0">
+                          {e.startAt
+                            ? new Intl.DateTimeFormat("pt-PT", {
+                                weekday: "short",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }).format(e.startAt)
+                            : "—"}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+                {weekTasks.map((tk) => {
+                  const assignee = tk.assigneeId
+                    ? profileById.get(tk.assigneeId)
+                    : null;
+                  const proj = tk.projectId
+                    ? projectById.get(tk.projectId)
+                    : null;
+                  const ev = tk.eventId ? eventById.get(tk.eventId) : null;
+                  return (
+                    <li key={`tk-${tk.id}`}>
+                      <Link
+                        href={`/ops/tasks/${tk.id}`}
+                        className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
+                      >
+                        <div className="min-w-0 flex items-center gap-2">
+                          <ListTodo className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                          <div className="min-w-0">
+                            <div className="text-sm font-medium text-foreground truncate">
+                              {tk.title}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {assignee?.fullName ?? assignee?.email ?? "—"}
+                              {proj ? ` · ${proj.name}` : ""}
+                              {ev ? ` · ${ev.name}` : ""}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs text-muted-foreground shrink-0">
+                          {tk.dueDate ?? t("noDueDate")}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </CardContent>
@@ -583,31 +657,34 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="p-0">
             <ul className="divide-y divide-border">
-              {recentDocs.map((d) => (
-                <li key={d.id}>
-                  <Link
-                    href={`/docs/${d.id}`}
-                    className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
-                  >
-                    <div className="min-w-0 flex items-center gap-2">
-                      <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <div className="min-w-0">
-                        <div className="text-sm font-medium text-foreground truncate">
-                          {d.title}
-                        </div>
-                        <div className="text-xs text-muted-foreground truncate">
-                          {d.pillar?.name ?? ""} · {d.fileName}
+              {recentDocs.map((d) => {
+                const pil = pillarById.get(d.pillarId);
+                return (
+                  <li key={d.id}>
+                    <Link
+                      href={`/docs/${d.id}`}
+                      className="flex items-center justify-between gap-3 px-6 py-3 hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="min-w-0 flex items-center gap-2">
+                        <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-foreground truncate">
+                            {d.title}
+                          </div>
+                          <div className="text-xs text-muted-foreground truncate">
+                            {pil?.name ?? ""} · {d.fileName}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground shrink-0">
-                      {new Intl.DateTimeFormat("pt-PT", {
-                        dateStyle: "short",
-                      }).format(d.createdAt)}
-                    </div>
-                  </Link>
-                </li>
-              ))}
+                      <div className="text-xs text-muted-foreground shrink-0">
+                        {new Intl.DateTimeFormat("pt-PT", {
+                          dateStyle: "short",
+                        }).format(d.createdAt)}
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </CardContent>
         </Card>
@@ -627,32 +704,40 @@ export default async function DashboardPage() {
           <Card>
             <CardContent className="p-0">
               <ul className="divide-y divide-border">
-                {recentAudit.map((entry) => (
-                  <li key={entry.id} className="px-6 py-3 text-sm">
-                    <div className="flex flex-wrap items-baseline gap-x-1 gap-y-1">
-                      <span className="font-medium text-foreground">
-                        {entry.user?.fullName ?? entry.user?.email ?? "—"}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {ACTION_LABEL[entry.action] ?? entry.action}
-                      </span>
-                      <span className="text-foreground">
-                        {ENTITY_LABEL[entry.entityType] ?? entry.entityType}
-                      </span>
-                      {entry.pillar && (
-                        <span className="text-xs text-muted-foreground">
-                          · {entry.pillar.name}
+                {recentAudit.map((entry) => {
+                  const user = entry.userId
+                    ? profileById.get(entry.userId)
+                    : null;
+                  const pil = entry.pillarId
+                    ? pillarById.get(entry.pillarId)
+                    : null;
+                  return (
+                    <li key={entry.id} className="px-6 py-3 text-sm">
+                      <div className="flex flex-wrap items-baseline gap-x-1 gap-y-1">
+                        <span className="font-medium text-foreground">
+                          {user?.fullName ?? user?.email ?? "—"}
                         </span>
-                      )}
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        {new Intl.DateTimeFormat("pt-PT", {
-                          dateStyle: "short",
-                          timeStyle: "short",
-                        }).format(entry.createdAt)}
-                      </span>
-                    </div>
-                  </li>
-                ))}
+                        <span className="text-muted-foreground">
+                          {ACTION_LABEL[entry.action] ?? entry.action}
+                        </span>
+                        <span className="text-foreground">
+                          {ENTITY_LABEL[entry.entityType] ?? entry.entityType}
+                        </span>
+                        {pil && (
+                          <span className="text-xs text-muted-foreground">
+                            · {pil.name}
+                          </span>
+                        )}
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          {new Intl.DateTimeFormat("pt-PT", {
+                            dateStyle: "short",
+                            timeStyle: "short",
+                          }).format(entry.createdAt)}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </CardContent>
           </Card>
