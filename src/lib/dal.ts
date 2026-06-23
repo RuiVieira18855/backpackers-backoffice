@@ -53,6 +53,8 @@ export const requireProfile = cache(async () => {
 });
 
 export type Role = "super_user" | "admin_grupo" | "admin_pilar" | "member";
+export type Skill = "crm" | "ops" | "docs" | "finance" | "admin";
+export const SKILLS: Skill[] = ["crm", "ops", "docs", "finance", "admin"];
 
 /**
  * Redirects to /dashboard if the user does not have any of the required
@@ -65,6 +67,29 @@ export async function requireRole(...roles: Role[]) {
     redirect("/dashboard");
   }
   return profile;
+}
+
+/**
+ * Redirects to /dashboard if the user does not have the required skill.
+ * super_user implicitly has every skill.
+ */
+export async function requireSkill(skill: Skill) {
+  const profile = await requireProfile();
+  if (profile.role === "super_user") return profile;
+  const skills = (profile.skills ?? []) as string[];
+  if (!skills.includes(skill)) {
+    redirect("/dashboard");
+  }
+  return profile;
+}
+
+/** Returns true if current user has the skill (or is super_user). */
+export async function hasSkill(skill: Skill): Promise<boolean> {
+  const profile = await getCurrentProfile();
+  if (!profile) return false;
+  if (profile.role === "super_user") return true;
+  const skills = (profile.skills ?? []) as string[];
+  return skills.includes(skill);
 }
 
 export const getAllPillars = cache(async () => {
@@ -81,6 +106,7 @@ export const getAllProfiles = cache(async () => {
       email: true,
       fullName: true,
       role: true,
+      skills: true,
       pillarAccess: true,
       defaultPillarId: true,
     },

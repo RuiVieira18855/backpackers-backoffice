@@ -10,6 +10,9 @@ import { adminUpdateUser, type AdminUserState } from "./actions";
 const ALL_ROLES = ["super_user", "admin_grupo", "admin_pilar", "member"] as const;
 type RoleValue = (typeof ALL_ROLES)[number];
 
+const ALL_SKILLS = ["crm", "ops", "docs", "finance", "admin"] as const;
+type SkillValue = (typeof ALL_SKILLS)[number];
+
 type Pillar = { id: string; name: string };
 
 type Props = {
@@ -17,13 +20,12 @@ type Props = {
   email: string;
   fullName: string | null;
   role: RoleValue;
+  skills: string[];
   pillarAccess: string[];
   defaultPillarId: string | null;
   pillars: Pillar[];
   isSelf: boolean;
-  /** Logged-in user is super_user → may promote/demote super_user */
   actorIsSuperUser: boolean;
-  /** Target user is super_user — locked for non-super_user actors */
   targetIsSuperUser: boolean;
 };
 
@@ -34,6 +36,7 @@ export function UserForm({
   email,
   fullName,
   role,
+  skills,
   pillarAccess,
   defaultPillarId,
   pillars,
@@ -43,6 +46,7 @@ export function UserForm({
 }: Props) {
   const t = useTranslations("admin.users");
   const tRoles = useTranslations("roles");
+  const tSkills = useTranslations("admin.skills");
   const tCommon = useTranslations("common");
 
   const [state, formAction, pending] = useActionState(
@@ -50,7 +54,6 @@ export function UserForm({
     initialState,
   );
 
-  // Role options the actor is allowed to assign
   const availableRoles = ALL_ROLES.filter((r) => {
     if (r === "super_user" && !actorIsSuperUser) return false;
     return true;
@@ -95,6 +98,40 @@ export function UserForm({
         </select>
         <p className="text-xs text-muted-foreground">{t("roleHint")}</p>
       </div>
+
+      <fieldset className="space-y-2" disabled={formDisabled}>
+        <legend className="text-sm font-medium text-foreground">
+          {tSkills("legend")}
+        </legend>
+        <p className="text-xs text-muted-foreground">{tSkills("hint")}</p>
+        <div className="grid sm:grid-cols-2 gap-2 mt-2">
+          {ALL_SKILLS.map((s) => (
+            <label
+              key={s}
+              className="flex items-start gap-2 text-sm text-foreground border border-border rounded-md px-3 py-2 cursor-pointer hover:bg-muted/30 transition-colors"
+            >
+              <input
+                type="checkbox"
+                name="skills"
+                value={s}
+                defaultChecked={skills.includes(s)}
+                className="mt-0.5 h-4 w-4 rounded border-input shrink-0"
+              />
+              <div className="flex-1">
+                <div className="font-medium">{tSkills(`labels.${s}`)}</div>
+                <div className="text-xs text-muted-foreground">
+                  {tSkills(`descriptions.${s}`)}
+                </div>
+              </div>
+            </label>
+          ))}
+        </div>
+        {role === "super_user" && (
+          <p className="text-xs text-accent-foreground italic mt-2">
+            {tSkills("superUserNote")}
+          </p>
+        )}
+      </fieldset>
 
       <fieldset className="space-y-2" disabled={formDisabled}>
         <legend className="text-sm font-medium text-foreground">

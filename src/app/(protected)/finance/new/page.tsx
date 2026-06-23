@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { getAllPillars, requireRole } from "@/lib/dal";
+import { getAllPillars, requireSkill } from "@/lib/dal";
 import { TransactionForm } from "@/components/finance/transaction-form";
 import { createTransaction } from "./actions";
 
@@ -12,7 +12,7 @@ export default async function NewTransactionPage({
 }: {
   searchParams: SearchParams;
 }) {
-  await requireRole("super_user");
+  await requireSkill("finance");
   const t = await getTranslations("finance.form");
   const sp = await searchParams;
   const pillars = await getAllPillars();

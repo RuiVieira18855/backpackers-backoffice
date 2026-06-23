@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
-import { requireRole } from "@/lib/dal";
+import { requireSkill, SKILLS } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 
 export type AdminUserState = {
@@ -14,10 +14,12 @@ export type AdminUserState = {
 };
 
 const ROLES = ["super_user", "admin_grupo", "admin_pilar", "member"] as const;
+const SKILL_VALUES = SKILLS;
 
 const schema = z.object({
   id: z.string().uuid(),
   role: z.enum(ROLES),
+  skills: z.array(z.enum(SKILL_VALUES as never)),
   pillarAccess: z.array(z.string().uuid()),
   defaultPillarId: z.string().uuid().nullable(),
 });
@@ -26,15 +28,20 @@ export async function adminUpdateUser(
   _prev: AdminUserState | undefined,
   formData: FormData,
 ): Promise<AdminUserState> {
-  // admin_grupo OR super_user can edit users (requireRole accepts super_user implicitly)
-  const actor = await requireRole("admin_grupo");
+  // admin skill (super_user passes implicitly)
+  const actor = await requireSkill("admin");
 
   const pillarAccess = formData.getAll("pillarAccess").map(String);
+  const skills = formData
+    .getAll("skills")
+    .map(String)
+    .filter((s) => (SKILL_VALUES as readonly string[]).includes(s));
   const defaultRaw = String(formData.get("defaultPillarId") ?? "");
 
   const raw = {
     id: String(formData.get("id") ?? ""),
     role: formData.get("role") as string,
+    skills,
     pillarAccess,
     defaultPillarId: defaultRaw || null,
   };
@@ -55,12 +62,11 @@ export async function adminUpdateUser(
     return { error: "Utilizador não encontrado." };
   }
 
-  // ----- Privilege rules -----
   const isActorSuper = actor.role === "super_user";
   const isTargetSuper = before.role === "super_user";
   const isPromotingToSuper = parsed.data.role === "super_user";
 
-  // Only super_user can promote OR demote a super_user.
+  // Only super_user can promote OR demote a super_user
   if (isPromotingToSuper && !isActorSuper) {
     return {
       error: "Só um super-utilizador pode promover outros a super-utilizador.",
@@ -73,7 +79,7 @@ export async function adminUpdateUser(
     };
   }
 
-  // Lockout: cannot demote the LAST super_user.
+  // Lockout: cannot demote the LAST super_user
   if (isTargetSuper && !isPromotingToSuper) {
     const supers = await db.query.profiles.findMany({
       where: eq(profiles.role, "super_user"),
@@ -86,26 +92,11 @@ export async function adminUpdateUser(
     }
   }
 
-  // Lockout: cannot demote the LAST admin_grupo (kept for backward safety).
-  if (before.role === "admin_grupo" && parsed.data.role !== "admin_grupo") {
-    const admins = await db.query.profiles.findMany({
-      where: eq(profiles.role, "admin_grupo"),
-    });
-    const supers = await db.query.profiles.findMany({
-      where: eq(profiles.role, "super_user"),
-    });
-    if (admins.length <= 1 && supers.length === 0) {
-      return {
-        error:
-          "Não podes remover o papel de admin_grupo ao último admin sem nenhum super-utilizador no sistema.",
-      };
-    }
-  }
-
   const [updated] = await db
     .update(profiles)
     .set({
       role: parsed.data.role,
+      skills: parsed.data.skills as string[],
       pillarAccess: parsed.data.pillarAccess,
       defaultPillarId: parsed.data.defaultPillarId,
     })
@@ -121,11 +112,13 @@ export async function adminUpdateUser(
     diff: {
       before: {
         role: before.role,
+        skills: before.skills,
         pillarAccess: before.pillarAccess,
         defaultPillarId: before.defaultPillarId,
       },
       after: {
         role: updated.role,
+        skills: updated.skills,
         pillarAccess: updated.pillarAccess,
         defaultPillarId: updated.defaultPillarId,
       },

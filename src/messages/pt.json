@@ -624,6 +624,25 @@
       "allPillars": "Todos",
       "isSelf": "Estás a editar a tua própria conta.",
       "targetSuperUserLocked": "Este utilizador é super-utilizador. Só outro super-utilizador o pode editar."
+    },
+    "skills": {
+      "legend": "Skills (acessos por módulo)",
+      "hint": "Cada skill dá acesso a um módulo. Super-utilizador tem todas implicitamente.",
+      "superUserNote": "Este utilizador é super-utilizador — tem todas as skills automaticamente, mesmo sem marcar.",
+      "labels": {
+        "crm": "CRM",
+        "ops": "Operações",
+        "docs": "Documentos",
+        "finance": "Finanças",
+        "admin": "Administração"
+      },
+      "descriptions": {
+        "crm": "Ver e gerir contactos, leads, clientes, pipeline.",
+        "ops": "Ver e gerir eventos, projectos, tarefas, calendário.",
+        "docs": "Carregar e ver documentos.",
+        "finance": "Ver e gerir movimentos financeiros (receitas/despesas).",
+        "admin": "Gerir utilizadores, roles, skills e acesso a pilares."
+      }
     }
   }
 }

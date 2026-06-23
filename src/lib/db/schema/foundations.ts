@@ -64,6 +64,10 @@ export const profiles = pgTable("profiles", {
   fullName: text("full_name"),
   avatarUrl: text("avatar_url"),
   role: userRoleEnum("role").notNull().default("member"),
+  skills: text("skills")
+    .array()
+    .notNull()
+    .default(sql`'{}'::text[]`),
   pillarAccess: uuid("pillar_access")
     .array()
     .notNull()

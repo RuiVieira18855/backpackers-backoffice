@@ -43,6 +43,13 @@
       "when": 1782247210296,
       "tag": "0005_graceful_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1782249687988,
+      "tag": "0006_premium_sprite",
+      "breakpoints": true
     }
   ]
 }

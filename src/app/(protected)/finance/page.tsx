@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
-import { getAllPillars, requireRole } from "@/lib/dal";
+import { getAllPillars, requireSkill } from "@/lib/dal";
 
 type SearchParams = Promise<{
   type?: string;
@@ -36,7 +36,7 @@ export default async function FinancePage({
 }: {
   searchParams: SearchParams;
 }) {
-  await requireRole("super_user");
+  await requireSkill("finance");
   const t = await getTranslations("finance");
   const tTypes = await getTranslations("finance.types");
   const tStatuses = await getTranslations("finance.statuses");

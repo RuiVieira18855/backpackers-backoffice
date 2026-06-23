@@ -31,8 +31,14 @@ type Props = {
 export async function AppSidebar({ variant = "desktop" }: Props) {
   const t = await getTranslations("sidebar");
   const profile = await requireProfile();
-  const isAdmin = profile.role === "admin_grupo" || profile.role === "super_user";
-  const isSuperUser = profile.role === "super_user";
+  const isSuper = profile.role === "super_user";
+  const skills = (profile.skills ?? []) as string[];
+  const has = (s: string) => isSuper || skills.includes(s);
+  const hasCrm = has("crm");
+  const hasOps = has("ops");
+  const hasDocs = has("docs");
+  const hasFinance = has("finance");
+  const hasAdmin = has("admin");
 
   return (
     <aside
@@ -56,78 +62,100 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
 
       {/* Quick actions */}
       <SidebarGroup label={t("quickActions")}>
-        <SidebarLink href="/crm/contacts/new" icon={UserPlus} accent>
-          {t("addContact")}
-        </SidebarLink>
-        <SidebarLink href="/crm/contacts/new?type=lead" icon={Target} accent>
-          {t("addLead")}
-        </SidebarLink>
-        <SidebarLink href="/ops/events/new" icon={CalendarPlus} accent>
-          {t("scheduleEvent")}
-        </SidebarLink>
-        <SidebarLink href="/ops/events/new?type=meeting" icon={Users} accent>
-          {t("scheduleMeeting")}
-        </SidebarLink>
-        <SidebarLink href="/ops/tasks/new" icon={Plus} accent>
-          {t("newTask")}
-        </SidebarLink>
-        <SidebarLink href="/ops/projects/new" icon={FolderPlus} accent>
-          {t("newProject")}
-        </SidebarLink>
-        <SidebarLink href="/docs/new" icon={Upload} accent>
-          {t("uploadDocument")}
-        </SidebarLink>
+        {hasCrm && (
+          <>
+            <SidebarLink href="/crm/contacts/new" icon={UserPlus} accent>
+              {t("addContact")}
+            </SidebarLink>
+            <SidebarLink href="/crm/contacts/new?type=lead" icon={Target} accent>
+              {t("addLead")}
+            </SidebarLink>
+          </>
+        )}
+        {hasOps && (
+          <>
+            <SidebarLink href="/ops/events/new" icon={CalendarPlus} accent>
+              {t("scheduleEvent")}
+            </SidebarLink>
+            <SidebarLink
+              href="/ops/events/new?type=meeting"
+              icon={Users}
+              accent
+            >
+              {t("scheduleMeeting")}
+            </SidebarLink>
+            <SidebarLink href="/ops/tasks/new" icon={Plus} accent>
+              {t("newTask")}
+            </SidebarLink>
+            <SidebarLink href="/ops/projects/new" icon={FolderPlus} accent>
+              {t("newProject")}
+            </SidebarLink>
+          </>
+        )}
+        {hasDocs && (
+          <SidebarLink href="/docs/new" icon={Upload} accent>
+            {t("uploadDocument")}
+          </SidebarLink>
+        )}
       </SidebarGroup>
 
-      <SidebarDivider />
+      {hasCrm && (
+        <>
+          <SidebarDivider />
+          <SidebarGroup label={t("crmLabel")}>
+            <SidebarLink href="/crm" icon={Users}>
+              {t("contacts")}
+            </SidebarLink>
+            <SidebarLink href="/crm?type=lead" icon={Target}>
+              {t("leads")}
+            </SidebarLink>
+            <SidebarLink href="/crm?type=customer" icon={UserPlus}>
+              {t("customers")}
+            </SidebarLink>
+            <SidebarLink href="/crm/pipeline" icon={LayoutGrid}>
+              {t("pipeline")}
+            </SidebarLink>
+          </SidebarGroup>
+        </>
+      )}
 
-      {/* CRM */}
-      <SidebarGroup label={t("crmLabel")}>
-        <SidebarLink href="/crm" icon={Users}>
-          {t("contacts")}
-        </SidebarLink>
-        <SidebarLink href="/crm?type=lead" icon={Target}>
-          {t("leads")}
-        </SidebarLink>
-        <SidebarLink href="/crm?type=customer" icon={UserPlus}>
-          {t("customers")}
-        </SidebarLink>
-        <SidebarLink href="/crm/pipeline" icon={LayoutGrid}>
-          {t("pipeline")}
-        </SidebarLink>
-      </SidebarGroup>
+      {hasOps && (
+        <SidebarGroup label={t("operationsLabel")}>
+          <SidebarLink href="/ops/events" icon={Calendar}>
+            {t("events")}
+          </SidebarLink>
+          <SidebarLink href="/ops/projects" icon={ClipboardList}>
+            {t("projects")}
+          </SidebarLink>
+          <SidebarLink href="/ops/tasks" icon={ListTodo}>
+            {t("tasks")}
+          </SidebarLink>
+          <SidebarLink href="/ops/tasks?mine=1" icon={CheckSquare}>
+            {t("myTasks")}
+          </SidebarLink>
+        </SidebarGroup>
+      )}
 
-      {/* Operations */}
-      <SidebarGroup label={t("operationsLabel")}>
-        <SidebarLink href="/ops/events" icon={Calendar}>
-          {t("events")}
-        </SidebarLink>
-        <SidebarLink href="/ops/projects" icon={ClipboardList}>
-          {t("projects")}
-        </SidebarLink>
-        <SidebarLink href="/ops/tasks" icon={ListTodo}>
-          {t("tasks")}
-        </SidebarLink>
-        <SidebarLink href="/ops/tasks?mine=1" icon={CheckSquare}>
-          {t("myTasks")}
-        </SidebarLink>
-      </SidebarGroup>
+      {hasDocs && (
+        <SidebarGroup label={t("documentsLabel")}>
+          <SidebarLink href="/docs" icon={FileText}>
+            {t("documents")}
+          </SidebarLink>
+        </SidebarGroup>
+      )}
 
-      {/* Documents */}
-      <SidebarGroup label={t("documentsLabel")}>
-        <SidebarLink href="/docs" icon={FileText}>
-          {t("documents")}
-        </SidebarLink>
-      </SidebarGroup>
-
-      {isSuperUser && (
+      {hasFinance && (
         <>
           <SidebarDivider />
           <SidebarGroup label={t("financeLabel")}>
             <SidebarLink href="/finance" icon={Wallet}>
               {t("finance")}
             </SidebarLink>
-            <SidebarLink href="/finance/new?type=income" icon={TrendingUp} accent>
+            <SidebarLink
+              href="/finance/new?type=income"
+              icon={TrendingUp}
+              accent
+            >
               {t("addIncome")}
             </SidebarLink>
             <SidebarLink href="/finance/new?type=expense" icon={Plus} accent>
@@ -137,7 +165,7 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
         </>
       )}
 
-      {isAdmin && (
+      {hasAdmin && (
         <>
           <SidebarDivider />
           <SidebarGroup label={t("adminLabel")}>

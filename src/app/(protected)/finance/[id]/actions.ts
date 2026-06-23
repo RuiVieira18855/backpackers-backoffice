@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
-import { requireRole } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import type { TransactionFormState } from "@/components/finance/transaction-form";
 
@@ -33,7 +33,7 @@ export async function updateTransaction(
   _prev: TransactionFormState | undefined,
   formData: FormData,
 ): Promise<TransactionFormState> {
-  const profile = await requireRole("super_user");
+  const profile = await requireSkill("finance");
   const tErrors = await getTranslations("finance.form.errors");
 
   const raw = {
@@ -116,7 +116,7 @@ export async function updateTransaction(
 }
 
 export async function deleteTransaction(id: string): Promise<void> {
-  const profile = await requireRole("super_user");
+  const profile = await requireSkill("finance");
 
   const before = await db.query.transactions.findFirst({
     where: eq(transactions.id, id),

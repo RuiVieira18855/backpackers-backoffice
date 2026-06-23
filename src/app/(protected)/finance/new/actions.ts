@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
-import { requireRole } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import type { TransactionFormState } from "@/components/finance/transaction-form";
 
@@ -31,8 +31,8 @@ export async function createTransaction(
   _prev: TransactionFormState | undefined,
   formData: FormData,
 ): Promise<TransactionFormState> {
-  // FINANCE = super_user only
-  const profile = await requireRole("super_user");
+  // FINANCE = skill-gated (super_user implicit)
+  const profile = await requireSkill("finance");
   const tErrors = await getTranslations("finance.form.errors");
 
   const raw = {

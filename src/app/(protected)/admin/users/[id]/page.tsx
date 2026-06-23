@@ -44,6 +44,7 @@ export default async function AdminUserDetailPage({ params }: Props) {
         email={user.email}
         fullName={user.fullName}
         role={user.role}
+        skills={(user.skills ?? []) as string[]}
         pillarAccess={user.pillarAccess}
         defaultPillarId={user.defaultPillarId}
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}

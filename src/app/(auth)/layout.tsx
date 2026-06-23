@@ -12,16 +12,14 @@ export default async function AuthLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 grid lg:grid-cols-2">
-        <aside className="hidden lg:flex bg-primary text-primary-foreground p-12 flex-col justify-between">
-          <Logo size="md" className="!rounded-none" />
+        <aside className="hidden lg:flex bg-primary text-primary-foreground p-12 flex-col items-center justify-center text-center">
+          <Logo size="xl" className="!rounded-none mb-10" />
           <div className="max-w-md">
-            <p className="font-display text-7xl leading-none">
-              Outpost
-            </p>
-            <p className="mt-3 text-base text-primary-foreground/70">
+            <p className="font-display text-7xl leading-none">Outpost</p>
+            <p className="mt-4 text-base text-primary-foreground/70">
               {t("brandTagline")}
             </p>
-            <p className="mt-8 text-xs uppercase tracking-wider text-primary-foreground/50">
+            <p className="mt-10 text-xs uppercase tracking-wider text-primary-foreground/50">
               a Backpackers Labs product
             </p>
           </div>

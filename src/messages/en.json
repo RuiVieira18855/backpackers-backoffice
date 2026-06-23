@@ -615,6 +615,25 @@
       "allPillars": "All",
       "isSelf": "You're editing your own account.",
       "targetSuperUserLocked": "This user is a super user. Only another super user can edit them."
+    },
+    "skills": {
+      "legend": "Skills (module access)",
+      "hint": "Each skill grants access to one module. Super user has them all implicitly.",
+      "superUserNote": "This user is a super user — has all skills automatically, even if unchecked.",
+      "labels": {
+        "crm": "CRM",
+        "ops": "Operations",
+        "docs": "Documents",
+        "finance": "Finance",
+        "admin": "Administration"
+      },
+      "descriptions": {
+        "crm": "View and manage contacts, leads, customers, pipeline.",
+        "ops": "View and manage events, projects, tasks, calendar.",
+        "docs": "Upload and view documents.",
+        "finance": "View and manage financial transactions (income/expense).",
+        "admin": "Manage users, roles, skills and pillar access."
+      }
     }
   }
 }
