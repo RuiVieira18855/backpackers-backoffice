@@ -12,7 +12,19 @@ import {
   Wallet,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { sql, gte, and, ne, isNotNull, desc, eq, or } from "drizzle-orm";
+import {
+  sql,
+  gte,
+  and,
+  ne,
+  eq,
+  or,
+  lt,
+  lte,
+  isNull,
+  isNotNull,
+  desc,
+} from "drizzle-orm";
 import {
   Card,
   CardContent,
@@ -101,6 +113,88 @@ export default async function DashboardPage() {
     .toISOString()
     .slice(0, 10);
 
+  // Defensive wrapper: if a query throws (e.g. a column or relation that the
+  // production DB hasn't received yet via SQL migration), log + return a safe
+  // fallback so the dashboard renders instead of 500-ing.
+  function safe<T>(label: string, p: Promise<T>, fallback: T): Promise<T> {
+    return p.catch((err) => {
+      console.error(`[dashboard] ${label} failed:`, err);
+      return fallback;
+    });
+  }
+
+  const weekEndIso = isoDay(weekEnd);
+
+  // Declare queries first so Awaited<typeof q> picks up the `with` relations.
+  const qContactsCount = db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(contacts);
+  const qLeadCount = db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(contacts)
+    .where(sql`${contacts.stage} IN ('new','qualified','active')`);
+  const qUpcomingEventsCount = db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(events)
+    .where(and(isNotNull(events.startAt), gte(events.startAt, now)));
+  const qOpenTasksCount = db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(tasks)
+    .where(ne(tasks.status, "done"));
+  const qDocsCount = db.select({ count: sql<number>`count(*)::int` }).from(documents);
+  const qRecentAudit = db.query.auditLog.findMany({
+    orderBy: [desc(auditLog.createdAt)],
+    limit: 8,
+    with: { user: true, pillar: true },
+  });
+  const qWeekEvents = db.query.events.findMany({
+    where: and(
+      isNotNull(events.startAt),
+      gte(events.startAt, today),
+      lt(events.startAt, weekEnd),
+    ),
+    orderBy: (e, { asc }) => [asc(e.startAt)],
+    with: { pillar: true },
+    limit: 20,
+  });
+  const qWeekTasks = db.query.tasks.findMany({
+    where: and(
+      ne(tasks.status, "done"),
+      or(
+        and(isNull(tasks.dueDate), eq(tasks.assigneeId, profile.id)),
+        and(isNotNull(tasks.dueDate), lte(tasks.dueDate, weekEndIso)),
+      ),
+    ),
+    orderBy: (tk, { asc }) => [asc(tk.dueDate), asc(tk.createdAt)],
+    with: { pillar: true, project: true, event: true, assignee: true },
+    limit: 20,
+  });
+  const qContactsByStage = db
+    .select({
+      stage: contacts.stage,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(contacts)
+    .groupBy(contacts.stage);
+  const qRecentDocs = db.query.documents.findMany({
+    orderBy: [desc(documents.createdAt)],
+    limit: 5,
+    with: { pillar: true },
+  });
+  const qMtdAgg = db
+    .select({
+      type: transactions.type,
+      total: sql<string>`coalesce(sum(${transactions.amount}), 0)`,
+    })
+    .from(transactions)
+    .where(
+      and(eq(transactions.status, "paid"), gte(transactions.date, monthStart)),
+    )
+    .groupBy(transactions.type);
+
+  type RecentDocs = Awaited<typeof qRecentDocs>;
+  type MtdAggRows = Awaited<typeof qMtdAgg>;
+
   const [
     contactsCount,
     leadCount,
@@ -117,88 +211,40 @@ export default async function DashboardPage() {
     recentDocs,
     mtdAgg,
   ] = await Promise.all([
-    db.select({ count: sql<number>`count(*)::int` }).from(contacts),
-    db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(contacts)
-      .where(sql`${contacts.stage} IN ('new','qualified','active')`),
-    db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(events)
-      .where(and(isNotNull(events.startAt), gte(events.startAt, now))),
-    db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(tasks)
-      .where(ne(tasks.status, "done")),
-    db.select({ count: sql<number>`count(*)::int` }).from(documents),
-    db.query.auditLog.findMany({
-      orderBy: [desc(auditLog.createdAt)],
-      limit: 8,
-      with: { user: true, pillar: true },
-    }),
-    db.query.events.findMany({
-      where: and(
-        isNotNull(events.startAt),
-        gte(events.startAt, today),
-        sql`${events.startAt} < ${weekEnd}`,
-      ),
-      orderBy: (e, { asc }) => [asc(e.startAt)],
-      with: { pillar: true },
-      limit: 20,
-    }),
-    db.query.tasks.findMany({
-      where: and(
-        ne(tasks.status, "done"),
-        or(
-          sql`${tasks.dueDate} IS NULL AND ${tasks.assigneeId} = ${profile.id}`,
-          and(
-            isNotNull(tasks.dueDate),
-            sql`${tasks.dueDate} <= ${isoDay(weekEnd)}`,
-          ),
-        ),
-      ),
-      orderBy: (tk, { asc }) => [asc(tk.dueDate), asc(tk.createdAt)],
-      with: { pillar: true, project: true, event: true, assignee: true },
-      limit: 20,
-    }),
-    contactsTrend(30),
-    eventsTrend(30),
-    tasksTrend(30),
-    db
-      .select({
-        stage: contacts.stage,
-        count: sql<number>`count(*)::int`,
-      })
-      .from(contacts)
-      .groupBy(contacts.stage),
+    safe("contactsCount", qContactsCount, [{ count: 0 }]),
+    safe("leadCount", qLeadCount, [{ count: 0 }]),
+    safe("upcomingEventsCount", qUpcomingEventsCount, [{ count: 0 }]),
+    safe("openTasksCount", qOpenTasksCount, [{ count: 0 }]),
+    safe("docsCount", qDocsCount, [{ count: 0 }]),
+    safe("recentAudit", qRecentAudit, [] as Awaited<typeof qRecentAudit>),
+    safe("weekEvents", qWeekEvents, [] as Awaited<typeof qWeekEvents>),
+    safe("weekTasks", qWeekTasks, [] as Awaited<typeof qWeekTasks>),
+    safe(
+      "contactsTrend",
+      contactsTrend(30),
+      [] as Awaited<ReturnType<typeof contactsTrend>>,
+    ),
+    safe(
+      "eventsTrend",
+      eventsTrend(30),
+      [] as Awaited<ReturnType<typeof eventsTrend>>,
+    ),
+    safe(
+      "tasksTrend",
+      tasksTrend(30),
+      [] as Awaited<ReturnType<typeof tasksTrend>>,
+    ),
+    safe(
+      "contactsByStage",
+      qContactsByStage,
+      [] as Awaited<typeof qContactsByStage>,
+    ),
     hasDocs
-      ? db.query.documents
-          .findMany({
-            orderBy: [desc(documents.createdAt)],
-            limit: 5,
-            with: { pillar: true },
-          })
-          .catch(() => [] as never[])
-      : Promise.resolve([] as never[]),
+      ? safe("recentDocs", qRecentDocs, [] as RecentDocs)
+      : Promise.resolve([] as RecentDocs),
     hasFinance
-      ? db
-          .select({
-            type: transactions.type,
-            total: sql<string>`coalesce(sum(${transactions.amount}), 0)`,
-          })
-          .from(transactions)
-          .where(
-            and(
-              eq(transactions.status, "paid"),
-              gte(transactions.date, monthStart),
-            ),
-          )
-          .groupBy(transactions.type)
-          .catch(
-            () =>
-              [] as Array<{ type: "income" | "expense"; total: string }>,
-          )
-      : Promise.resolve([] as Array<{ type: "income" | "expense"; total: string }>),
+      ? safe("mtdAgg", qMtdAgg, [] as MtdAggRows)
+      : Promise.resolve([] as MtdAggRows),
   ]);
 
   const mtdIncome = Number(mtdAgg.find((r) => r.type === "income")?.total ?? 0);
