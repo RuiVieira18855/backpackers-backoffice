@@ -42,11 +42,15 @@ export async function LinkedDocsCard({ eventId, projectId }: Props) {
     ? eq(documents.eventId, eventId)
     : eq(documents.projectId, projectId!);
 
-  const rows = await db.query.documents.findMany({
-    where,
-    orderBy: [desc(documents.createdAt)],
-    limit: 20,
-  });
+  // Defensive: if 10_docs_v2.sql hasn't been applied yet, the eventId/projectId
+  // columns are missing and the query throws. Render with zero rows instead.
+  const rows = await db.query.documents
+    .findMany({
+      where,
+      orderBy: [desc(documents.createdAt)],
+      limit: 20,
+    })
+    .catch(() => [] as Awaited<ReturnType<typeof db.query.documents.findMany>>);
 
   const newQuery = eventId ? `event=${eventId}` : `project=${projectId}`;
 

@@ -172,11 +172,13 @@ export default async function DashboardPage() {
       .from(contacts)
       .groupBy(contacts.stage),
     hasDocs
-      ? db.query.documents.findMany({
-          orderBy: [desc(documents.createdAt)],
-          limit: 5,
-          with: { pillar: true },
-        })
+      ? db.query.documents
+          .findMany({
+            orderBy: [desc(documents.createdAt)],
+            limit: 5,
+            with: { pillar: true },
+          })
+          .catch(() => [] as never[])
       : Promise.resolve([] as never[]),
     hasFinance
       ? db
@@ -192,6 +194,10 @@ export default async function DashboardPage() {
             ),
           )
           .groupBy(transactions.type)
+          .catch(
+            () =>
+              [] as Array<{ type: "income" | "expense"; total: string }>,
+          )
       : Promise.resolve([] as Array<{ type: "income" | "expense"; total: string }>),
   ]);
 
