@@ -35,8 +35,12 @@
     }
   },
   "metadata": {
-    "title": "Backpackers Backoffice",
-    "description": "Backoffice unificado del grupo Backpackers — Adventures, Synergy, Labs."
+    "title": "Outpost — Backpackers",
+    "description": "Outpost, el backoffice del grupo Backpackers. Adventures, Synergy, Labs."
+  },
+  "footer": {
+    "byLabs": "un producto Backpackers Labs",
+    "copyright": "Backpackers World Adventures. Construido con curiosidad."
   },
   "nav": {
     "dashboard": "Panel",
@@ -75,7 +79,75 @@
     "documentsLabel": "Documentos",
     "documents": "Biblioteca",
     "adminLabel": "Administración",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "financeLabel": "Finanzas",
+    "finance": "Movimientos",
+    "addIncome": "Añadir ingreso",
+    "addExpense": "Añadir gasto"
+  },
+  "finance": {
+    "title": "Finanzas",
+    "subtitle": "Ingresos, gastos y flujo de caja del grupo. Solo super usuario.",
+    "addIncome": "Ingreso",
+    "addExpense": "Gasto",
+    "addTransaction": "Nuevo movimiento",
+    "ytdIncome": "Ingresos (año)",
+    "ytdExpense": "Gastos (año)",
+    "ytdNet": "Resultado (año)",
+    "ytdHint": "Solo pagado",
+    "mtdHint": "Este mes: +{income} / −{expense}",
+    "count": "{count, plural, =0 {Sin movimientos} one {1 movimiento} other {# movimientos}}",
+    "empty": "Aún no hay movimientos.",
+    "types": {
+      "income": "Ingreso",
+      "expense": "Gasto"
+    },
+    "statuses": {
+      "pending": "Pendiente",
+      "paid": "Pagado",
+      "overdue": "Vencido",
+      "cancelled": "Cancelado"
+    },
+    "table": {
+      "date": "Fecha",
+      "description": "Descripción",
+      "type": "Tipo",
+      "status": "Estado",
+      "pillar": "Pilar",
+      "amount": "Importe"
+    },
+    "form": {
+      "pageTitle": "Nuevo movimiento",
+      "subtitle": "Registrar ingreso o gasto.",
+      "type": "Tipo",
+      "amount": "Importe",
+      "description": "Descripción",
+      "category": "Categoría",
+      "categoryPlaceholder": "Ej.: Marketing, Salarios, Material…",
+      "status": "Estado",
+      "date": "Fecha del movimiento",
+      "dueDate": "Fecha de vencimiento",
+      "pillar": "Pilar",
+      "pillarNone": "Grupo (sin pilar)",
+      "invoiceNumber": "Nº de factura",
+      "vendor": "Cliente / Proveedor",
+      "vendorPlaceholder": "Ej.: ACME S.L.",
+      "notes": "Notas",
+      "create": "Registrar",
+      "creating": "Registrando…",
+      "errors": {
+        "amountInvalid": "Importe no válido. Usa formato 123.45.",
+        "descriptionRequired": "La descripción es obligatoria."
+      }
+    },
+    "detail": {
+      "backToList": "Volver a movimientos",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "delete": "Eliminar movimiento",
+      "deleting": "Eliminando…",
+      "deleteConfirm": "¿Seguro que quieres eliminar «{label}»? Esta acción no se puede deshacer."
+    }
   },
   "roles": {
     "super_user": "Super usuario",

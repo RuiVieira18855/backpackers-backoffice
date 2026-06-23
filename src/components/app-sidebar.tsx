@@ -12,9 +12,11 @@ import {
   Plus,
   Shield,
   Target,
+  TrendingUp,
   Upload,
   Users,
   UserPlus,
+  Wallet,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/dal";
@@ -30,6 +32,7 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
   const t = await getTranslations("sidebar");
   const profile = await requireProfile();
   const isAdmin = profile.role === "admin_grupo" || profile.role === "super_user";
+  const isSuperUser = profile.role === "super_user";
 
   return (
     <aside
@@ -116,6 +119,23 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
           {t("documents")}
         </SidebarLink>
       </SidebarGroup>
+
+      {isSuperUser && (
+        <>
+          <SidebarDivider />
+          <SidebarGroup label={t("financeLabel")}>
+            <SidebarLink href="/finance" icon={Wallet}>
+              {t("finance")}
+            </SidebarLink>
+            <SidebarLink href="/finance/new?type=income" icon={TrendingUp} accent>
+              {t("addIncome")}
+            </SidebarLink>
+            <SidebarLink href="/finance/new?type=expense" icon={Plus} accent>
+              {t("addExpense")}
+            </SidebarLink>
+          </SidebarGroup>
+        </>
+      )}
 
       {isAdmin && (
         <>

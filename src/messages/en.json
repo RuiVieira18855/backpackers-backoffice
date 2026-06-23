@@ -35,8 +35,12 @@
     }
   },
   "metadata": {
-    "title": "Backpackers Backoffice",
-    "description": "Unified backoffice for the Backpackers group — Adventures, Synergy, Labs."
+    "title": "Outpost — Backpackers",
+    "description": "Outpost, the Backpackers group's backoffice. Adventures, Synergy, Labs."
+  },
+  "footer": {
+    "byLabs": "a Backpackers Labs product",
+    "copyright": "Backpackers World Adventures. Built with curiosity."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -75,7 +79,75 @@
     "documentsLabel": "Documents",
     "documents": "Library",
     "adminLabel": "Administration",
-    "users": "Users"
+    "users": "Users",
+    "financeLabel": "Finance",
+    "finance": "Transactions",
+    "addIncome": "Add income",
+    "addExpense": "Add expense"
+  },
+  "finance": {
+    "title": "Finance",
+    "subtitle": "Group income, expenses and cash flow. Super user only.",
+    "addIncome": "Income",
+    "addExpense": "Expense",
+    "addTransaction": "New transaction",
+    "ytdIncome": "Income (YTD)",
+    "ytdExpense": "Expenses (YTD)",
+    "ytdNet": "Net (YTD)",
+    "ytdHint": "Paid only",
+    "mtdHint": "This month: +{income} / −{expense}",
+    "count": "{count, plural, =0 {No transactions} one {1 transaction} other {# transactions}}",
+    "empty": "No transactions yet.",
+    "types": {
+      "income": "Income",
+      "expense": "Expense"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled"
+    },
+    "table": {
+      "date": "Date",
+      "description": "Description",
+      "type": "Type",
+      "status": "Status",
+      "pillar": "Pillar",
+      "amount": "Amount"
+    },
+    "form": {
+      "pageTitle": "New transaction",
+      "subtitle": "Record income or expense.",
+      "type": "Type",
+      "amount": "Amount",
+      "description": "Description",
+      "category": "Category",
+      "categoryPlaceholder": "e.g. Marketing, Salaries, Supplies…",
+      "status": "Status",
+      "date": "Transaction date",
+      "dueDate": "Due date",
+      "pillar": "Pillar",
+      "pillarNone": "Group (no pillar)",
+      "invoiceNumber": "Invoice #",
+      "vendor": "Client / Vendor",
+      "vendorPlaceholder": "e.g. ACME Ltd.",
+      "notes": "Notes",
+      "create": "Record",
+      "creating": "Recording…",
+      "errors": {
+        "amountInvalid": "Invalid amount. Use 123.45 format.",
+        "descriptionRequired": "Description is required."
+      }
+    },
+    "detail": {
+      "backToList": "Back to transactions",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "delete": "Delete transaction",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Are you sure you want to delete \"{label}\"? This cannot be undone."
+    }
   },
   "roles": {
     "super_user": "Super user",
