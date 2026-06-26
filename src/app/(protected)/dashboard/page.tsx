@@ -116,11 +116,24 @@ export default async function DashboardPage() {
     .toISOString()
     .slice(0, 10);
 
-  // Defensive wrapper: if a query throws (e.g. a column or relation that the
-  // production DB hasn't received yet via SQL migration), log + return a safe
-  // fallback so the dashboard renders instead of 500-ing.
+  // Defensive wrapper. Three safety nets per query:
+  //   1. .catch — if it rejects (e.g. missing column, RLS denial), log + fallback
+  //   2. Promise.race against a timeout — if it never resolves, fall back too
+  //      (prevents one stuck connection from 504'ing the whole dashboard)
+  //   3. The underlying promise is fire-and-forget after timeout; postgres-js
+  //      releases its connection when the server side finishes.
+  const SAFE_TIMEOUT_MS = 4000;
   function safe<T>(label: string, p: Promise<T>, fallback: T): Promise<T> {
-    return p.catch((err) => {
+    return Promise.race<T>([
+      p,
+      new Promise<T>((_, reject) =>
+        setTimeout(
+          () =>
+            reject(new Error(`${label} timed out after ${SAFE_TIMEOUT_MS}ms`)),
+          SAFE_TIMEOUT_MS,
+        ),
+      ),
+    ]).catch((err) => {
       console.error(`[dashboard] ${label} failed:`, err);
       return fallback;
     });
@@ -145,33 +158,41 @@ export default async function DashboardPage() {
     .from(tasks)
     .where(ne(tasks.status, "done"));
   const qDocsCount = db.select({ count: sql<number>`count(*)::int` }).from(documents);
-  // NOTE: avoid `with: {...}` (relational query) — Drizzle 0.45 generates
-  // LATERAL JOINs that fail on the Supabase transaction pooler. We fetch raw
-  // rows and join in JS using lookup maps further down.
-  const qRecentAudit = db.query.auditLog.findMany({
-    orderBy: [desc(auditLog.createdAt)],
-    limit: 8,
-  });
-  const qWeekEvents = db.query.events.findMany({
-    where: and(
-      isNotNull(events.startAt),
-      gte(events.startAt, today),
-      lt(events.startAt, weekEnd),
-    ),
-    orderBy: (e, { asc }) => [asc(e.startAt)],
-    limit: 20,
-  });
-  const qWeekTasks = db.query.tasks.findMany({
-    where: and(
-      ne(tasks.status, "done"),
-      or(
-        and(isNull(tasks.dueDate), eq(tasks.assigneeId, profile.id)),
-        and(isNotNull(tasks.dueDate), lte(tasks.dueDate, weekEndIso)),
+  // Plain selects only — avoid db.query.X.findMany / relational query builder.
+  // The relational builder (even without `with`) can introduce schema-graph
+  // overhead or unexpected joins on Drizzle 0.45 + Supabase pooler that have
+  // produced hangs and LATERAL JOIN failures.
+  const qRecentAudit = db
+    .select()
+    .from(auditLog)
+    .orderBy(desc(auditLog.createdAt))
+    .limit(8);
+  const qWeekEvents = db
+    .select()
+    .from(events)
+    .where(
+      and(
+        isNotNull(events.startAt),
+        gte(events.startAt, today),
+        lt(events.startAt, weekEnd),
       ),
-    ),
-    orderBy: (tk, { asc }) => [asc(tk.dueDate), asc(tk.createdAt)],
-    limit: 20,
-  });
+    )
+    .orderBy(events.startAt)
+    .limit(20);
+  const qWeekTasks = db
+    .select()
+    .from(tasks)
+    .where(
+      and(
+        ne(tasks.status, "done"),
+        or(
+          and(isNull(tasks.dueDate), eq(tasks.assigneeId, profile.id)),
+          and(isNotNull(tasks.dueDate), lte(tasks.dueDate, weekEndIso)),
+        ),
+      ),
+    )
+    .orderBy(tasks.dueDate, tasks.createdAt)
+    .limit(20);
   const qContactsByStage = db
     .select({
       stage: contacts.stage,
@@ -179,10 +200,11 @@ export default async function DashboardPage() {
     })
     .from(contacts)
     .groupBy(contacts.stage);
-  const qRecentDocs = db.query.documents.findMany({
-    orderBy: [desc(documents.createdAt)],
-    limit: 5,
-  });
+  const qRecentDocs = db
+    .select()
+    .from(documents)
+    .orderBy(desc(documents.createdAt))
+    .limit(5);
   const qMtdAgg = db
     .select({
       type: transactions.type,
