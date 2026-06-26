@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
 import { requireProfile, requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import { createNotification } from "@/lib/notifications";
 import type { TaskFormState } from "@/components/tasks/task-form";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -104,6 +105,24 @@ export async function updateTask(
     action: "update",
     diff: { before, after: updated },
   });
+
+  // Notify on assignee CHANGE — only when the new assignee differs from the
+  // previous one (and isn't the actor performing the update).
+  if (updated.assigneeId && updated.assigneeId !== before.assigneeId) {
+    try {
+      await createNotification({
+        userId: updated.assigneeId,
+        actorId: profile.id,
+        pillarId: updated.pillarId,
+        kind: "task_assigned",
+        title: `Tarefa atribuída: ${updated.title}`,
+        body: updated.description ?? null,
+        link: `/ops/tasks/${updated.id}`,
+      });
+    } catch (err) {
+      console.error("[notifications] task_assigned (update) failed:", err);
+    }
+  }
 
   redirect(`/ops/tasks/${updated.id}`);
 }

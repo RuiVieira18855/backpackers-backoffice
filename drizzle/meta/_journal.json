@@ -64,6 +64,13 @@
       "when": 1782253823900,
       "tag": "0008_freezing_mephistopheles",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1782503331144,
+      "tag": "0009_burly_vulcan",
+      "breakpoints": true
     }
   ]
 }

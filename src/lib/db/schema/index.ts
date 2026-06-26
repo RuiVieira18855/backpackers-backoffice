@@ -3,3 +3,4 @@ export * from "./crm";
 export * from "./ops";
 export * from "./docs";
 export * from "./finance";
+export * from "./notifications";

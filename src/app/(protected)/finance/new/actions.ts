@@ -3,10 +3,12 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getTranslations } from "next-intl/server";
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { transactions } from "@/lib/db/schema";
+import { events, projects, transactions } from "@/lib/db/schema";
 import { requireSkill } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import { createNotification } from "@/lib/notifications";
 import type { TransactionFormState } from "@/components/finance/transaction-form";
 
 const TYPES = ["income", "expense"] as const;
@@ -104,6 +106,45 @@ export async function createTransaction(
     action: "create",
     diff: { snapshot: created },
   });
+
+  // Notify the event/project owner when a transaction is linked to one.
+  try {
+    if (created.eventId) {
+      const ev = await db.query.events.findFirst({
+        where: eq(events.id, created.eventId),
+        columns: { id: true, name: true, ownerId: true },
+      });
+      if (ev?.ownerId) {
+        await createNotification({
+          userId: ev.ownerId,
+          actorId: profile.id,
+          pillarId: created.pillarId,
+          kind: "event_finance",
+          title: `Movimento em «${ev.name}»: ${created.description}`,
+          body: `${created.type === "income" ? "+" : "−"}${created.amount} ${created.currency}`,
+          link: `/ops/events/${ev.id}`,
+        });
+      }
+    } else if (created.projectId) {
+      const pr = await db.query.projects.findFirst({
+        where: eq(projects.id, created.projectId),
+        columns: { id: true, name: true, ownerId: true },
+      });
+      if (pr?.ownerId) {
+        await createNotification({
+          userId: pr.ownerId,
+          actorId: profile.id,
+          pillarId: created.pillarId,
+          kind: "project_finance",
+          title: `Movimento em «${pr.name}»: ${created.description}`,
+          body: `${created.type === "income" ? "+" : "−"}${created.amount} ${created.currency}`,
+          link: `/ops/projects/${pr.id}`,
+        });
+      }
+    }
+  } catch (err) {
+    console.error("[notifications] linked finance failed:", err);
+  }
 
   // Only allow internal returnTo (must start with /) to prevent open redirects
   if (returnTo.startsWith("/")) {

@@ -258,6 +258,14 @@
       "docs": "Gestión documental"
     }
   },
+  "notifications": {
+    "title": "Notificaciones",
+    "subtitle": "Todo lo que ha pasado que es relevante para ti.",
+    "empty": "Sin notificaciones por ahora.",
+    "markAsRead": "Marcar como leída",
+    "markAllAsRead": "Marcar todas como leídas",
+    "ariaLabel": "{count, plural, =0 {Sin notificaciones} one {1 notificación sin leer} other {# notificaciones sin leer}}"
+  },
   "crm": {
     "title": "CRM",
     "subtitle": "Contactos, leads y socios — transversal a los pilares.",

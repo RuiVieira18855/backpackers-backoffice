@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import { createNotification } from "@/lib/notifications";
 import type { TaskFormState } from "@/components/tasks/task-form";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -86,6 +87,23 @@ export async function createTask(
     action: "create",
     diff: { snapshot: created },
   });
+
+  // Notify the assignee (no-op if they're the actor or no one assigned).
+  if (created.assigneeId) {
+    try {
+      await createNotification({
+        userId: created.assigneeId,
+        actorId: profile.id,
+        pillarId: created.pillarId,
+        kind: "task_assigned",
+        title: `Tarefa atribuída: ${created.title}`,
+        body: created.description ?? null,
+        link: `/ops/tasks/${created.id}`,
+      });
+    } catch (err) {
+      console.error("[notifications] task_assigned create failed:", err);
+    }
+  }
 
   redirect(`/ops/tasks/${created.id}`);
 }

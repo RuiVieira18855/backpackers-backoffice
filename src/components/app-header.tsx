@@ -6,6 +6,7 @@ import { AppSidebar } from "./app-sidebar";
 import { AppSidebarTrigger } from "./app-sidebar-trigger";
 import { GlobalSearch } from "./global-search";
 import { Logo } from "./logo";
+import { NotificationsBell } from "./notifications/bell";
 import { UserMenu } from "./user-menu";
 
 type Props = {
@@ -60,6 +61,7 @@ export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
         </div>
         <div className="flex items-center gap-2">
           <GlobalSearch />
+          <NotificationsBell />
           <UserMenu
             fullName={fullName}
             email={email}
