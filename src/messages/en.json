@@ -97,6 +97,8 @@
     "documents": "Library",
     "adminLabel": "Administration",
     "users": "Users",
+    "templates": "Templates",
+    "customFields": "Custom fields",
     "financeLabel": "Finance",
     "finance": "Transactions",
     "addIncome": "Add income",
@@ -830,6 +832,11 @@
   },
   "admin": {
     "title": "Administration",
+    "landing": {
+      "title": "Administration",
+      "subtitle": "Manage users, templates and custom fields.",
+      "open": "Open"
+    },
     "users": {
       "title": "Users",
       "subtitle": "Manage roles and pillar access.",

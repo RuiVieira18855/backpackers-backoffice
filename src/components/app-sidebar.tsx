@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   ListTodo,
   Plus,
+  Settings,
   Shield,
   Target,
   TrendingUp,
@@ -171,6 +172,12 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
           <SidebarGroup label={t("adminLabel")}>
             <SidebarLink href="/admin/users" icon={Shield}>
               {t("users")}
+            </SidebarLink>
+            <SidebarLink href="/admin/templates" icon={FileText}>
+              {t("templates")}
+            </SidebarLink>
+            <SidebarLink href="/admin/custom-fields" icon={Settings}>
+              {t("customFields")}
             </SidebarLink>
           </SidebarGroup>
         </>

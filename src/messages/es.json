@@ -97,6 +97,8 @@
     "documents": "Biblioteca",
     "adminLabel": "Administración",
     "users": "Usuarios",
+    "templates": "Templates",
+    "customFields": "Custom fields",
     "financeLabel": "Finanzas",
     "finance": "Movimientos",
     "addIncome": "Añadir ingreso",
@@ -830,6 +832,11 @@
   },
   "admin": {
     "title": "Administración",
+    "landing": {
+      "title": "Administración",
+      "subtitle": "Gestionar usuarios, templates y custom fields.",
+      "open": "Abrir"
+    },
     "users": {
       "title": "Usuarios",
       "subtitle": "Gestionar papeles y acceso por pilar.",

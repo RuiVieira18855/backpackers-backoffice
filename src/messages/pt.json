@@ -97,6 +97,8 @@
     "documents": "Biblioteca",
     "adminLabel": "Administração",
     "users": "Utilizadores",
+    "templates": "Templates",
+    "customFields": "Custom fields",
     "financeLabel": "Finanças",
     "finance": "Movimentos",
     "addIncome": "Adicionar receita",
@@ -839,6 +841,11 @@
   },
   "admin": {
     "title": "Administração",
+    "landing": {
+      "title": "Administração",
+      "subtitle": "Gerir utilizadores, templates e custom fields do backoffice.",
+      "open": "Abrir"
+    },
     "users": {
       "title": "Utilizadores",
       "subtitle": "Gerir papéis e acesso por pilar.",
