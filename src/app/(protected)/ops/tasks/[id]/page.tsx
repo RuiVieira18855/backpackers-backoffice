@@ -12,6 +12,7 @@ import {
 } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { TaskForm } from "@/components/tasks/task-form";
+import { getTemplatesForScope } from "@/lib/templates";
 import { updateTask } from "./actions";
 import { DeleteTaskButton } from "./delete-button";
 
@@ -29,18 +30,20 @@ export default async function TaskDetailPage({ params }: Props) {
 
   if (!task) notFound();
 
-  const [pillars, profiles, allProjects, allEvents] = await Promise.all([
-    getAllPillars(),
-    getAllProfiles(),
-    db.query.projects.findMany({
-      orderBy: [desc(projects.createdAt)],
-      limit: 200,
-    }),
-    db.query.events.findMany({
-      orderBy: [asc(events.name)],
-      limit: 200,
-    }),
-  ]);
+  const [pillars, profiles, allProjects, allEvents, descriptionTemplates] =
+    await Promise.all([
+      getAllPillars(),
+      getAllProfiles(),
+      db.query.projects.findMany({
+        orderBy: [desc(projects.createdAt)],
+        limit: 200,
+      }),
+      db.query.events.findMany({
+        orderBy: [asc(events.name)],
+        limit: 200,
+      }),
+      getTemplatesForScope("task_description"),
+    ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -95,6 +98,7 @@ export default async function TaskDetailPage({ params }: Props) {
           eventId: task.eventId,
           dueDate: task.dueDate,
         }}
+        descriptionTemplates={descriptionTemplates}
         action={updateTask}
       />
     </div>

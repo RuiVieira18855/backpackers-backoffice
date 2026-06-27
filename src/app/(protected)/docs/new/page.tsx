@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { events, projects } from "@/lib/db/schema";
 import { getAllPillars, requireSkill } from "@/lib/dal";
+import { getTemplatesForScope } from "@/lib/templates";
 import { DocumentUploadForm } from "./document-upload-form";
 
 type SearchParams = Promise<{
@@ -20,9 +21,15 @@ export default async function NewDocumentPage({
   const t = await getTranslations("docs.form");
   const sp = await searchParams;
 
-  const [pillars, allEvents, allProjects, prefillEvent, prefillProject] =
-    await Promise.all([
-      getAllPillars(),
+  const [
+    pillars,
+    allEvents,
+    allProjects,
+    prefillEvent,
+    prefillProject,
+    descriptionTemplates,
+  ] = await Promise.all([
+    getAllPillars(),
       db.query.events.findMany({
         orderBy: [asc(events.name)],
         limit: 500,
@@ -45,6 +52,7 @@ export default async function NewDocumentPage({
             columns: { id: true, pillarId: true },
           })
         : Promise.resolve(null),
+      getTemplatesForScope("doc_description"),
     ]);
 
   const defaultPillarId =
@@ -76,6 +84,7 @@ export default async function NewDocumentPage({
         defaultPillarId={defaultPillarId ?? undefined}
         lockContext={Boolean(prefillEvent || prefillProject)}
         returnTo={returnTo}
+        descriptionTemplates={descriptionTemplates}
       />
     </div>
   );

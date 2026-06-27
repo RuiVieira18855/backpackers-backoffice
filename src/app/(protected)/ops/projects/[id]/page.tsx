@@ -17,6 +17,8 @@ import {
 import { ProjectForm } from "@/components/projects/project-form";
 import { LinkedFinanceCard } from "@/components/finance/linked-finance-card";
 import { LinkedDocsCard } from "@/components/docs/linked-docs-card";
+import { getTemplatesForScope } from "@/lib/templates";
+import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { updateProject } from "./actions";
 import { DeleteProjectButton } from "./delete-button";
 
@@ -45,13 +47,16 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   if (!project) notFound();
 
-  const [pillars, allContacts] = await Promise.all([
-    getAllPillars(),
-    db.query.contacts.findMany({
-      orderBy: [asc(contacts.fullName)],
-      limit: 500,
-    }),
-  ]);
+  const [pillars, allContacts, descriptionTemplates, customFieldDefs] =
+    await Promise.all([
+      getAllPillars(),
+      db.query.contacts.findMany({
+        orderBy: [asc(contacts.fullName)],
+        limit: 500,
+      }),
+      getTemplatesForScope("project_description"),
+      getCustomFieldDefs("project"),
+    ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -94,6 +99,14 @@ export default async function ProjectDetailPage({ params }: Props) {
           targetDate: project.targetDate,
           notes: project.notes,
         }}
+        descriptionTemplates={descriptionTemplates}
+        customFieldDefs={customFieldDefs}
+        customFieldValues={
+          (project.customFields ?? {}) as Record<
+            string,
+            string | number | null
+          >
+        }
         action={updateProject}
       />
 

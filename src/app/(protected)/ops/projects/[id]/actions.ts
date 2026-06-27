@@ -8,6 +8,10 @@ import { db } from "@/lib/db";
 import { projects } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { ProjectFormState } from "@/components/projects/project-form";
 
 const STATUSES = ["planned", "active", "on_hold", "completed", "cancelled"] as const;
@@ -67,6 +71,9 @@ export async function updateProject(
     return { error: "Projecto não encontrado." };
   }
 
+  const customDefs = await getCustomFieldDefs("project");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [updated] = await db
     .update(projects)
     .set({
@@ -78,6 +85,7 @@ export async function updateProject(
       startDate: parsed.data.startDate,
       targetDate: parsed.data.targetDate,
       notes: parsed.data.notes || null,
+      customFields,
     })
     .where(eq(projects.id, parsed.data.id))
     .returning();

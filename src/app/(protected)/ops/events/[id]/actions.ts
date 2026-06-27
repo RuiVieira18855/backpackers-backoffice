@@ -8,6 +8,10 @@ import { db } from "@/lib/db";
 import { events } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { EventFormState } from "@/components/events/event-form";
 
 const TYPES = ["tour", "team_building", "workshop", "meeting", "retreat", "other"] as const;
@@ -85,6 +89,9 @@ export async function updateEvent(
     return { error: "Evento não encontrado." };
   }
 
+  const customDefs = await getCustomFieldDefs("event");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [updated] = await db
     .update(events)
     .set({
@@ -99,6 +106,7 @@ export async function updateEvent(
       capacity: parsed.data.capacity,
       clientContactId: parsed.data.clientContactId,
       notes: parsed.data.notes || null,
+      customFields,
     })
     .where(eq(events.id, parsed.data.id))
     .returning();

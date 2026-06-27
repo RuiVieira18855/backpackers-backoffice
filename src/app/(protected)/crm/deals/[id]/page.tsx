@@ -8,6 +8,8 @@ import { contacts, deals } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { DealForm } from "@/components/deals/deal-form";
+import { getTemplatesForScope } from "@/lib/templates";
+import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { updateDeal } from "./actions";
 import { DeleteDealButton } from "./delete-button";
 
@@ -23,14 +25,17 @@ export default async function DealDetailPage({ params }: Props) {
   });
   if (!deal) notFound();
 
-  const [pillars, allContacts] = await Promise.all([
-    getAllPillars(),
-    db.query.contacts.findMany({
-      orderBy: [asc(contacts.fullName)],
-      limit: 500,
-      columns: { id: true, fullName: true, company: true },
-    }),
-  ]);
+  const [pillars, allContacts, descriptionTemplates, customFieldDefs] =
+    await Promise.all([
+      getAllPillars(),
+      db.query.contacts.findMany({
+        orderBy: [asc(contacts.fullName)],
+        limit: 500,
+        columns: { id: true, fullName: true, company: true },
+      }),
+      getTemplatesForScope("deal_description"),
+      getCustomFieldDefs("deal"),
+    ]);
 
   return (
     <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -74,6 +79,14 @@ export default async function DealDetailPage({ params }: Props) {
           description: deal.description,
           notes: deal.notes,
         }}
+        descriptionTemplates={descriptionTemplates}
+        customFieldDefs={customFieldDefs}
+        customFieldValues={
+          (deal.customFields ?? {}) as Record<
+            string,
+            string | number | null
+          >
+        }
         action={updateDeal}
       />
     </div>

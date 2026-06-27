@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
 import { DealForm } from "@/components/deals/deal-form";
+import { getTemplatesForScope } from "@/lib/templates";
+import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { createDeal } from "./actions";
 
 type SearchParams = Promise<{ client?: string; stage?: string }>;
@@ -22,7 +24,13 @@ export default async function NewDealPage({
   const t = await getTranslations("deals.form");
   const sp = await searchParams;
 
-  const [pillars, allContacts, prefillContact] = await Promise.all([
+  const [
+    pillars,
+    allContacts,
+    prefillContact,
+    descriptionTemplates,
+    customFieldDefs,
+  ] = await Promise.all([
     getAllPillars(),
     db.query.contacts.findMany({
       orderBy: [asc(contacts.fullName)],
@@ -35,6 +43,8 @@ export default async function NewDealPage({
           columns: { id: true },
         })
       : Promise.resolve(null),
+    getTemplatesForScope("deal_description"),
+    getCustomFieldDefs("deal"),
   ]);
 
   const defaultStage =
@@ -62,6 +72,8 @@ export default async function NewDealPage({
         contacts={allContacts}
         defaultContactId={prefillContact?.id}
         defaultStage={defaultStage}
+        descriptionTemplates={descriptionTemplates}
+        customFieldDefs={customFieldDefs}
         action={createDeal}
       />
     </div>

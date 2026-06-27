@@ -351,7 +351,8 @@
       "saving": "A guardar…",
       "delete": "Eliminar deal",
       "deleting": "A eliminar…",
-      "deleteConfirm": "Tens a certeza que queres eliminar o deal «{name}»?"
+      "deleteConfirm": "Tens a certeza que queres eliminar o deal «{name}»?",
+      "customFields": "Campos personalizados"
     },
     "pipeline": {
       "title": "Pipeline de deals",
@@ -624,7 +625,8 @@
       "delete": "Eliminar evento",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o evento «{name}»? Esta acção não pode ser desfeita.",
-      "addToCalendar": "Adicionar ao calendário"
+      "addToCalendar": "Adicionar ao calendário",
+      "customFields": "Campos personalizados"
     },
     "projectStatuses": {
       "planned": "Planeado",
@@ -688,7 +690,8 @@
         "tasksSectionTitle": "Tarefas do projecto",
         "tasksCount": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
         "addTask": "Adicionar tarefa",
-        "noTasks": "Ainda não existem tarefas neste projecto."
+        "noTasks": "Ainda não existem tarefas neste projecto.",
+        "customFields": "Campos personalizados"
       }
     },
     "tasks": {

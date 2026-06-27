@@ -351,7 +351,8 @@
       "saving": "Saving…",
       "delete": "Delete deal",
       "deleting": "Deleting…",
-      "deleteConfirm": "Are you sure you want to delete deal \"{name}\"?"
+      "deleteConfirm": "Are you sure you want to delete deal \"{name}\"?",
+      "customFields": "Custom fields"
     },
     "pipeline": {
       "title": "Deals pipeline",
@@ -625,7 +626,8 @@
       "delete": "Delete event",
       "deleting": "Deleting…",
       "deleteConfirm": "Are you sure you want to delete event \"{name}\"? This action cannot be undone.",
-      "addToCalendar": "Add to calendar"
+      "addToCalendar": "Add to calendar",
+      "customFields": "Custom fields"
     },
     "projectStatuses": {
       "planned": "Planned",
@@ -689,7 +691,8 @@
         "tasksSectionTitle": "Project tasks",
         "tasksCount": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
         "addTask": "Add task",
-        "noTasks": "No tasks in this project yet."
+        "noTasks": "No tasks in this project yet.",
+        "customFields": "Custom fields"
       }
     },
     "tasks": {

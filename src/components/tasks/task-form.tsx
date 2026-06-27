@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TemplatePicker } from "@/components/templates/template-picker";
+import type { TemplateOption } from "@/lib/templates";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
 const PRIORITIES = ["low", "normal", "high", "urgent"] as const;
@@ -43,6 +45,7 @@ type Props = {
   defaultProjectId?: string;
   defaultEventId?: string;
   defaultAssigneeId?: string;
+  descriptionTemplates?: TemplateOption[];
   action: (
     state: TaskFormState | undefined,
     formData: FormData,
@@ -61,6 +64,7 @@ export function TaskForm({
   defaultProjectId,
   defaultEventId,
   defaultAssigneeId,
+  descriptionTemplates = [],
   action,
 }: Props) {
   const t = useTranslations("ops.tasks.form");
@@ -214,7 +218,13 @@ export function TaskForm({
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="description">{t("description")}</Label>
+          <div className="flex items-center justify-between gap-2">
+            <Label htmlFor="description">{t("description")}</Label>
+            <TemplatePicker
+              templates={descriptionTemplates}
+              targetId="description"
+            />
+          </div>
           <textarea
             id="description"
             name="description"

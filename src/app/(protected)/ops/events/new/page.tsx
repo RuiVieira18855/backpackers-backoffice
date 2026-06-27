@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { getAllPillars, requireRole } from "@/lib/dal";
 import { EventForm } from "@/components/events/event-form";
+import { getTemplatesForScope } from "@/lib/templates";
+import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { createEvent } from "./actions";
 
 const VALID_TYPES = [
@@ -33,13 +35,16 @@ export default async function NewEventPage({
 
   const defaultClientContactId = sp.client || undefined;
 
-  const [pillars, allContacts] = await Promise.all([
-    getAllPillars(),
-    db.query.contacts.findMany({
-      orderBy: [asc(contacts.fullName)],
-      limit: 500,
-    }),
-  ]);
+  const [pillars, allContacts, descriptionTemplates, customFieldDefs] =
+    await Promise.all([
+      getAllPillars(),
+      db.query.contacts.findMany({
+        orderBy: [asc(contacts.fullName)],
+        limit: 500,
+      }),
+      getTemplatesForScope("event_description"),
+      getCustomFieldDefs("event"),
+    ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -58,6 +63,8 @@ export default async function NewEventPage({
         }))}
         defaultType={defaultType}
         defaultClientContactId={defaultClientContactId}
+        descriptionTemplates={descriptionTemplates}
+        customFieldDefs={customFieldDefs}
         action={createEvent}
       />
     </div>

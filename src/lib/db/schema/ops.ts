@@ -4,6 +4,7 @@ import {
   date,
   index,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -83,6 +84,10 @@ export const events = pgTable(
       .notNull()
       .default(sql`'{}'::text[]`),
     notes: text("notes"),
+    customFields: jsonb("custom_fields")
+      .notNull()
+      .default(sql`'{}'::jsonb`)
+      .$type<Record<string, string | number | null>>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -125,6 +130,10 @@ export const projects = pgTable(
       .notNull()
       .default(sql`'{}'::text[]`),
     notes: text("notes"),
+    customFields: jsonb("custom_fields")
+      .notNull()
+      .default(sql`'{}'::jsonb`)
+      .$type<Record<string, string | number | null>>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

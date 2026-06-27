@@ -8,6 +8,7 @@ import {
   requireRole,
 } from "@/lib/dal";
 import { TaskForm } from "@/components/tasks/task-form";
+import { getTemplatesForScope } from "@/lib/templates";
 import { createTask } from "./actions";
 
 type SearchParams = Promise<{ project?: string; event?: string }>;
@@ -21,18 +22,20 @@ export default async function NewTaskPage({
   const t = await getTranslations("ops.tasks.form");
   const sp = await searchParams;
 
-  const [pillars, profiles, allProjects, allEvents] = await Promise.all([
-    getAllPillars(),
-    getAllProfiles(),
-    db.query.projects.findMany({
-      orderBy: [desc(projects.createdAt)],
-      limit: 200,
-    }),
-    db.query.events.findMany({
-      orderBy: [asc(events.name)],
-      limit: 200,
-    }),
-  ]);
+  const [pillars, profiles, allProjects, allEvents, descriptionTemplates] =
+    await Promise.all([
+      getAllPillars(),
+      getAllProfiles(),
+      db.query.projects.findMany({
+        orderBy: [desc(projects.createdAt)],
+        limit: 200,
+      }),
+      db.query.events.findMany({
+        orderBy: [asc(events.name)],
+        limit: 200,
+      }),
+      getTemplatesForScope("task_description"),
+    ]);
 
   // If pre-filling from query param, try to infer pillar from the selected
   // project/event.
@@ -72,6 +75,7 @@ export default async function NewTaskPage({
         defaultProjectId={sp.project}
         defaultEventId={sp.event}
         defaultAssigneeId={profile.id}
+        descriptionTemplates={descriptionTemplates}
         action={createTask}
       />
     </div>

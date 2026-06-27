@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { contacts, events, pillars } from "@/lib/db/schema";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { createNotifications } from "@/lib/notifications";
+import { htmlToText, sendEmail } from "@/lib/email";
 
 export type BookingState = {
   ok?: boolean;
@@ -161,8 +162,40 @@ export async function submitBooking(
     console.error("[book] admin notify failed:", err);
   }
 
+  // 4. Confirmation email to the lead — best-effort, no-op without RESEND_API_KEY.
+  try {
+    const html = `
+      <div style="font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; color: #0E2A44; max-width: 560px;">
+        <h1 style="font-size: 24px; margin: 0 0 16px;">Pedido recebido</h1>
+        <p>Olá ${escapeHtml(parsed.data.fullName)},</p>
+        <p>Recebemos o teu pedido de <strong>${escapeHtml(parsed.data.type)}</strong> com a marca <strong>${escapeHtml(pillar.name)}</strong> para o dia <strong>${escapeHtml(parsed.data.preferredDate)}</strong> · ${parsed.data.partySize} pessoa(s).</p>
+        <p>Vamos rever e voltar a contactar-te por e-mail nas próximas 24h úteis.</p>
+        ${parsed.data.notes ? `<p style="background:#f1f5f9; padding:12px; border-radius:6px; font-size:13px;"><em>"${escapeHtml(parsed.data.notes)}"</em></p>` : ""}
+        <p style="margin-top: 24px; color: #64748b; font-size: 12px;">Referência: <code>${createdEvent.id}</code></p>
+        <p style="margin-top: 24px; color: #64748b; font-size: 12px;">— Equipa Backpackers</p>
+      </div>
+    `.trim();
+    await sendEmail({
+      to: parsed.data.email,
+      subject: `Pedido recebido — ${pillar.name}`,
+      html,
+      text: htmlToText(html),
+    });
+  } catch (err) {
+    console.error("[book] confirmation email failed:", err);
+  }
+
   return {
     ok: true,
     reference: createdEvent.id,
   };
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }

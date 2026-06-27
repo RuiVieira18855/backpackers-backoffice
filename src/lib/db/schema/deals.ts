@@ -3,6 +3,7 @@ import {
   date,
   decimal,
   index,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -46,6 +47,10 @@ export const deals = pgTable(
       .notNull()
       .default(sql`'{}'::text[]`),
     notes: text("notes"),
+    customFields: jsonb("custom_fields")
+      .notNull()
+      .default(sql`'{}'::jsonb`)
+      .$type<Record<string, string | number | null>>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

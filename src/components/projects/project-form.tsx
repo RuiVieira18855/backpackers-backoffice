@@ -6,6 +6,12 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TemplatePicker } from "@/components/templates/template-picker";
+import type { TemplateOption } from "@/lib/templates";
+import {
+  CustomFieldsSection,
+  type CustomFieldDef,
+} from "@/components/custom-fields/fields-section";
 
 const STATUSES = [
   "planned",
@@ -41,6 +47,9 @@ type Props = {
   project?: ProjectPrefill;
   /** Pre-fill client contact when creating (e.g. ?client=contactId) */
   defaultClientContactId?: string;
+  descriptionTemplates?: TemplateOption[];
+  customFieldDefs?: CustomFieldDef[];
+  customFieldValues?: Record<string, string | number | null>;
   action: (
     state: ProjectFormState | undefined,
     formData: FormData,
@@ -54,6 +63,9 @@ export function ProjectForm({
   contacts,
   project,
   defaultClientContactId,
+  descriptionTemplates = [],
+  customFieldDefs = [],
+  customFieldValues = {},
   action,
 }: Props) {
   const t = useTranslations("ops.projects.form");
@@ -167,7 +179,13 @@ export function ProjectForm({
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="description">{t("description")}</Label>
+          <div className="flex items-center justify-between gap-2">
+            <Label htmlFor="description">{t("description")}</Label>
+            <TemplatePicker
+              templates={descriptionTemplates}
+              targetId="description"
+            />
+          </div>
           <textarea
             id="description"
             name="description"
@@ -187,6 +205,12 @@ export function ProjectForm({
             className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs"
           />
         </div>
+
+        <CustomFieldsSection
+          defs={customFieldDefs}
+          values={customFieldValues}
+          heading={tDetail("customFields")}
+        />
       </div>
 
       {state?.error && (

@@ -7,6 +7,10 @@ import { db } from "@/lib/db";
 import { events } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { EventFormState } from "@/components/events/event-form";
 
 const TYPES = ["tour", "team_building", "workshop", "meeting", "retreat", "other"] as const;
@@ -78,6 +82,9 @@ export async function createEvent(
     };
   }
 
+  const customDefs = await getCustomFieldDefs("event");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [created] = await db
     .insert(events)
     .values({
@@ -92,6 +99,7 @@ export async function createEvent(
       capacity: parsed.data.capacity,
       clientContactId: parsed.data.clientContactId,
       notes: parsed.data.notes || null,
+      customFields,
       ownerId: profile.id,
     })
     .returning();

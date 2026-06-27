@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TemplatePicker } from "@/components/templates/template-picker";
+import type { TemplateOption } from "@/lib/templates";
 import {
   uploadDocument,
   type UploadDocumentState,
@@ -26,6 +28,7 @@ type Props = {
   defaultPillarId?: string;
   lockContext?: boolean;
   returnTo?: string;
+  descriptionTemplates?: TemplateOption[];
 };
 
 const initialState: UploadDocumentState = {};
@@ -39,6 +42,7 @@ export function DocumentUploadForm({
   defaultPillarId,
   lockContext,
   returnTo,
+  descriptionTemplates = [],
 }: Props) {
   const t = useTranslations("docs.form");
   const tTypes = useTranslations("docs.types");
@@ -161,7 +165,13 @@ export function DocumentUploadForm({
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="description">{t("description")}</Label>
+          <div className="flex items-center justify-between gap-2">
+            <Label htmlFor="description">{t("description")}</Label>
+            <TemplatePicker
+              templates={descriptionTemplates}
+              targetId="description"
+            />
+          </div>
           <textarea
             id="description"
             name="description"

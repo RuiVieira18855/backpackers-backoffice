@@ -7,6 +7,10 @@ import { db } from "@/lib/db";
 import { projects } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { ProjectFormState } from "@/components/projects/project-form";
 
 const STATUSES = ["planned", "active", "on_hold", "completed", "cancelled"] as const;
@@ -57,6 +61,9 @@ export async function createProject(
     };
   }
 
+  const customDefs = await getCustomFieldDefs("project");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [created] = await db
     .insert(projects)
     .values({
@@ -68,6 +75,7 @@ export async function createProject(
       startDate: parsed.data.startDate,
       targetDate: parsed.data.targetDate,
       notes: parsed.data.notes || null,
+      customFields,
       ownerId: profile.id,
     })
     .returning();

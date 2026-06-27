@@ -6,6 +6,10 @@ import { db } from "@/lib/db";
 import { deals } from "@/lib/db/schema";
 import { requireProfile } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { DealFormState } from "@/components/deals/deal-form";
 
 const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] as const;
@@ -61,6 +65,9 @@ export async function createDeal(
       ? new Date()
       : null;
 
+  const customDefs = await getCustomFieldDefs("deal");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [created] = await db
     .insert(deals)
     .values({
@@ -73,6 +80,7 @@ export async function createDeal(
       expectedCloseDate: parsed.data.expectedCloseDate,
       description: parsed.data.description || null,
       notes: parsed.data.notes || null,
+      customFields,
       ownerId: profile.id,
       closedAt,
     })
