@@ -1,17 +1,21 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, desc, eq, type SQL } from "drizzle-orm";
+import { and, desc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { events } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
 
 type SearchParams = Promise<{
   pillar?: string;
   status?: string;
   type?: string;
+  page?: string;
+  perPage?: string;
 }>;
 
 const STATUSES = ["draft", "scheduled", "in_progress", "completed", "cancelled"] as const;
@@ -54,12 +58,22 @@ export default async function EventsListPage({
   const where = filters.some(Boolean) ? and(...filters) : undefined;
   const hasActiveFilters = Boolean(sp.pillar || sp.status || sp.type);
 
-  const rows = await db.query.events.findMany({
-    with: { pillar: true, clientContact: true },
-    where,
-    orderBy: [desc(events.startAt), desc(events.createdAt)],
-    limit: 200,
-  });
+  const pagination = parsePagination(sp, 25);
+
+  const [rows, totalRows] = await Promise.all([
+    db.query.events.findMany({
+      with: { pillar: true, clientContact: true },
+      where,
+      orderBy: [desc(events.startAt), desc(events.createdAt)],
+      limit: pagination.limit,
+      offset: pagination.offset,
+    }),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(events)
+      .where(where ?? sql`true`)
+      .then((r) => r[0]?.count ?? 0),
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -150,7 +164,7 @@ export default async function EventsListPage({
       </form>
 
       <p className="text-sm text-muted-foreground">
-        {t("eventsCount", { count: rows.length })}
+        {t("eventsCount", { count: totalRows })}
       </p>
 
       {rows.length === 0 ? (
@@ -261,6 +275,14 @@ export default async function EventsListPage({
           </CardContent>
         </Card>
       )}
+
+      <Pagination
+        basePath="/ops/events"
+        searchParams={sp}
+        page={pagination.page}
+        pageSize={pagination.pageSize}
+        total={totalRows}
+      />
     </div>
   );
 }

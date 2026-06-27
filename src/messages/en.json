@@ -1,4 +1,19 @@
 {
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "range": "{start, number}–{end, number} of {total, number}",
+    "pageOf": "Page {page, number} of {total, number}"
+  },
+  "bulk": {
+    "selected": "{count, plural, one {1 selected} other {# selected}}",
+    "clear": "Clear selection",
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "deleteConfirm": "Are you sure you want to delete {count, plural, one {1 record} other {# records}}? This cannot be undone."
+  },
   "common": {
     "appName": "Backpackers Backoffice",
     "loading": "Loading…",
@@ -273,6 +288,42 @@
     "contactsCount": "{count, plural, =0 {No contacts} one {1 contact} other {# contacts}}",
     "empty": "No contacts yet. Create the first one.",
     "openKanban": "Pipeline view",
+    "importCsv": "Import CSV",
+    "import": {
+      "title": "Import contacts",
+      "subtitle": "Upload a CSV, review the preview and confirm the import.",
+      "backToList": "Back to contacts",
+      "formatTitle": "Expected format",
+      "formatColumns": "Recognised columns: name (or fullName), email, phone, company, jobTitle, type, stage, notes.",
+      "formatRequired": "Only «name» is required. Other columns are optional.",
+      "formatDedup": "Contacts with an email already present in the chosen pillar are flagged as duplicates and skipped on import.",
+      "formatLimit": "Limits: 2000 rows, 4 MB per file.",
+      "formatExample": "Example header: name,email,company,type,stage",
+      "pillar": "Target pillar",
+      "pillarPlaceholder": "Choose the pillar where the contacts will land.",
+      "file": "CSV file",
+      "fileHint": "UTF-8 encoding recommended.",
+      "preview": "Preview",
+      "analysing": "Analysing…",
+      "previewTotal": "Rows in file",
+      "previewNew": "Will import",
+      "previewDuplicates": "Duplicates",
+      "skippedRows": "{count, plural, one {1 row skipped (missing name)} other {# rows skipped (missing name)}}.",
+      "col": {
+        "name": "Name",
+        "email": "Email",
+        "company": "Company",
+        "type": "Type",
+        "stage": "Stage",
+        "status": "Status"
+      },
+      "dup": "duplicate",
+      "new": "new",
+      "truncated": "Showing the first {shown, number} of {total, number} rows.",
+      "importCount": "Import {count, number}",
+      "importing": "Importing…",
+      "startOver": "Start over"
+    },
     "table": {
       "name": "Name",
       "type": "Type",

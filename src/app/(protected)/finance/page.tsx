@@ -22,12 +22,16 @@ import {
   MonthlyCashflow,
   type MonthlyPoint,
 } from "@/components/charts/monthly-cashflow";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
 
 type SearchParams = Promise<{
   type?: string;
   status?: string;
   pillar?: string;
   month?: string; // YYYY-MM
+  page?: string;
+  perPage?: string;
 }>;
 
 const TYPES = ["income", "expense"] as const;
@@ -130,13 +134,22 @@ export default async function FinancePage({
     return d.toISOString().slice(0, 10);
   })();
 
-  const [rows, ytdAgg, mtdAgg, cashflowRaw, byCategoryRaw] = await Promise.all([
-    db.query.transactions.findMany({
-      with: { pillar: true, event: true, project: true },
-      where,
-      orderBy: [desc(transactions.date), desc(transactions.createdAt)],
-      limit: 300,
-    }),
+  const pagination = parsePagination(sp, 25);
+
+  const [rows, totalRows, ytdAgg, mtdAgg, cashflowRaw, byCategoryRaw] =
+    await Promise.all([
+      db.query.transactions.findMany({
+        with: { pillar: true, event: true, project: true },
+        where,
+        orderBy: [desc(transactions.date), desc(transactions.createdAt)],
+        limit: pagination.limit,
+        offset: pagination.offset,
+      }),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(transactions)
+        .where(where ?? sql`true`)
+        .then((r) => r[0]?.count ?? 0),
     db
       .select({
         type: transactions.type,
@@ -480,7 +493,7 @@ export default async function FinancePage({
       </form>
 
       <p className="text-sm text-muted-foreground">
-        {t("count", { count: rows.length })}
+        {t("count", { count: totalRows })}
       </p>
 
       {rows.length === 0 ? (
@@ -618,6 +631,14 @@ export default async function FinancePage({
           </CardContent>
         </Card>
       )}
+
+      <Pagination
+        basePath="/finance"
+        searchParams={sp}
+        page={pagination.page}
+        pageSize={pagination.pageSize}
+        total={totalRows}
+      />
     </div>
   );
 }

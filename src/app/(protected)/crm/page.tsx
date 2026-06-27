@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { LayoutGrid, Plus } from "lucide-react";
+import { LayoutGrid, Plus, Upload } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, asc, desc, eq, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import {
   Card,
   CardContent,
@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
-import { SortableHeader } from "@/components/sortable-header";
 import { ExportButton } from "@/components/export-button";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
+import { ContactsBulkBar } from "@/components/contacts/bulk-bar";
 
 type SearchParams = Promise<{
   pillar?: string;
@@ -19,6 +21,8 @@ type SearchParams = Promise<{
   type?: string;
   sort?: string;
   dir?: string;
+  page?: string;
+  perPage?: string;
 }>;
 
 const STAGES = [
@@ -49,7 +53,9 @@ export default async function CrmPage({
   const tStages = await getTranslations("crm.stages");
   const tTypes = await getTranslations("crm.types");
   const tCommon = await getTranslations("common");
-  await requireProfile();
+  const profile = await requireProfile();
+  const canBulkDelete =
+    profile.role === "super_user" || profile.role === "admin_grupo";
 
   const sp = await searchParams;
   const spForHeaders = {
@@ -88,12 +94,22 @@ export default async function CrmPage({
       : desc(sortCol)
     : desc(contacts.createdAt);
 
-  const rows = await db.query.contacts.findMany({
-    with: { pillar: true, owner: true },
-    where,
-    orderBy: [orderExpr],
-    limit: 200,
-  });
+  const pagination = parsePagination(sp, 25);
+
+  const [rows, totalRows] = await Promise.all([
+    db.query.contacts.findMany({
+      with: { pillar: true, owner: true },
+      where,
+      orderBy: [orderExpr],
+      limit: pagination.limit,
+      offset: pagination.offset,
+    }),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(contacts)
+      .where(where ?? sql`true`)
+      .then((r) => r[0]?.count ?? 0),
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -108,6 +124,12 @@ export default async function CrmPage({
         </div>
         <div className="flex flex-wrap gap-2">
           <ExportButton href="/api/export/contacts" />
+          <Button asChild variant="outline">
+            <Link href="/crm/contacts/import">
+              <Upload className="mr-2 h-4 w-4" />
+              {t("importCsv")}
+            </Link>
+          </Button>
           <Button asChild variant="outline">
             <Link href="/crm/pipeline">
               <LayoutGrid className="mr-2 h-4 w-4" />
@@ -196,7 +218,7 @@ export default async function CrmPage({
       </form>
 
       <p className="text-sm text-muted-foreground">
-        {t("contactsCount", { count: rows.length })}
+        {t("contactsCount", { count: totalRows })}
       </p>
 
       {rows.length === 0 ? (
@@ -212,130 +234,33 @@ export default async function CrmPage({
           </CardContent>
         </Card>
       ) : (
-        <Card>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-border bg-muted/30">
-                  <tr className="text-left">
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      <SortableHeader
-                        basePath="/crm"
-                        searchParams={spForHeaders}
-                        column="fullName"
-                      >
-                        {t("table.name")}
-                      </SortableHeader>
-                    </th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      <SortableHeader
-                        basePath="/crm"
-                        searchParams={spForHeaders}
-                        column="type"
-                      >
-                        {t("table.type")}
-                      </SortableHeader>
-                    </th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      <SortableHeader
-                        basePath="/crm"
-                        searchParams={spForHeaders}
-                        column="stage"
-                      >
-                        {t("table.stage")}
-                      </SortableHeader>
-                    </th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      {t("table.pillar")}
-                    </th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      <SortableHeader
-                        basePath="/crm"
-                        searchParams={spForHeaders}
-                        column="company"
-                      >
-                        {t("table.company")}
-                      </SortableHeader>
-                    </th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                      <SortableHeader
-                        basePath="/crm"
-                        searchParams={spForHeaders}
-                        column="email"
-                      >
-                        {t("table.email")}
-                      </SortableHeader>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {rows.map((c) => (
-                    <tr
-                      key={c.id}
-                      className="hover:bg-muted/30 transition-colors cursor-pointer"
-                    >
-                      <td className="px-4 py-0">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="block px-0 py-3"
-                        >
-                          <div className="font-medium text-foreground">
-                            {c.fullName}
-                          </div>
-                          {c.jobTitle && (
-                            <div className="text-xs text-muted-foreground">
-                              {c.jobTitle}
-                            </div>
-                          )}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="block py-3 -my-3"
-                        >
-                          {tTypes(c.type)}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="inline-flex items-center rounded-full bg-accent/40 px-2 py-0.5 text-xs text-foreground"
-                        >
-                          {tStages(c.stage)}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="block py-3 -my-3"
-                        >
-                          {c.pillar?.name ?? "—"}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="block py-3 -my-3"
-                        >
-                          {c.company ?? "—"}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        <Link
-                          href={`/crm/contacts/${c.id}`}
-                          className="block py-3 -my-3"
-                        >
-                          {c.email ?? "—"}
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        <>
+          <Card>
+            <CardContent className="p-0">
+              <ContactsBulkBar
+                rows={rows.map((c) => ({
+                  id: c.id,
+                  fullName: c.fullName,
+                  jobTitle: c.jobTitle,
+                  type: c.type,
+                  stage: c.stage,
+                  pillarName: c.pillar?.name ?? null,
+                  company: c.company,
+                  email: c.email,
+                }))}
+                spForHeaders={spForHeaders}
+                canBulkDelete={canBulkDelete}
+              />
+            </CardContent>
+          </Card>
+          <Pagination
+            basePath="/crm"
+            searchParams={sp}
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            total={totalRows}
+          />
+        </>
       )}
     </div>
   );

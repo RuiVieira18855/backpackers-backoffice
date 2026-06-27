@@ -1,4 +1,19 @@
 {
+  "pagination": {
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "range": "{start, number}–{end, number} de {total, number}",
+    "pageOf": "Página {page, number} de {total, number}"
+  },
+  "bulk": {
+    "selected": "{count, plural, one {1 seleccionado} other {# seleccionados}}",
+    "clear": "Limpiar selección",
+    "selectAll": "Seleccionar todos",
+    "selectRow": "Seleccionar fila",
+    "delete": "Eliminar",
+    "deleting": "Eliminando…",
+    "deleteConfirm": "¿Seguro que quieres eliminar {count, plural, one {1 registro} other {# registros}}? Esta acción no se puede deshacer."
+  },
   "common": {
     "appName": "Backpackers Backoffice",
     "loading": "Cargando…",
@@ -270,6 +285,42 @@
     "title": "CRM",
     "subtitle": "Contactos, leads y socios — transversal a los pilares.",
     "newContact": "Nuevo contacto",
+    "importCsv": "Importar CSV",
+    "import": {
+      "title": "Importar contactos",
+      "subtitle": "Sube un CSV, revisa la vista previa y confirma la importación.",
+      "backToList": "Volver a contactos",
+      "formatTitle": "Formato esperado",
+      "formatColumns": "Columnas reconocidas: name (o fullName/nombre), email, phone, company, jobTitle, type, stage, notes.",
+      "formatRequired": "Solo «name» es obligatorio. Las demás columnas son opcionales.",
+      "formatDedup": "Contactos con email ya existente en el pilar elegido se marcan como duplicados y se omiten en la importación.",
+      "formatLimit": "Límites: 2000 filas, 4 MB por fichero.",
+      "formatExample": "Ejemplo de cabecera: name,email,company,type,stage",
+      "pillar": "Pilar de destino",
+      "pillarPlaceholder": "Elige el pilar donde aterrizarán los contactos.",
+      "file": "Fichero CSV",
+      "fileHint": "Codificación UTF-8 recomendada.",
+      "preview": "Vista previa",
+      "analysing": "Analizando…",
+      "previewTotal": "Filas en el fichero",
+      "previewNew": "Se importarán",
+      "previewDuplicates": "Duplicados",
+      "skippedRows": "{count, plural, one {1 fila omitida (falta nombre)} other {# filas omitidas (falta nombre)}}.",
+      "col": {
+        "name": "Nombre",
+        "email": "Email",
+        "company": "Empresa",
+        "type": "Tipo",
+        "stage": "Fase",
+        "status": "Estado"
+      },
+      "dup": "duplicado",
+      "new": "nuevo",
+      "truncated": "Mostrando las primeras {shown, number} de {total, number} filas.",
+      "importCount": "Importar {count, number}",
+      "importing": "Importando…",
+      "startOver": "Empezar de nuevo"
+    },
     "contactsCount": "{count, plural, =0 {Sin contactos} one {1 contacto} other {# contactos}}",
     "empty": "Aún no hay contactos. Crea el primero.",
     "openKanban": "Vista pipeline",

@@ -1,11 +1,20 @@
 import Link from "next/link";
 import { Bell, CheckCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { count, eq, sql } from "drizzle-orm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { db } from "@/lib/db";
+import { notifications } from "@/lib/db/schema";
 import { requireProfile } from "@/lib/dal";
-import { getRecentNotifications } from "@/lib/notifications";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
 import { markAllAsRead, markAsRead } from "./actions";
+
+type SearchParams = Promise<{
+  page?: string;
+  perPage?: string;
+}>;
 
 const KIND_ICON: Record<string, string> = {
   task_assigned: "📋",
@@ -27,10 +36,33 @@ function fmtRelative(d: Date, now: Date): string {
   return new Intl.DateTimeFormat("pt-PT", { dateStyle: "short" }).format(d);
 }
 
-export default async function NotificationsPage() {
+export default async function NotificationsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const profile = await requireProfile();
   const t = await getTranslations("notifications");
-  const rows = await getRecentNotifications(profile.id, 100);
+  const sp = await searchParams;
+  const pagination = parsePagination(sp, 25);
+  const where = eq(notifications.userId, profile.id);
+
+  const [rows, totalRows] = await Promise.all([
+    db
+      .select()
+      .from(notifications)
+      .where(where)
+      .orderBy(sql`${notifications.createdAt} DESC`)
+      .limit(pagination.limit)
+      .offset(pagination.offset)
+      .catch(() => [] as Array<typeof notifications.$inferSelect>),
+    db
+      .select({ value: count() })
+      .from(notifications)
+      .where(where)
+      .then((r) => r[0]?.value ?? 0)
+      .catch(() => 0),
+  ]);
   const now = new Date();
 
   const hasUnread = rows.some((r) => r.readAt === null);
@@ -136,6 +168,14 @@ export default async function NotificationsPage() {
           </CardContent>
         </Card>
       )}
+
+      <Pagination
+        basePath="/notifications"
+        searchParams={sp}
+        page={pagination.page}
+        pageSize={pagination.pageSize}
+        total={totalRows}
+      />
     </div>
   );
 }

@@ -1,18 +1,22 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, asc, eq, type SQL } from "drizzle-orm";
+import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
 
 type SearchParams = Promise<{
   pillar?: string;
   status?: string;
   priority?: string;
   mine?: string;
+  page?: string;
+  perPage?: string;
 }>;
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -49,12 +53,22 @@ export default async function TasksListPage({
   const where = filters.some(Boolean) ? and(...filters) : undefined;
   const hasActiveFilters = Boolean(sp.pillar || sp.status || sp.priority);
 
-  const rows = await db.query.tasks.findMany({
-    with: { pillar: true, assignee: true, project: true, event: true },
-    where,
-    orderBy: [asc(tasks.dueDate), asc(tasks.createdAt)],
-    limit: 300,
-  });
+  const pagination = parsePagination(sp, 25);
+
+  const [rows, totalRows] = await Promise.all([
+    db.query.tasks.findMany({
+      with: { pillar: true, assignee: true, project: true, event: true },
+      where,
+      orderBy: [asc(tasks.dueDate), asc(tasks.createdAt)],
+      limit: pagination.limit,
+      offset: pagination.offset,
+    }),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(tasks)
+      .where(where ?? sql`true`)
+      .then((r) => r[0]?.count ?? 0),
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -171,7 +185,7 @@ export default async function TasksListPage({
       </form>
 
       <p className="text-sm text-muted-foreground">
-        {t("count", { count: rows.length })}
+        {t("count", { count: totalRows })}
       </p>
 
       {rows.length === 0 ? (
@@ -275,6 +289,14 @@ export default async function TasksListPage({
           </CardContent>
         </Card>
       )}
+
+      <Pagination
+        basePath="/ops/tasks"
+        searchParams={sp}
+        page={pagination.page}
+        pageSize={pagination.pageSize}
+        total={totalRows}
+      />
     </div>
   );
 }

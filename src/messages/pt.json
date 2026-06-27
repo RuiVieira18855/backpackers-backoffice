@@ -1,4 +1,19 @@
 {
+  "pagination": {
+    "prev": "Anterior",
+    "next": "Próximo",
+    "range": "{start, number}–{end, number} de {total, number}",
+    "pageOf": "Página {page, number} de {total, number}"
+  },
+  "bulk": {
+    "selected": "{count, plural, one {1 seleccionado} other {# seleccionados}}",
+    "clear": "Limpar selecção",
+    "selectAll": "Seleccionar todos",
+    "selectRow": "Seleccionar linha",
+    "delete": "Eliminar",
+    "deleting": "A eliminar…",
+    "deleteConfirm": "Tens a certeza que queres eliminar {count, plural, one {1 registo} other {# registos}}? Esta acção não pode ser desfeita."
+  },
   "common": {
     "appName": "Backpackers Backoffice",
     "loading": "A carregar…",
@@ -273,6 +288,42 @@
     "contactsCount": "{count, plural, =0 {Sem contactos} one {1 contacto} other {# contactos}}",
     "empty": "Ainda não existem contactos. Cria o primeiro.",
     "openKanban": "Vista pipeline",
+    "importCsv": "Importar CSV",
+    "import": {
+      "title": "Importar contactos",
+      "subtitle": "Carrega um CSV, vê o preview e confirma a importação.",
+      "backToList": "Voltar aos contactos",
+      "formatTitle": "Formato esperado",
+      "formatColumns": "Colunas reconhecidas: name (ou fullName/nome), email, phone, company, jobTitle, type, stage, notes.",
+      "formatRequired": "Só «name» é obrigatório. As outras colunas são opcionais.",
+      "formatDedup": "Contactos com email já existente no pilar são marcados como duplicados e ignorados na importação.",
+      "formatLimit": "Limite: 2000 linhas, 4 MB por ficheiro.",
+      "formatExample": "Exemplo de cabeçalho: name,email,company,type,stage",
+      "pillar": "Pilar de destino",
+      "pillarPlaceholder": "Escolhe o pilar onde os contactos vão ficar.",
+      "file": "Ficheiro CSV",
+      "fileHint": "Codificação UTF-8 recomendada.",
+      "preview": "Pré-visualizar",
+      "analysing": "A analisar…",
+      "previewTotal": "Linhas no ficheiro",
+      "previewNew": "A importar",
+      "previewDuplicates": "Duplicados",
+      "skippedRows": "{count, plural, one {1 linha foi ignorada por falta de nome} other {# linhas foram ignoradas por falta de nome}}.",
+      "col": {
+        "name": "Nome",
+        "email": "E-mail",
+        "company": "Empresa",
+        "type": "Tipo",
+        "stage": "Fase",
+        "status": "Estado"
+      },
+      "dup": "duplicado",
+      "new": "novo",
+      "truncated": "A mostrar as primeiras {shown, number} de {total, number} linhas.",
+      "importCount": "Importar {count, number}",
+      "importing": "A importar…",
+      "startOver": "Recomeçar"
+    },
     "table": {
       "name": "Nome",
       "type": "Tipo",

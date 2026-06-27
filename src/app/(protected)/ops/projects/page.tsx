@@ -1,14 +1,21 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { and, desc, eq, type SQL } from "drizzle-orm";
+import { and, desc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { projects } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import { Pagination } from "@/components/pagination";
+import { parsePagination } from "@/lib/pagination";
 
-type SearchParams = Promise<{ pillar?: string; status?: string }>;
+type SearchParams = Promise<{
+  pillar?: string;
+  status?: string;
+  page?: string;
+  perPage?: string;
+}>;
 
 const STATUSES = ["planned", "active", "on_hold", "completed", "cancelled"] as const;
 
@@ -37,12 +44,22 @@ export default async function ProjectsListPage({
   const where = filters.some(Boolean) ? and(...filters) : undefined;
   const hasActiveFilters = Boolean(sp.pillar || sp.status);
 
-  const rows = await db.query.projects.findMany({
-    with: { pillar: true, clientContact: true },
-    where,
-    orderBy: [desc(projects.createdAt)],
-    limit: 200,
-  });
+  const pagination = parsePagination(sp, 25);
+
+  const [rows, totalRows] = await Promise.all([
+    db.query.projects.findMany({
+      with: { pillar: true, clientContact: true },
+      where,
+      orderBy: [desc(projects.createdAt)],
+      limit: pagination.limit,
+      offset: pagination.offset,
+    }),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(projects)
+      .where(where ?? sql`true`)
+      .then((r) => r[0]?.count ?? 0),
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -113,7 +130,7 @@ export default async function ProjectsListPage({
       </form>
 
       <p className="text-sm text-muted-foreground">
-        {t("count", { count: rows.length })}
+        {t("count", { count: totalRows })}
       </p>
 
       {rows.length === 0 ? (
@@ -206,6 +223,14 @@ export default async function ProjectsListPage({
           </CardContent>
         </Card>
       )}
+
+      <Pagination
+        basePath="/ops/projects"
+        searchParams={sp}
+        page={pagination.page}
+        pageSize={pagination.pageSize}
+        total={totalRows}
+      />
     </div>
   );
 }
