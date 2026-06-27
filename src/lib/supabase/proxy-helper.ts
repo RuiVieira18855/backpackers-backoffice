@@ -40,7 +40,11 @@ export async function updateSupabaseSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
-  const isPublic = pathname === "/" || isAuthRoute || pathname.startsWith("/_next");
+  const isPublic =
+    pathname === "/" ||
+    isAuthRoute ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/book");
 
   // Optimistic redirect: unauthenticated users hitting protected routes -> /login
   if (!user && !isPublic) {

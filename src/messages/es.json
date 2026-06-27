@@ -273,6 +273,62 @@
       "docs": "Gestión documental"
     }
   },
+  "deals": {
+    "title": "Deals",
+    "subtitle": "Oportunidades abiertas. Mantén el pipeline sano.",
+    "newDeal": "Nuevo deal",
+    "pipeline": "Pipeline",
+    "count": "{count, plural, =0 {Sin deals} one {1 deal} other {# deals}}",
+    "empty": "Aún no hay deals. Crea el primero.",
+    "stages": {
+      "lead": "Lead",
+      "qualified": "Cualificado",
+      "proposal": "Propuesta",
+      "negotiation": "Negociación",
+      "won": "Ganado",
+      "lost": "Perdido"
+    },
+    "table": {
+      "name": "Nombre",
+      "stage": "Fase",
+      "pillar": "Pilar",
+      "value": "Valor",
+      "close": "Cierre previsto"
+    },
+    "form": {
+      "pageTitle": "Nuevo deal",
+      "subtitle": "Registra una oportunidad.",
+      "backToList": "Volver a deals",
+      "name": "Nombre",
+      "pillar": "Pilar",
+      "stage": "Fase",
+      "value": "Valor",
+      "expectedClose": "Cierre previsto",
+      "contact": "Contacto cliente",
+      "contactNone": "Sin contacto",
+      "description": "Descripción",
+      "notes": "Notas",
+      "selectPlaceholder": "Elegir…",
+      "create": "Crear",
+      "creating": "Creando…"
+    },
+    "detail": {
+      "backToList": "Volver a deals",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "delete": "Eliminar deal",
+      "deleting": "Eliminando…",
+      "deleteConfirm": "¿Seguro que quieres eliminar el deal «{name}»?"
+    },
+    "pipeline": {
+      "title": "Pipeline de deals",
+      "subtitle": "Arrastra para cambiar de fase. Totales por columna en la cabecera.",
+      "newDeal": "Nuevo deal",
+      "backToList": "Volver a deals",
+      "totalDeals": "{count, plural, =0 {sin deals} one {1 deal} other {# deals}}",
+      "empty": "vacío"
+    }
+  },
   "notifications": {
     "title": "Notificaciones",
     "subtitle": "Todo lo que ha pasado que es relevante para ti.",
@@ -324,6 +380,10 @@
     "contactsCount": "{count, plural, =0 {Sin contactos} one {1 contacto} other {# contactos}}",
     "empty": "Aún no hay contactos. Crea el primero.",
     "openKanban": "Vista pipeline",
+    "openDeals": "Deals",
+    "dedup": {
+      "cta": "Eliminar duplicados"
+    },
     "table": {
       "name": "Nombre",
       "type": "Tipo",
@@ -410,6 +470,34 @@
       "email": "Enviar email",
       "call": "Llamar",
       "whatsapp": "WhatsApp"
+    },
+    "dedup": {
+      "title": "Eliminar duplicados",
+      "subtitle": "Encontré grupos de contactos con email o teléfono iguales en {total, number} contactos totales.",
+      "backToList": "Volver a contactos",
+      "noDuplicates": "Sin duplicados. Todo limpio.",
+      "groupsFound": "{count, plural, one {1 grupo de duplicados} other {# grupos de duplicados}}",
+      "matchOn": "Coincidencia por {kind}: {key}",
+      "groupSize": "{count, plural, one {1 contacto} other {# contactos}}",
+      "kind": {
+        "email": "email",
+        "phone": "teléfono"
+      },
+      "keeper": "mantener",
+      "setKeeper": "Marcar como keeper",
+      "mergeInto": "Fusionar {count, number} en 1",
+      "merging": "Fusionando…",
+      "mergeConfirm": "Voy a fusionar {count} contactos en 1. No se puede deshacer. ¿Confirmar?"
+    },
+    "timeline": {
+      "title": "Línea de tiempo",
+      "hint": "Eventos, proyectos, deals, movimientos y documentos relacionados ({count, number}).",
+      "empty": "Sin actividad registrada para este contacto.",
+      "auditAction": {
+        "create": "creó contacto",
+        "update": "actualizó contacto",
+        "delete": "eliminó contacto"
+      }
     }
   },
   "ops": {
@@ -502,7 +590,8 @@
       "saving": "Guardando…",
       "delete": "Eliminar evento",
       "deleting": "Eliminando…",
-      "deleteConfirm": "¿Seguro que quieres eliminar el evento «{name}»? Esta acción no se puede deshacer."
+      "deleteConfirm": "¿Seguro que quieres eliminar el evento «{name}»? Esta acción no se puede deshacer.",
+      "addToCalendar": "Añadir al calendario"
     },
     "projectStatuses": {
       "planned": "Planeado",
@@ -748,6 +837,41 @@
         "docs": "Subir y ver documentos.",
         "finance": "Ver y gestionar movimientos financieros (ingresos/gastos).",
         "admin": "Gestionar usuarios, roles, skills y acceso a pilares."
+      }
+    },
+    "templates": {
+      "title": "Templates",
+      "subtitle": "Snippets reutilizables para notas y descripciones.",
+      "backToAdmin": "Volver a administración",
+      "backToList": "Volver a templates",
+      "newTemplate": "Nuevo template",
+      "empty": "Aún no hay templates.",
+      "anyPillar": "Todos los pilares",
+      "deleteConfirm": "¿Eliminar el template «{name}»?",
+      "scopes": {
+        "contact_note": "Nota de contacto",
+        "event_description": "Descripción de evento",
+        "project_description": "Descripción de proyecto",
+        "deal_description": "Descripción de deal",
+        "task_description": "Descripción de tarea",
+        "doc_description": "Descripción de documento",
+        "generic": "Genérico"
+      },
+      "col": {
+        "name": "Nombre",
+        "scope": "Ámbito",
+        "pillar": "Pilar",
+        "preview": "Vista previa"
+      },
+      "form": {
+        "name": "Nombre",
+        "scope": "Ámbito",
+        "pillar": "Pilar (opcional)",
+        "anyPillar": "Disponible en todos los pilares",
+        "body": "Cuerpo del template",
+        "bodyHint": "Texto plano. Sin placeholders en esta versión.",
+        "save": "Guardar",
+        "saving": "Guardando…"
       }
     },
     "invite": {

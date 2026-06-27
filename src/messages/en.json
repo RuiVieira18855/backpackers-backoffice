@@ -273,6 +273,62 @@
       "docs": "Document management"
     }
   },
+  "deals": {
+    "title": "Deals",
+    "subtitle": "Open opportunities. Keep the pipeline healthy.",
+    "newDeal": "New deal",
+    "pipeline": "Pipeline",
+    "count": "{count, plural, =0 {No deals} one {1 deal} other {# deals}}",
+    "empty": "No deals yet. Create the first one.",
+    "stages": {
+      "lead": "Lead",
+      "qualified": "Qualified",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "table": {
+      "name": "Name",
+      "stage": "Stage",
+      "pillar": "Pillar",
+      "value": "Value",
+      "close": "Expected close"
+    },
+    "form": {
+      "pageTitle": "New deal",
+      "subtitle": "Record an opportunity.",
+      "backToList": "Back to deals",
+      "name": "Name",
+      "pillar": "Pillar",
+      "stage": "Stage",
+      "value": "Value",
+      "expectedClose": "Expected close",
+      "contact": "Client contact",
+      "contactNone": "No linked contact",
+      "description": "Description",
+      "notes": "Notes",
+      "selectPlaceholder": "Choose…",
+      "create": "Create",
+      "creating": "Creating…"
+    },
+    "detail": {
+      "backToList": "Back to deals",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "delete": "Delete deal",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Are you sure you want to delete deal \"{name}\"?"
+    },
+    "pipeline": {
+      "title": "Deals pipeline",
+      "subtitle": "Drag to change stage. Totals per column at the top.",
+      "newDeal": "New deal",
+      "backToList": "Back to deals",
+      "totalDeals": "{count, plural, =0 {no deals} one {1 deal} other {# deals}}",
+      "empty": "empty"
+    }
+  },
   "notifications": {
     "title": "Notifications",
     "subtitle": "Everything that's happened that's relevant to you.",
@@ -288,6 +344,10 @@
     "contactsCount": "{count, plural, =0 {No contacts} one {1 contact} other {# contacts}}",
     "empty": "No contacts yet. Create the first one.",
     "openKanban": "Pipeline view",
+    "openDeals": "Deals",
+    "dedup": {
+      "cta": "Find duplicates"
+    },
     "importCsv": "Import CSV",
     "import": {
       "title": "Import contacts",
@@ -410,6 +470,34 @@
       "email": "Send email",
       "call": "Call",
       "whatsapp": "WhatsApp"
+    },
+    "dedup": {
+      "title": "Find duplicates",
+      "subtitle": "I found groups of contacts sharing email or phone across {total, number} total contacts.",
+      "backToList": "Back to contacts",
+      "noDuplicates": "No duplicates found. All clean.",
+      "groupsFound": "{count, plural, one {1 duplicate group} other {# duplicate groups}}",
+      "matchOn": "Match by {kind}: {key}",
+      "groupSize": "{count, plural, one {1 contact} other {# contacts}}",
+      "kind": {
+        "email": "email",
+        "phone": "phone"
+      },
+      "keeper": "keep",
+      "setKeeper": "Mark as keeper",
+      "mergeInto": "Merge {count, number} into 1",
+      "merging": "Merging…",
+      "mergeConfirm": "I'll merge {count} contacts into 1. This cannot be undone. Confirm?"
+    },
+    "timeline": {
+      "title": "Timeline",
+      "hint": "Related events, projects, deals, transactions and documents ({count, number}).",
+      "empty": "No activity recorded for this contact yet.",
+      "auditAction": {
+        "create": "created contact",
+        "update": "updated contact",
+        "delete": "deleted contact"
+      }
     }
   },
   "ops": {
@@ -502,7 +590,8 @@
       "saving": "Saving…",
       "delete": "Delete event",
       "deleting": "Deleting…",
-      "deleteConfirm": "Are you sure you want to delete event \"{name}\"? This action cannot be undone."
+      "deleteConfirm": "Are you sure you want to delete event \"{name}\"? This action cannot be undone.",
+      "addToCalendar": "Add to calendar"
     },
     "projectStatuses": {
       "planned": "Planned",
@@ -748,6 +837,41 @@
         "docs": "Upload and view documents.",
         "finance": "View and manage financial transactions (income/expense).",
         "admin": "Manage users, roles, skills and pillar access."
+      }
+    },
+    "templates": {
+      "title": "Templates",
+      "subtitle": "Reusable snippets for notes and descriptions.",
+      "backToAdmin": "Back to admin",
+      "backToList": "Back to templates",
+      "newTemplate": "New template",
+      "empty": "No templates yet.",
+      "anyPillar": "All pillars",
+      "deleteConfirm": "Delete the template \"{name}\"?",
+      "scopes": {
+        "contact_note": "Contact note",
+        "event_description": "Event description",
+        "project_description": "Project description",
+        "deal_description": "Deal description",
+        "task_description": "Task description",
+        "doc_description": "Document description",
+        "generic": "Generic"
+      },
+      "col": {
+        "name": "Name",
+        "scope": "Scope",
+        "pillar": "Pillar",
+        "preview": "Preview"
+      },
+      "form": {
+        "name": "Name",
+        "scope": "Scope",
+        "pillar": "Pillar (optional)",
+        "anyPillar": "Available in all pillars",
+        "body": "Template body",
+        "bodyHint": "Plain text. No placeholders in this version.",
+        "save": "Save",
+        "saving": "Saving…"
       }
     },
     "invite": {

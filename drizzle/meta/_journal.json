@@ -71,6 +71,13 @@
       "when": 1782503331144,
       "tag": "0009_burly_vulcan",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1782561544993,
+      "tag": "0010_sturdy_mentor",
+      "breakpoints": true
     }
   ]
 }

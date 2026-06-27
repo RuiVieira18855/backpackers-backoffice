@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { CalendarPlus, ChevronLeft } from "lucide-react";
 import { eq, asc } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -54,7 +54,17 @@ export default async function EventDetailPage({ params }: Props) {
               {event.location ? ` · ${event.location}` : ""}
             </p>
           </div>
-          <DeleteEventButton eventId={event.id} eventName={event.name} />
+          <div className="flex items-center gap-2">
+            {event.startAt && (
+              <Button asChild variant="outline" size="sm">
+                <a href={`/api/events/${event.id}/ics`} download>
+                  <CalendarPlus className="mr-2 h-3.5 w-3.5" />
+                  {t("addToCalendar")}
+                </a>
+              </Button>
+            )}
+            <DeleteEventButton eventId={event.id} eventName={event.name} />
+          </div>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutGrid, Plus, Upload } from "lucide-react";
+import { LayoutGrid, Merge, Plus, Target, Upload } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import {
@@ -128,6 +128,20 @@ export default async function CrmPage({
             <Link href="/crm/contacts/import">
               <Upload className="mr-2 h-4 w-4" />
               {t("importCsv")}
+            </Link>
+          </Button>
+          {canBulkDelete && (
+            <Button asChild variant="outline">
+              <Link href="/crm/dedup">
+                <Merge className="mr-2 h-4 w-4" />
+                {t("dedup.cta")}
+              </Link>
+            </Button>
+          )}
+          <Button asChild variant="outline">
+            <Link href="/crm/deals">
+              <Target className="mr-2 h-4 w-4" />
+              {t("openDeals")}
             </Link>
           </Button>
           <Button asChild variant="outline">
