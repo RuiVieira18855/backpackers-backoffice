@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  Boxes,
   Calendar,
   CalendarPlus,
   CheckSquare,
@@ -172,6 +173,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
           <SidebarGroup label={t("adminLabel")}>
             <SidebarLink href="/admin/users" icon={Shield}>
               {t("users")}
+            </SidebarLink>
+            <SidebarLink href="/admin/apps" icon={Boxes}>
+              {t("apps")}
             </SidebarLink>
             <SidebarLink href="/admin/templates" icon={FileText}>
               {t("templates")}

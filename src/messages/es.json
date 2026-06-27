@@ -97,6 +97,7 @@
     "documents": "Biblioteca",
     "adminLabel": "Administración",
     "users": "Usuarios",
+    "apps": "Apps & Accesos",
     "templates": "Templates",
     "customFields": "Custom fields",
     "financeLabel": "Finanzas",
@@ -880,6 +881,25 @@
         "finance": "Ver y gestionar movimientos financieros (ingresos/gastos).",
         "admin": "Gestionar usuarios, roles, skills y acceso a pilares."
       }
+    },
+    "apps": {
+      "title": "Apps & Accesos",
+      "cardSubtitle": "Conceder o revocar acceso pago a apps Backpackers (ej.: Cairn Pro).",
+      "subtitle": "Conceder o revocar acceso a Cairn Pro. {active, number} activos · {total, number} usuarios.",
+      "backToAdmin": "Volver a administración",
+      "empty": "Aún no hay usuarios.",
+      "statusLabel": "Estado",
+      "expiresLabel": "Expira el",
+      "planPlaceholder": "plan",
+      "save": "Guardar",
+      "statuses": {
+        "none": "— sin acceso —",
+        "trial": "Trial",
+        "active": "Activo",
+        "expired": "Expirado",
+        "revoked": "Revocado"
+      },
+      "enforcementNote": "El acceso se valida en el login de la app externa (Cairn Pro) y en el proxy de IA (server-side). Deja un usuario en «sin acceso» para impedirle usar Cairn Pro."
     },
     "customFields": {
       "title": "Custom fields",

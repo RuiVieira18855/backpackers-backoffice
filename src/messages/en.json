@@ -97,6 +97,7 @@
     "documents": "Library",
     "adminLabel": "Administration",
     "users": "Users",
+    "apps": "Apps & Access",
     "templates": "Templates",
     "customFields": "Custom fields",
     "financeLabel": "Finance",
@@ -880,6 +881,25 @@
         "finance": "View and manage financial transactions (income/expense).",
         "admin": "Manage users, roles, skills and pillar access."
       }
+    },
+    "apps": {
+      "title": "Apps & Access",
+      "cardSubtitle": "Grant or revoke paid access to Backpackers apps (e.g. Cairn Pro).",
+      "subtitle": "Grant or revoke access to Cairn Pro. {active, number} active · {total, number} users.",
+      "backToAdmin": "Back to admin",
+      "empty": "No users yet.",
+      "statusLabel": "Status",
+      "expiresLabel": "Expires on",
+      "planPlaceholder": "plan",
+      "save": "Save",
+      "statuses": {
+        "none": "— no access —",
+        "trial": "Trial",
+        "active": "Active",
+        "expired": "Expired",
+        "revoked": "Revoked"
+      },
+      "enforcementNote": "Access is enforced at the external app's login (Cairn Pro) and on the AI proxy (server-side). Leave a user as «no access» to keep them out of Cairn Pro."
     },
     "customFields": {
       "title": "Custom fields",

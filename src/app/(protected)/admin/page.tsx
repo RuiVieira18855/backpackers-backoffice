@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, Settings, Shield } from "lucide-react";
+import { Boxes, FileText, Settings, Shield } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import {
   Card,
@@ -13,11 +13,12 @@ import { requireSkill } from "@/lib/dal";
 type Section = {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
-  titleKey: "users" | "templates" | "customFields";
+  titleKey: "users" | "templates" | "customFields" | "apps";
 };
 
 const SECTIONS: Section[] = [
   { href: "/admin/users", icon: Shield, titleKey: "users" },
+  { href: "/admin/apps", icon: Boxes, titleKey: "apps" },
   { href: "/admin/templates", icon: FileText, titleKey: "templates" },
   { href: "/admin/custom-fields", icon: Settings, titleKey: "customFields" },
 ];
@@ -28,8 +29,10 @@ export default async function AdminLandingPage() {
   const tUsers = await getTranslations("admin.users");
   const tTemplates = await getTranslations("admin.templates");
   const tCustomFields = await getTranslations("admin.customFields");
+  const tApps = await getTranslations("admin.apps");
 
   const labels = {
+    apps: { title: tApps("title"), subtitle: tApps("cardSubtitle") },
     users: { title: tUsers("title"), subtitle: tUsers("subtitle") },
     templates: {
       title: tTemplates("title"),
