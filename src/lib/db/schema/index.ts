@@ -6,3 +6,4 @@ export * from "./finance";
 export * from "./notifications";
 export * from "./deals";
 export * from "./templates";
+export * from "./custom-fields";

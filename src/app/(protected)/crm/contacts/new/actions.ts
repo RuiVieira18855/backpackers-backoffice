@@ -7,6 +7,10 @@ import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -76,6 +80,9 @@ export async function createContact(
     };
   }
 
+  const customDefs = await getCustomFieldDefs("contact");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [created] = await db
     .insert(contacts)
     .values({
@@ -89,6 +96,7 @@ export async function createContact(
       company: parsed.data.company || null,
       jobTitle: parsed.data.jobTitle || null,
       notes: parsed.data.notes || null,
+      customFields,
       ownerId: profile.id,
     })
     .returning();

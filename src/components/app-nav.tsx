@@ -11,6 +11,7 @@ type NavKey =
   | "operations"
   | "documents"
   | "finance"
+  | "reports"
   | "admin";
 
 export type NavItem = { href: string; key: NavKey };

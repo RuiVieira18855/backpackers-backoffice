@@ -63,6 +63,7 @@
     "operations": "Operaciones",
     "documents": "Documentos",
     "finance": "Finanzas",
+    "reports": "Informes",
     "settings": "Ajustes",
     "admin": "Administración"
   },
@@ -273,6 +274,36 @@
       "docs": "Gestión documental"
     }
   },
+  "reports": {
+    "title": "Informes",
+    "subtitle": "Vista ejecutiva: pipeline, conversión, finanzas, operaciones.",
+    "openPipelineValue": "Valor en pipeline",
+    "openPipelineHint": "Suma del valor de los deals abiertos.",
+    "winRate": "Tasa de victoria",
+    "winRateHint": "{won} ganados / {lost} perdidos.",
+    "taskCompletion": "Finalización de tareas",
+    "taskCompletionHint": "{done} de {total} este año.",
+    "ytdNet": "Resultado (año)",
+    "ytdNetHint": "+{income} / −{expense}",
+    "dealsByStage": "Deals por fase",
+    "dealsByStageHint": "Recuento y valor por fase (todos los deals).",
+    "contactsByStage": "Contactos por fase",
+    "contactsByStageHint": "Distribución de {total, number} contactos.",
+    "topCustomers": "Top clientes",
+    "topCustomersHint": "Contactos con más eventos.",
+    "eventsCount": "{count, plural, =0 {sin eventos} one {1 evento} other {# eventos}}",
+    "opsSummary": "Operaciones (año)",
+    "opsSummaryHint": "Visión rápida del volumen desde el 1 de enero.",
+    "eventsYtd": "Eventos creados",
+    "tasksDone": "Tareas hechas",
+    "tasksOpen": "Tareas abiertas"
+  },
+  "templates": {
+    "picker": {
+      "button": "Insertar template",
+      "hint": "Haz clic para insertar. Editar después."
+    }
+  },
   "deals": {
     "title": "Deals",
     "subtitle": "Oportunidades abiertas. Mantén el pipeline sano.",
@@ -431,6 +462,7 @@
       "stage": "Estado inicial",
       "source": "Origen",
       "notes": "Notas",
+      "customFields": "Campos personalizados",
       "selectPlaceholder": "Elegir…",
       "create": "Crear contacto",
       "creating": "Creando…",
@@ -837,6 +869,46 @@
         "docs": "Subir y ver documentos.",
         "finance": "Ver y gestionar movimientos financieros (ingresos/gastos).",
         "admin": "Gestionar usuarios, roles, skills y acceso a pilares."
+      }
+    },
+    "customFields": {
+      "title": "Custom fields",
+      "subtitle": "Define campos extra por entidad (contactos, eventos, proyectos, deals).",
+      "backToAdmin": "Volver a administración",
+      "newSectionTitle": "Añadir campo",
+      "empty": "Aún no hay campos definidos.",
+      "deleteConfirm": "¿Eliminar el campo «{name}»? Los valores guardados en registros existentes se mantienen pero ya no son editables.",
+      "entities": {
+        "contact": "Contacto",
+        "event": "Evento",
+        "project": "Proyecto",
+        "deal": "Deal"
+      },
+      "types": {
+        "text": "Texto corto",
+        "textarea": "Texto largo",
+        "number": "Número",
+        "date": "Fecha",
+        "select": "Selección"
+      },
+      "col": {
+        "entity": "Entidad",
+        "key": "Clave",
+        "label": "Etiqueta",
+        "type": "Tipo",
+        "required": "Obligatorio"
+      },
+      "form": {
+        "entityType": "Entidad",
+        "key": "Clave",
+        "label": "Etiqueta",
+        "type": "Tipo",
+        "options": "Opciones (selección)",
+        "optionsHint": "Separadas por coma. Ej: PT, ES, EN.",
+        "required": "Obligatorio",
+        "sortOrder": "Orden",
+        "create": "Añadir",
+        "creating": "Añadiendo…"
       }
     },
     "templates": {

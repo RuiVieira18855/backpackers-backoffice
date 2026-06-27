@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   index,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -65,6 +66,10 @@ export const contacts = pgTable(
     nextAction: text("next_action"),
     nextActionAt: timestamp("next_action_at", { withTimezone: true }),
     lastContactAt: timestamp("last_contact_at", { withTimezone: true }),
+    customFields: jsonb("custom_fields")
+      .notNull()
+      .default(sql`'{}'::jsonb`)
+      .$type<Record<string, string | number | null>>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

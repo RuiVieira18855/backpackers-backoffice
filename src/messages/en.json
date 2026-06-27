@@ -63,6 +63,7 @@
     "operations": "Operations",
     "documents": "Documents",
     "finance": "Finance",
+    "reports": "Reports",
     "settings": "Settings",
     "admin": "Admin"
   },
@@ -273,6 +274,36 @@
       "docs": "Document management"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Executive view: pipeline, conversion, finance, operations.",
+    "openPipelineValue": "Open pipeline value",
+    "openPipelineHint": "Sum of value across open deals.",
+    "winRate": "Win rate",
+    "winRateHint": "{won} won / {lost} lost.",
+    "taskCompletion": "Task completion",
+    "taskCompletionHint": "{done} of {total} this year.",
+    "ytdNet": "Net (YTD)",
+    "ytdNetHint": "+{income} / −{expense}",
+    "dealsByStage": "Deals by stage",
+    "dealsByStageHint": "Count and value per stage (all deals).",
+    "contactsByStage": "Contacts by stage",
+    "contactsByStageHint": "Distribution across {total, number} contacts.",
+    "topCustomers": "Top customers",
+    "topCustomersHint": "Contacts with the most events.",
+    "eventsCount": "{count, plural, =0 {no events} one {1 event} other {# events}}",
+    "opsSummary": "Operations (year)",
+    "opsSummaryHint": "Quick volume snapshot since Jan 1.",
+    "eventsYtd": "Events created",
+    "tasksDone": "Tasks done",
+    "tasksOpen": "Tasks open"
+  },
+  "templates": {
+    "picker": {
+      "button": "Insert template",
+      "hint": "Click to insert. Edit afterwards."
+    }
+  },
   "deals": {
     "title": "Deals",
     "subtitle": "Open opportunities. Keep the pipeline healthy.",
@@ -431,6 +462,7 @@
       "stage": "Initial stage",
       "source": "Source",
       "notes": "Notes",
+      "customFields": "Custom fields",
       "selectPlaceholder": "Choose…",
       "create": "Create contact",
       "creating": "Creating…",
@@ -837,6 +869,46 @@
         "docs": "Upload and view documents.",
         "finance": "View and manage financial transactions (income/expense).",
         "admin": "Manage users, roles, skills and pillar access."
+      }
+    },
+    "customFields": {
+      "title": "Custom fields",
+      "subtitle": "Define extra fields per entity (contacts, events, projects, deals).",
+      "backToAdmin": "Back to admin",
+      "newSectionTitle": "Add field",
+      "empty": "No fields defined yet.",
+      "deleteConfirm": "Delete the field \"{name}\"? Saved values on existing records stay in the database but become non-editable.",
+      "entities": {
+        "contact": "Contact",
+        "event": "Event",
+        "project": "Project",
+        "deal": "Deal"
+      },
+      "types": {
+        "text": "Short text",
+        "textarea": "Long text",
+        "number": "Number",
+        "date": "Date",
+        "select": "Select"
+      },
+      "col": {
+        "entity": "Entity",
+        "key": "Key",
+        "label": "Label",
+        "type": "Type",
+        "required": "Required"
+      },
+      "form": {
+        "entityType": "Entity",
+        "key": "Key",
+        "label": "Label",
+        "type": "Type",
+        "options": "Options (select)",
+        "optionsHint": "Comma-separated. Ex: PT, ES, EN.",
+        "required": "Required",
+        "sortOrder": "Order",
+        "create": "Add",
+        "creating": "Adding…"
       }
     },
     "templates": {

@@ -17,6 +17,8 @@ import {
 import { ContactForm } from "@/components/contacts/contact-form";
 import { ContactChannels } from "@/components/contacts/contact-channels";
 import { ContactTimeline } from "@/components/contacts/contact-timeline";
+import { getTemplatesForScope } from "@/lib/templates";
+import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { updateContact } from "./actions";
 import { DeleteContactButton } from "./delete-button";
 
@@ -40,21 +42,24 @@ export default async function ContactDetailPage({ params }: Props) {
   }
 
   // Fetch related events + projects in parallel
-  const [pillars, relatedEvents, relatedProjects] = await Promise.all([
-    getAllPillars(),
-    db.query.events.findMany({
-      where: eq(events.clientContactId, contact.id),
-      with: { pillar: true },
-      orderBy: [desc(events.startAt), desc(events.createdAt)],
-      limit: 50,
-    }),
-    db.query.projects.findMany({
-      where: eq(projects.clientContactId, contact.id),
-      with: { pillar: true },
-      orderBy: [desc(projects.createdAt)],
-      limit: 50,
-    }),
-  ]);
+  const [pillars, relatedEvents, relatedProjects, noteTemplates, customDefs] =
+    await Promise.all([
+      getAllPillars(),
+      db.query.events.findMany({
+        where: eq(events.clientContactId, contact.id),
+        with: { pillar: true },
+        orderBy: [desc(events.startAt), desc(events.createdAt)],
+        limit: 50,
+      }),
+      db.query.projects.findMany({
+        where: eq(projects.clientContactId, contact.id),
+        with: { pillar: true },
+        orderBy: [desc(projects.createdAt)],
+        limit: 50,
+      }),
+      getTemplatesForScope("contact_note"),
+      getCustomFieldDefs("contact"),
+    ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -102,6 +107,14 @@ export default async function ContactDetailPage({ params }: Props) {
           jobTitle: contact.jobTitle,
           notes: contact.notes,
         }}
+        noteTemplates={noteTemplates}
+        customFieldDefs={customDefs}
+        customFieldValues={
+          (contact.customFields ?? {}) as Record<
+            string,
+            string | number | null
+          >
+        }
         action={updateContact}
       />
 

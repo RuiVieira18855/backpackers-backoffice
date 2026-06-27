@@ -78,6 +78,13 @@
       "when": 1782561544993,
       "tag": "0010_sturdy_mentor",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1782568776480,
+      "tag": "0011_lonely_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }

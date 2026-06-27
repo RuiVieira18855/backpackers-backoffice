@@ -63,6 +63,7 @@
     "operations": "Operações",
     "documents": "Documentos",
     "finance": "Finanças",
+    "reports": "Relatórios",
     "settings": "Definições",
     "admin": "Administração"
   },
@@ -273,6 +274,36 @@
       "docs": "Gestão Documental"
     }
   },
+  "reports": {
+    "title": "Relatórios",
+    "subtitle": "Vista executiva: pipeline, conversão, finanças, operações.",
+    "openPipelineValue": "Valor em pipeline",
+    "openPipelineHint": "Soma do valor dos deals em aberto.",
+    "winRate": "Taxa de vitória",
+    "winRateHint": "{won} ganhos / {lost} perdidos.",
+    "taskCompletion": "Conclusão de tarefas",
+    "taskCompletionHint": "{done} de {total} no ano.",
+    "ytdNet": "Resultado (ano)",
+    "ytdNetHint": "+{income} / −{expense}",
+    "dealsByStage": "Deals por fase",
+    "dealsByStageHint": "Contagem e valor por fase (todos os deals).",
+    "contactsByStage": "Contactos por fase",
+    "contactsByStageHint": "Distribuição de {total, number} contactos.",
+    "topCustomers": "Top clientes",
+    "topCustomersHint": "Contactos com mais eventos.",
+    "eventsCount": "{count, plural, =0 {sem eventos} one {1 evento} other {# eventos}}",
+    "opsSummary": "Operações (ano)",
+    "opsSummaryHint": "Visão rápida do volume desde 1 de Janeiro.",
+    "eventsYtd": "Eventos criados",
+    "tasksDone": "Tarefas concluídas",
+    "tasksOpen": "Tarefas em aberto"
+  },
+  "templates": {
+    "picker": {
+      "button": "Inserir template",
+      "hint": "Clica para inserir. Editas depois."
+    }
+  },
   "deals": {
     "title": "Deals",
     "subtitle": "Oportunidades em curso. Mantém o pipeline saudável.",
@@ -431,6 +462,7 @@
       "stage": "Estado inicial",
       "source": "Origem",
       "notes": "Notas",
+      "customFields": "Campos personalizados",
       "selectPlaceholder": "Escolher…",
       "create": "Criar contacto",
       "creating": "A criar…",
@@ -846,6 +878,46 @@
         "docs": "Carregar e ver documentos.",
         "finance": "Ver e gerir movimentos financeiros (receitas/despesas).",
         "admin": "Gerir utilizadores, roles, skills e acesso a pilares."
+      }
+    },
+    "customFields": {
+      "title": "Custom fields",
+      "subtitle": "Define campos extra por entidade (contactos, eventos, projectos, deals).",
+      "backToAdmin": "Voltar à administração",
+      "newSectionTitle": "Adicionar campo",
+      "empty": "Ainda não há campos definidos.",
+      "deleteConfirm": "Eliminar o campo «{name}»? Os valores guardados em registos existentes não desaparecem mas deixam de ser editáveis.",
+      "entities": {
+        "contact": "Contacto",
+        "event": "Evento",
+        "project": "Projecto",
+        "deal": "Deal"
+      },
+      "types": {
+        "text": "Texto curto",
+        "textarea": "Texto longo",
+        "number": "Número",
+        "date": "Data",
+        "select": "Selecção"
+      },
+      "col": {
+        "entity": "Entidade",
+        "key": "Chave",
+        "label": "Etiqueta",
+        "type": "Tipo",
+        "required": "Obrigatório"
+      },
+      "form": {
+        "entityType": "Entidade",
+        "key": "Chave",
+        "label": "Etiqueta",
+        "type": "Tipo",
+        "options": "Opções (selecção)",
+        "optionsHint": "Separadas por vírgula. Ex: PT, ES, EN.",
+        "required": "Campo obrigatório",
+        "sortOrder": "Ordem",
+        "create": "Adicionar",
+        "creating": "A adicionar…"
       }
     },
     "templates": {

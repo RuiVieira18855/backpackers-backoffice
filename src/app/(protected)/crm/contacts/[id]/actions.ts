@@ -8,6 +8,10 @@ import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import {
+  getCustomFieldDefs,
+  parseCustomFieldsFromFormData,
+} from "@/lib/custom-fields";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -86,6 +90,9 @@ export async function updateContact(
     return { error: "Contacto não encontrado." };
   }
 
+  const customDefs = await getCustomFieldDefs("contact");
+  const customFields = parseCustomFieldsFromFormData(formData, customDefs);
+
   const [updated] = await db
     .update(contacts)
     .set({
@@ -99,6 +106,7 @@ export async function updateContact(
       company: parsed.data.company || null,
       jobTitle: parsed.data.jobTitle || null,
       notes: parsed.data.notes || null,
+      customFields,
     })
     .where(eq(contacts.id, parsed.data.id))
     .returning();

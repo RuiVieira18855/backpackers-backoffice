@@ -36,6 +36,9 @@ export async function AppHeader({ fullName, email, avatarUrl, role }: Props) {
     ...(hasOps ? [{ href: "/ops", key: "operations" as const }] : []),
     ...(hasDocs ? [{ href: "/docs", key: "documents" as const }] : []),
     ...(hasFinance ? [{ href: "/finance", key: "finance" as const }] : []),
+    ...(hasCrm || hasOps || hasFinance
+      ? [{ href: "/reports", key: "reports" as const }]
+      : []),
     ...(hasAdmin ? [{ href: "/admin", key: "admin" as const }] : []),
   ];
 
