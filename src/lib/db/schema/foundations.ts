@@ -27,6 +27,14 @@ export const userRoleEnum = pgEnum("user_role", [
   "member",
 ]);
 
+/**
+ * Distinguishes Backpackers team members (internal) from external customers
+ * who only signed up to use a Backpackers SaaS app (e.g. Cairn Pro).
+ * Customers may still have a row in profiles + a row in app_access without
+ * any backoffice skills.
+ */
+export const userKindEnum = pgEnum("user_kind", ["internal", "customer"]);
+
 export const auditActionEnum = pgEnum("audit_action", [
   "create",
   "update",
@@ -64,6 +72,7 @@ export const profiles = pgTable("profiles", {
   fullName: text("full_name"),
   avatarUrl: text("avatar_url"),
   role: userRoleEnum("role").notNull().default("member"),
+  kind: userKindEnum("kind").notNull().default("internal"),
   skills: text("skills")
     .array()
     .notNull()

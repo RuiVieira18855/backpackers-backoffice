@@ -1,46 +1,91 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
-import { eq } from "drizzle-orm";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { asc, eq, inArray, sql } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
-import { appAccess } from "@/lib/db/schema";
-import { requireSkill, getAllProfiles } from "@/lib/dal";
+import { appAccess, apps } from "@/lib/db/schema";
+import { requireSkill } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { setCairnAccess } from "./actions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { NewAppForm } from "./new-app-form";
 
-const STATUS_OPTIONS = ["none", "trial", "active", "expired", "revoked"] as const;
-const ACTIVE = new Set(["trial", "active"]);
+type AppRow = {
+  key: string;
+  name: string;
+  description: string | null;
+  icon: string | null;
+  url: string | null;
+  isActive: boolean;
+};
 
-const fieldCls =
-  "h-9 rounded-md border border-input bg-background px-2 text-sm text-foreground";
+type AppCounts = {
+  active: number;
+  trial: number;
+  expired: number;
+  revoked: number;
+  total: number;
+};
 
-export default async function AppsAdminPage() {
+export default async function AppsAdminLanding() {
   await requireSkill("admin");
   const t = await getTranslations("admin.apps");
-  const profiles = await getAllProfiles();
 
-  let rows: Array<{
-    userId: string;
-    status: string;
-    plan: string | null;
-    expiresAt: Date | null;
-  }> = [];
+  let appsRows: AppRow[] = [];
   try {
-    rows = await db
+    appsRows = await db
       .select({
-        userId: appAccess.userId,
-        status: appAccess.status,
-        plan: appAccess.plan,
-        expiresAt: appAccess.expiresAt,
+        key: apps.key,
+        name: apps.name,
+        description: apps.description,
+        icon: apps.icon,
+        url: apps.url,
+        isActive: apps.isActive,
       })
-      .from(appAccess)
-      .where(eq(appAccess.app, "cairn"));
+      .from(apps)
+      .orderBy(asc(apps.name));
   } catch (err) {
-    console.error("[admin/apps] list failed:", err);
+    console.error("[admin/apps] list apps failed:", err);
   }
-  const byUser = new Map(rows.map((r) => [r.userId, r]));
-  const activeCount = rows.filter((r) => ACTIVE.has(r.status)).length;
+
+  // Aggregate counts of access rows per app.
+  let countsByApp = new Map<string, AppCounts>();
+  if (appsRows.length > 0) {
+    try {
+      const aggs = await db
+        .select({
+          app: appAccess.app,
+          status: appAccess.status,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(appAccess)
+        .where(inArray(appAccess.app, appsRows.map((a) => a.key)))
+        .groupBy(appAccess.app, appAccess.status);
+
+      countsByApp = aggs.reduce((acc, r) => {
+        const cur =
+          acc.get(r.app) ?? {
+            active: 0,
+            trial: 0,
+            expired: 0,
+            revoked: 0,
+            total: 0,
+          };
+        cur[r.status as keyof AppCounts] =
+          (cur[r.status as keyof AppCounts] as number) + r.count;
+        cur.total += r.count;
+        acc.set(r.app, cur);
+        return acc;
+      }, new Map<string, AppCounts>());
+    } catch (err) {
+      console.error("[admin/apps] count failed:", err);
+    }
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -55,97 +100,109 @@ export default async function AppsAdminPage() {
           {t("title")}
         </h1>
         <p className="mt-2 text-base text-muted-foreground">
-          {t("subtitle", { active: activeCount, total: profiles.length })}
+          {t("landingSubtitle")}
         </p>
       </div>
 
-      {profiles.length === 0 ? (
+      {appsRows.length === 0 ? (
         <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-muted-foreground italic">{t("empty")}</p>
+          <CardContent className="py-12 text-center text-sm text-muted-foreground italic">
+            {t("noAppsYet")}
           </CardContent>
         </Card>
       ) : (
-        <Card>
-          <CardContent className="p-0">
-            <ul className="divide-y divide-border">
-              {profiles.map((p) => {
-                const a = byUser.get(p.id);
-                const expires = a?.expiresAt
-                  ? new Date(a.expiresAt).toISOString().slice(0, 10)
-                  : "";
-                const on = a && ACTIVE.has(a.status);
-                const statusLabel = a
-                  ? t(`statuses.${a.status}` as never)
-                  : t("statuses.none");
-                return (
-                  <li
-                    key={p.id}
-                    className="flex flex-wrap items-center gap-3 px-6 py-3"
-                  >
-                    <div className="min-w-[220px] flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-foreground">
-                          {p.fullName || p.email}
-                        </span>
-                        <span
-                          className={
-                            "text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 " +
-                            (on
-                              ? "bg-accent text-accent-foreground"
-                              : "bg-muted text-muted-foreground")
-                          }
-                        >
-                          {statusLabel}
-                        </span>
+        <section className="grid gap-4 sm:grid-cols-2">
+          {appsRows.map((a) => {
+            const c = countsByApp.get(a.key) ?? {
+              active: 0,
+              trial: 0,
+              expired: 0,
+              revoked: 0,
+              total: 0,
+            };
+            return (
+              <Link
+                key={a.key}
+                href={`/admin/apps/${a.key}`}
+                className="group"
+              >
+                <Card className="h-full transition-colors group-hover:border-accent">
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <CardTitle className="text-base flex items-center gap-2">
+                          {a.name}
+                          {!a.isActive && (
+                            <span className="text-[10px] uppercase tracking-wider rounded bg-muted px-1.5 py-0.5 text-muted-foreground">
+                              {t("inactive")}
+                            </span>
+                          )}
+                        </CardTitle>
+                        <CardDescription>
+                          {a.description ?? a.key}
+                        </CardDescription>
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {p.email} · {p.role}
+                      <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-1" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                      <div>
+                        <p className="text-foreground font-medium tabular-nums">
+                          {c.active}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {t("statuses.active")}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-foreground font-medium tabular-nums">
+                          {c.trial}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {t("statuses.trial")}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-foreground font-medium tabular-nums">
+                          {c.total}
+                        </p>
+                        <p className="text-muted-foreground">{t("total")}</p>
                       </div>
                     </div>
-                    <form
-                      action={setCairnAccess}
-                      className="flex flex-wrap items-center gap-2"
-                    >
-                      <input type="hidden" name="userId" value={p.id} />
-                      <select
-                        name="status"
-                        defaultValue={a?.status ?? "none"}
-                        className={fieldCls}
-                        aria-label={t("statusLabel")}
+                    {a.url && (
+                      <a
+                        href={a.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="block mt-3 text-xs text-muted-foreground underline-offset-2 hover:underline truncate"
                       >
-                        {STATUS_OPTIONS.map((s) => (
-                          <option key={s} value={s}>
-                            {t(`statuses.${s}` as never)}
-                          </option>
-                        ))}
-                      </select>
-                      <input
-                        name="plan"
-                        defaultValue={a?.plan ?? ""}
-                        placeholder={t("planPlaceholder")}
-                        className={fieldCls + " w-28"}
-                      />
-                      <input
-                        type="date"
-                        name="expiresAt"
-                        defaultValue={expires}
-                        className={fieldCls}
-                        aria-label={t("expiresLabel")}
-                      />
-                      <Button type="submit" size="sm" variant="secondary">
-                        {t("save")}
-                      </Button>
-                    </form>
-                  </li>
-                );
-              })}
-            </ul>
-          </CardContent>
-        </Card>
+                        {a.url}
+                      </a>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </section>
       )}
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t("newSectionTitle")}</CardTitle>
+          <CardDescription>{t("newSectionHint")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <NewAppForm />
+        </CardContent>
+      </Card>
 
       <p className="text-xs text-muted-foreground">{t("enforcementNote")}</p>
     </div>
   );
 }
+
+// avoid the `eq` import being flagged as unused if linting is strict
+void eq;

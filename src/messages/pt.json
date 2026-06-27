@@ -893,22 +893,47 @@
     },
     "apps": {
       "title": "Apps & Acessos",
-      "cardSubtitle": "Conceder ou revogar acesso pago a apps Backpackers (ex.: Cairn Pro).",
-      "subtitle": "Conceder ou revogar acesso a Cairn Pro. {active, number} activos · {total, number} utilizadores.",
+      "cardSubtitle": "Catálogo de apps Backpackers e quem tem acesso.",
+      "landingSubtitle": "Cada app gere o seu próprio catálogo de acessos. Clica numa app para conceder/revogar utilizadores.",
       "backToAdmin": "Voltar à administração",
-      "empty": "Ainda não há utilizadores.",
+      "backToApps": "Voltar às apps",
+      "noAppsYet": "Ainda não há apps no catálogo. Adiciona a primeira abaixo.",
+      "inactive": "inactiva",
+      "total": "Total",
+      "newSectionTitle": "Adicionar app ao catálogo",
+      "newSectionHint": "Cada app representa um produto Backpackers (ex.: Cairn Pro, outra SaaS) ao qual concedes acessos.",
+      "newForm": {
+        "key": "Chave",
+        "name": "Nome",
+        "icon": "Ícone (lucide)",
+        "description": "Descrição",
+        "url": "URL pública",
+        "create": "Adicionar",
+        "creating": "A adicionar…"
+      },
+      "appSubtitleFallback": "{active, number} com acesso · {total, number} utilizadores no sistema.",
+      "filterKind": "Tipo:",
+      "filterStatus": "Estado:",
+      "countFiltered": "A mostrar {shown, number} de {total, number} utilizadores.",
+      "noMatchingUsers": "Nenhum utilizador corresponde a este filtro.",
+      "kinds": {
+        "all": "Todos",
+        "internal": "Equipa",
+        "customer": "Clientes"
+      },
       "statusLabel": "Estado",
       "expiresLabel": "Expira em",
       "planPlaceholder": "plano",
       "save": "Guardar",
       "statuses": {
+        "all": "Todos",
         "none": "— sem acesso —",
         "trial": "Trial",
         "active": "Activo",
         "expired": "Expirado",
         "revoked": "Revogado"
       },
-      "enforcementNote": "O acesso é validado no login da app externa (Cairn Pro) e no proxy de IA (server-side). Deixa um utilizador em «sem acesso» para o impedir de usar Cairn Pro."
+      "enforcementNote": "O acesso é validado no login da app externa e no proxy de IA (server-side) através de has_app_access(uid, app_key). Define «sem acesso» para impedir um utilizador de usar a app."
     },
     "customFields": {
       "title": "Custom fields",

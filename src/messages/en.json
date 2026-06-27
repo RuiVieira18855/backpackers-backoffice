@@ -884,22 +884,47 @@
     },
     "apps": {
       "title": "Apps & Access",
-      "cardSubtitle": "Grant or revoke paid access to Backpackers apps (e.g. Cairn Pro).",
-      "subtitle": "Grant or revoke access to Cairn Pro. {active, number} active · {total, number} users.",
+      "cardSubtitle": "Catalog of Backpackers apps and who has access.",
+      "landingSubtitle": "Each app manages its own access list. Click an app to grant/revoke users.",
       "backToAdmin": "Back to admin",
-      "empty": "No users yet.",
+      "backToApps": "Back to apps",
+      "noAppsYet": "No apps in the catalog yet. Add the first one below.",
+      "inactive": "inactive",
+      "total": "Total",
+      "newSectionTitle": "Add app to the catalog",
+      "newSectionHint": "Each app represents a Backpackers product (e.g. Cairn Pro, another SaaS) you grant access to.",
+      "newForm": {
+        "key": "Key",
+        "name": "Name",
+        "icon": "Icon (lucide)",
+        "description": "Description",
+        "url": "Public URL",
+        "create": "Add",
+        "creating": "Adding…"
+      },
+      "appSubtitleFallback": "{active, number} with access · {total, number} users in the system.",
+      "filterKind": "Type:",
+      "filterStatus": "Status:",
+      "countFiltered": "Showing {shown, number} of {total, number} users.",
+      "noMatchingUsers": "No user matches this filter.",
+      "kinds": {
+        "all": "All",
+        "internal": "Team",
+        "customer": "Customers"
+      },
       "statusLabel": "Status",
       "expiresLabel": "Expires on",
       "planPlaceholder": "plan",
       "save": "Save",
       "statuses": {
+        "all": "All",
         "none": "— no access —",
         "trial": "Trial",
         "active": "Active",
         "expired": "Expired",
         "revoked": "Revoked"
       },
-      "enforcementNote": "Access is enforced at the external app's login (Cairn Pro) and on the AI proxy (server-side). Leave a user as «no access» to keep them out of Cairn Pro."
+      "enforcementNote": "Access is enforced at the external app's login and on the AI proxy (server-side) via has_app_access(uid, app_key). Set «no access» to lock a user out."
     },
     "customFields": {
       "title": "Custom fields",

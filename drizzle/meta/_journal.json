@@ -92,6 +92,13 @@
       "when": 1782595833630,
       "tag": "0012_nappy_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1782596374496,
+      "tag": "0013_worthless_thundra",
+      "breakpoints": true
     }
   ]
 }

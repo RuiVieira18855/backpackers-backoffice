@@ -8,7 +8,8 @@ type AuditParams = {
   userId: string;
   pillarId?: string | null;
   entityType: string;
-  entityId: string;
+  /** Null when the audited entity has no UUID (e.g. catalog rows keyed by text). */
+  entityId?: string | null;
   action: AuditAction;
   /** Any serialisable snapshot. For updates use { before, after }. */
   diff?: unknown;
@@ -24,7 +25,7 @@ export async function logAudit(params: AuditParams) {
     userId: params.userId,
     pillarId: params.pillarId ?? null,
     entityType: params.entityType,
-    entityId: params.entityId,
+    entityId: params.entityId ?? null,
     action: params.action,
     // JSON.parse(JSON.stringify(...)) coerces Dates -> ISO strings so the
     // jsonb column stores plain JSON.

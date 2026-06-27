@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   index,
   pgEnum,
   pgTable,
@@ -9,6 +10,30 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { profiles } from "./foundations";
+
+/**
+ * Catalog of Backpackers apps that can have access granted/revoked.
+ * Managed at /admin/apps. The `key` is the foreign reference used by
+ * appAccess.app (kept as text for backward compatibility).
+ */
+export const apps = pgTable("apps", {
+  key: text("key").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  icon: text("icon"),
+  url: text("url"),
+  color: text("color"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export type App = typeof apps.$inferSelect;
+export type NewApp = typeof apps.$inferInsert;
 
 export const appAccessStatusEnum = pgEnum("app_access_status", [
   "trial",
