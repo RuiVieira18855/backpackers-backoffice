@@ -7,8 +7,15 @@ import { db } from "@/lib/db";
 import { appAccess, apps, profiles } from "@/lib/db/schema";
 import { requireSkill } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { setAppAccess } from "../actions";
+import { AppMetadataForm } from "./metadata-form";
 
 type Params = { params: Promise<{ appKey: string }> };
 type SearchParams = Promise<{ kind?: string; status?: string }>;
@@ -130,6 +137,24 @@ export default async function AppDetailPage({
             })}
         </p>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t("metadata.title")}</CardTitle>
+          <CardDescription>{t("metadata.hint")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AppMetadataForm
+            appKey={appKey}
+            defaults={{
+              name: app.name,
+              description: app.description,
+              icon: app.icon,
+              url: app.url,
+            }}
+          />
+        </CardContent>
+      </Card>
 
       {/* Filter row */}
       <div className="flex flex-wrap items-center gap-4 border-y border-border py-4 text-sm">

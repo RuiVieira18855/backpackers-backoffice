@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/dal";
+import { AppLauncherGroup } from "./app-launcher-group";
 
 type IconComp = React.ComponentType<{ className?: string }>;
 
@@ -59,6 +60,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
           {t("calendar")}
         </SidebarLink>
       </SidebarGroup>
+
+      {/* Apps launcher — external links to Backpackers apps the user can open */}
+      <AppLauncherGroup />
 
       <SidebarDivider />
 

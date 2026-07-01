@@ -146,6 +146,76 @@ export async function createApp(
   return {};
 }
 
+const updateAppSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+  url: z.string().url().optional().or(z.literal("")),
+});
+
+export type UpdateAppState = {
+  error?: string;
+  fieldErrors?: Record<string, string>;
+};
+
+export async function updateApp(
+  key: string,
+  _prev: UpdateAppState | undefined,
+  formData: FormData,
+): Promise<UpdateAppState> {
+  const profile = await requireSkill("admin");
+
+  const raw = {
+    name: String(formData.get("name") ?? "").trim(),
+    description: String(formData.get("description") ?? "").trim(),
+    icon: String(formData.get("icon") ?? "").trim(),
+    url: String(formData.get("url") ?? "").trim(),
+  };
+
+  if (!raw.name) return { fieldErrors: { name: "Nome obrigatório." } };
+
+  const parsed = updateAppSchema.safeParse(raw);
+  if (!parsed.success) {
+    const flat = parsed.error.flatten();
+    const first = Object.entries(flat.fieldErrors)[0];
+    return {
+      error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",
+    };
+  }
+
+  const before = await db.query.apps.findFirst({ where: eq(apps.key, key) });
+  if (!before) return { error: "App não encontrada." };
+
+  const [after] = await db
+    .update(apps)
+    .set({
+      name: parsed.data.name,
+      description: parsed.data.description || null,
+      icon: parsed.data.icon || null,
+      url: parsed.data.url || null,
+      updatedAt: new Date(),
+    })
+    .where(eq(apps.key, key))
+    .returning();
+
+  try {
+    await logAudit({
+      userId: profile.id,
+      pillarId: null,
+      entityType: "app",
+      entityId: null,
+      action: "update",
+      diff: { key, before, after },
+    });
+  } catch {
+    /* audit best-effort */
+  }
+
+  revalidatePath("/admin/apps");
+  revalidatePath(`/admin/apps/${key}`);
+  return {};
+}
+
 export async function deleteApp(key: string): Promise<void> {
   const profile = await requireSkill("admin");
   await db.delete(apps).where(eq(apps.key, key));
