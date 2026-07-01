@@ -44,7 +44,8 @@ export async function updateSupabaseSession(request: NextRequest) {
     pathname === "/" ||
     isAuthRoute ||
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/book");
+    pathname.startsWith("/book") ||
+    pathname.startsWith("/no-access");
 
   // Optimistic redirect: unauthenticated users hitting protected routes -> /login
   if (!user && !isPublic) {

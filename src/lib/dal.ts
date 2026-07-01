@@ -73,6 +73,12 @@ export const getCurrentProfile = cache(async () => {
 export const requireProfile = cache(async () => {
   const profile = await getCurrentProfile();
   if (!profile) redirect("/login");
+  // Hard rule: external customers (Cairn Pro clients, etc.) never enter the
+  // backoffice — they get bounced to /no-access which explains what to use
+  // instead. Backoffice access is for the Backpackers team only.
+  if ("kind" in profile && profile.kind === "customer") {
+    redirect("/no-access");
+  }
   return profile;
 });
 

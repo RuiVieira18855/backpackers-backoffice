@@ -205,8 +205,11 @@ export default async function AppDetailPage({
                   ? new Date(a.expiresAt).toISOString().slice(0, 10)
                   : "";
                 const currentStatus = a?.status ?? "none";
+                const isSuperUser = p.role === "super_user";
                 const isOn =
-                  currentStatus === "active" || currentStatus === "trial";
+                  isSuperUser ||
+                  currentStatus === "active" ||
+                  currentStatus === "trial";
                 return (
                   <li
                     key={p.id}
@@ -227,56 +230,71 @@ export default async function AppDetailPage({
                         >
                           {t(`kinds.${p.kind}` as never)}
                         </span>
-                        <span
-                          className={
-                            "text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 " +
-                            (isOn
-                              ? "bg-accent text-accent-foreground"
-                              : "bg-muted text-muted-foreground")
-                          }
-                        >
-                          {t(`statuses.${currentStatus}` as never)}
-                        </span>
+                        {isSuperUser ? (
+                          <span
+                            className="text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 bg-accent text-accent-foreground"
+                            title={t("autoAccessHint")}
+                          >
+                            {t("autoAccess")}
+                          </span>
+                        ) : (
+                          <span
+                            className={
+                              "text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 " +
+                              (isOn
+                                ? "bg-accent text-accent-foreground"
+                                : "bg-muted text-muted-foreground")
+                            }
+                          >
+                            {t(`statuses.${currentStatus}` as never)}
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs text-muted-foreground">
                         {p.email} · {p.role}
                       </div>
                     </div>
-                    <form
-                      action={setAppAccess}
-                      className="flex flex-wrap items-center gap-2"
-                    >
-                      <input type="hidden" name="userId" value={p.id} />
-                      <input type="hidden" name="appKey" value={appKey} />
-                      <select
-                        name="status"
-                        defaultValue={currentStatus}
-                        className={fieldCls}
-                        aria-label={t("statusLabel")}
+                    {isSuperUser ? (
+                      <p className="text-xs text-muted-foreground italic max-w-xs">
+                        {t("autoAccessHint")}
+                      </p>
+                    ) : (
+                      <form
+                        action={setAppAccess}
+                        className="flex flex-wrap items-center gap-2"
                       >
-                        {STATUS_OPTIONS.map((s) => (
-                          <option key={s} value={s}>
-                            {t(`statuses.${s}` as never)}
-                          </option>
-                        ))}
-                      </select>
-                      <input
-                        name="plan"
-                        defaultValue={a?.plan ?? ""}
-                        placeholder={t("planPlaceholder")}
-                        className={fieldCls + " w-28"}
-                      />
-                      <input
-                        type="date"
-                        name="expiresAt"
-                        defaultValue={expires}
-                        className={fieldCls}
-                        aria-label={t("expiresLabel")}
-                      />
-                      <Button type="submit" size="sm" variant="secondary">
-                        {t("save")}
-                      </Button>
-                    </form>
+                        <input type="hidden" name="userId" value={p.id} />
+                        <input type="hidden" name="appKey" value={appKey} />
+                        <select
+                          name="status"
+                          defaultValue={currentStatus}
+                          className={fieldCls}
+                          aria-label={t("statusLabel")}
+                        >
+                          {STATUS_OPTIONS.map((s) => (
+                            <option key={s} value={s}>
+                              {t(`statuses.${s}` as never)}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          name="plan"
+                          defaultValue={a?.plan ?? ""}
+                          placeholder={t("planPlaceholder")}
+                          className={fieldCls + " w-28"}
+                        />
+                        <input
+                          type="date"
+                          name="expiresAt"
+                          defaultValue={expires}
+                          className={fieldCls}
+                          aria-label={t("expiresLabel")}
+                        />
+                        <Button type="submit" size="sm" variant="secondary">
+                          {t("save")}
+                        </Button>
+                      </form>
+                    )}
                   </li>
                 );
               })}

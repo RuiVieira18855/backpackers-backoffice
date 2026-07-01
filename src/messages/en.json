@@ -912,6 +912,8 @@
         "internal": "Team",
         "customer": "Customers"
       },
+      "autoAccess": "Auto",
+      "autoAccessHint": "Super user — automatic access to every app, no manual grant needed.",
       "statusLabel": "Status",
       "expiresLabel": "Expires on",
       "planPlaceholder": "plan",

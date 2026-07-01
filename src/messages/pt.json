@@ -921,6 +921,8 @@
         "internal": "Equipa",
         "customer": "Clientes"
       },
+      "autoAccess": "Auto",
+      "autoAccessHint": "Super-utilizador — acesso automático a todas as apps, sem grant manual.",
       "statusLabel": "Estado",
       "expiresLabel": "Expira em",
       "planPlaceholder": "plano",
