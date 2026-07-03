@@ -271,6 +271,58 @@ export function EventForm({
           />
         </div>
 
+        {mode === "create" && (
+          <div className="sm:col-span-2 space-y-3 pt-4 mt-2 border-t border-border">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              {t("recurrence.legend")}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {t("recurrence.hint")}
+            </p>
+            <div className="grid sm:grid-cols-3 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="recurrenceFrequency">
+                  {t("recurrence.frequency")}
+                </Label>
+                <select
+                  id="recurrenceFrequency"
+                  name="recurrenceFrequency"
+                  defaultValue="none"
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
+                >
+                  <option value="none">{t("recurrence.freq.none")}</option>
+                  <option value="daily">{t("recurrence.freq.daily")}</option>
+                  <option value="weekly">{t("recurrence.freq.weekly")}</option>
+                  <option value="monthly">
+                    {t("recurrence.freq.monthly")}
+                  </option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="recurrenceInterval">
+                  {t("recurrence.interval")}
+                </Label>
+                <Input
+                  id="recurrenceInterval"
+                  name="recurrenceInterval"
+                  type="number"
+                  min={1}
+                  max={12}
+                  defaultValue={1}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="recurrenceUntil">{t("recurrence.until")}</Label>
+                <Input
+                  id="recurrenceUntil"
+                  name="recurrenceUntil"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <CustomFieldsSection
           defs={customFieldDefs}
           values={customFieldValues}

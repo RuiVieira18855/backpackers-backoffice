@@ -25,6 +25,11 @@ export const eventTypeEnum = pgEnum("event_type", [
   "other",
 ]);
 
+export const eventRecurrenceFrequencyEnum = pgEnum(
+  "event_recurrence_frequency",
+  ["none", "daily", "weekly", "monthly"],
+);
+
 export const eventStatusEnum = pgEnum("event_status", [
   "draft",
   "scheduled",
@@ -88,6 +93,12 @@ export const events = pgTable(
       .notNull()
       .default(sql`'{}'::jsonb`)
       .$type<Record<string, string | number | null>>(),
+    recurrenceFrequency: eventRecurrenceFrequencyEnum("recurrence_frequency")
+      .notNull()
+      .default("none"),
+    recurrenceInterval: integer("recurrence_interval").notNull().default(1),
+    recurrenceUntil: date("recurrence_until"),
+    recurrenceParentId: uuid("recurrence_parent_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -97,6 +108,7 @@ export const events = pgTable(
   },
   (t) => [
     index("events_pillar_idx").on(t.pillarId),
+    index("events_recurrence_parent_idx").on(t.recurrenceParentId),
     index("events_status_idx").on(t.status),
     index("events_type_idx").on(t.type),
     index("events_start_at_idx").on(t.startAt),

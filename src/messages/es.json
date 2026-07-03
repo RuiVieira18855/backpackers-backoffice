@@ -12,7 +12,14 @@
     "selectRow": "Seleccionar fila",
     "delete": "Eliminar",
     "deleting": "Eliminando…",
-    "deleteConfirm": "¿Seguro que quieres eliminar {count, plural, one {1 registro} other {# registros}}? Esta acción no se puede deshacer."
+    "deleteConfirm": "¿Seguro que quieres eliminar {count, plural, one {1 registro} other {# registros}}? Esta acción no se puede deshacer.",
+    "changeStage": "Cambiar fase…",
+    "stagePickerLabel": "Cambiar fase",
+    "assignOwner": "Asignar…",
+    "ownerPickerLabel": "Asignar responsable",
+    "unassign": "sin responsable",
+    "addTag": "Añadir tag",
+    "addTagPrompt": "Tag(s) a añadir (separadas por coma):"
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -483,7 +490,22 @@
       "saving": "Guardando…",
       "delete": "Eliminar contacto",
       "deleting": "Eliminando…",
-      "deleteConfirm": "¿Seguro que quieres eliminar el contacto «{name}»? Esta acción no se puede deshacer."
+      "deleteConfirm": "¿Seguro que quieres eliminar el contacto «{name}»? Esta acción no se puede deshacer.",
+      "mergeCta": "Fusionar con…"
+    },
+    "mergeManual": {
+      "title": "Fusionar contactos",
+      "subtitle": "Elige un contacto para fusionar en «{name}». Este contacto se mantiene; el otro se elimina tras trasladar eventos y proyectos.",
+      "backToContact": "Volver al contacto",
+      "keeper": "Este contacto (se mantiene)",
+      "searchLabel": "Buscar contacto a fusionar",
+      "searchPlaceholder": "Nombre, email o empresa",
+      "noMatches": "Ningún contacto coincide con la búsqueda.",
+      "hint": "Antes de fusionar, comprueba que es la misma persona. Eventos y proyectos pasan al que se mantiene; email/teléfono/notas ausentes se copian. No se puede deshacer.",
+      "mergeCta": "Fusionar",
+      "merging": "Fusionando…",
+      "cancel": "Cancelar",
+      "confirm": "¿Fusionar «{name}» en el contacto actual? No se puede deshacer."
     },
     "pipeline": {
       "title": "Pipeline",
@@ -616,6 +638,19 @@
       "selectPlaceholder": "Elegir…",
       "create": "Crear evento",
       "creating": "Creando…",
+      "recurrence": {
+        "legend": "Recurrencia",
+        "hint": "Si se rellena, las ocurrencias se crean automáticamente (máx 26). Cada una es editable de forma independiente.",
+        "frequency": "Frecuencia",
+        "interval": "Cada",
+        "until": "Hasta (opcional)",
+        "freq": {
+          "none": "No repite",
+          "daily": "Todos los días",
+          "weekly": "Todas las semanas",
+          "monthly": "Todos los meses"
+        }
+      },
       "errors": {
         "nameRequired": "El nombre es obligatorio.",
         "pillarRequired": "Tienes que elegir un pilar."
@@ -629,7 +664,14 @@
       "deleting": "Eliminando…",
       "deleteConfirm": "¿Seguro que quieres eliminar el evento «{name}»? Esta acción no se puede deshacer.",
       "addToCalendar": "Añadir al calendario",
-      "customFields": "Campos personalizados"
+      "customFields": "Campos personalizados",
+      "recurringBadge": "Recurrente",
+      "deleteJustThis": "Eliminar solo este evento",
+      "deleteJustThisHint": "Los demás de la serie se mantienen.",
+      "deleteSeries": "Eliminar toda la serie",
+      "deleteSeriesHint": "Borra el evento raíz y todas las ocurrencias.",
+      "deleteConfirmOne": "¿Eliminar solo «{name}»?",
+      "deleteConfirmSeries": "Se eliminará «{name}» y TODAS las ocurrencias de la serie. ¿Confirmar?"
     },
     "projectStatuses": {
       "planned": "Planeado",

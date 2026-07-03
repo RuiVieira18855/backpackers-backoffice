@@ -3,11 +3,27 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Trash2, X } from "lucide-react";
+import { Tag, Trash2, UserCheck, Workflow, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { SortableHeader } from "@/components/sortable-header";
 import { Button } from "@/components/ui/button";
-import { bulkDeleteContacts } from "@/app/(protected)/crm/actions";
+import {
+  bulkAddTag,
+  bulkAssignOwner,
+  bulkDeleteContacts,
+  bulkUpdateContactStage,
+} from "@/app/(protected)/crm/actions";
+
+const STAGES = [
+  "new",
+  "qualified",
+  "active",
+  "on_hold",
+  "closed_won",
+  "closed_lost",
+] as const;
+
+export type OwnerOption = { id: string; label: string };
 
 export type ContactRow = {
   id: string;
@@ -30,9 +46,16 @@ type Props = {
   rows: ContactRow[];
   spForHeaders: Record<string, string | undefined>;
   canBulkDelete: boolean;
+  /** Owners the current user can pick from (typically all internal users). */
+  owners: OwnerOption[];
 };
 
-export function ContactsBulkBar({ rows, spForHeaders, canBulkDelete }: Props) {
+export function ContactsBulkBar({
+  rows,
+  spForHeaders,
+  canBulkDelete,
+  owners,
+}: Props) {
   const t = useTranslations("crm");
   const tStages = useTranslations("crm.stages");
   const tTypes = useTranslations("crm.types");
@@ -79,6 +102,50 @@ export function ContactsBulkBar({ rows, spForHeaders, canBulkDelete }: Props) {
     });
   };
 
+  const handleBulkStage = (stage: string) => {
+    const ids = Array.from(selected);
+    if (ids.length === 0 || !stage) return;
+    startTransition(async () => {
+      const res = await bulkUpdateContactStage(ids, stage);
+      if (res.ok) {
+        clearSelection();
+        router.refresh();
+      } else {
+        alert(res.error ?? "Error");
+      }
+    });
+  };
+
+  const handleBulkOwner = (ownerId: string) => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    startTransition(async () => {
+      const res = await bulkAssignOwner(ids, ownerId);
+      if (res.ok) {
+        clearSelection();
+        router.refresh();
+      } else {
+        alert(res.error ?? "Error");
+      }
+    });
+  };
+
+  const handleBulkTag = () => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    const tag = window.prompt(tBulk("addTagPrompt"), "");
+    if (!tag) return;
+    startTransition(async () => {
+      const res = await bulkAddTag(ids, tag);
+      if (res.ok) {
+        clearSelection();
+        router.refresh();
+      } else {
+        alert(res.error ?? "Error");
+      }
+    });
+  };
+
   return (
     <>
       {selected.size > 0 && (
@@ -96,7 +163,63 @@ export function ContactsBulkBar({ rows, spForHeaders, canBulkDelete }: Props) {
               {tBulk("selected", { count: selected.size })}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1">
+              <Workflow className="h-3.5 w-3.5 text-muted-foreground" />
+              <select
+                disabled={pending}
+                onChange={(e) => {
+                  if (e.target.value) {
+                    handleBulkStage(e.target.value);
+                    e.currentTarget.value = "";
+                  }
+                }}
+                className="h-8 rounded-md border border-input bg-background px-2 text-xs shadow-xs"
+                aria-label={tBulk("stagePickerLabel")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  {tBulk("changeStage")}
+                </option>
+                {STAGES.map((s) => (
+                  <option key={s} value={s}>
+                    {tStages(s)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-1">
+              <UserCheck className="h-3.5 w-3.5 text-muted-foreground" />
+              <select
+                disabled={pending}
+                onChange={(e) => {
+                  handleBulkOwner(e.target.value);
+                  e.currentTarget.value = "";
+                }}
+                className="h-8 rounded-md border border-input bg-background px-2 text-xs shadow-xs"
+                aria-label={tBulk("ownerPickerLabel")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  {tBulk("assignOwner")}
+                </option>
+                <option value="">— {tBulk("unassign")} —</option>
+                {owners.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={pending}
+              onClick={handleBulkTag}
+            >
+              <Tag className="mr-2 h-3.5 w-3.5" />
+              {tBulk("addTag")}
+            </Button>
             {canBulkDelete && (
               <Button
                 variant="destructive"

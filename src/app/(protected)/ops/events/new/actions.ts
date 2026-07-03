@@ -11,6 +11,7 @@ import {
   getCustomFieldDefs,
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
+import { expandRecurrence } from "@/lib/recurrence";
 import type { EventFormState } from "@/components/events/event-form";
 
 const TYPES = ["tour", "team_building", "workshop", "meeting", "retreat", "other"] as const;
@@ -85,6 +86,23 @@ export async function createEvent(
   const customDefs = await getCustomFieldDefs("event");
   const customFields = parseCustomFieldsFromFormData(formData, customDefs);
 
+  // Recurrence — read raw form fields (schema doesn't have them, they're
+  // form-only). Applied only when startAt exists.
+  const frequency = String(formData.get("recurrenceFrequency") ?? "none");
+  const intervalRaw = Number(formData.get("recurrenceInterval") ?? "1");
+  const recurrenceInterval =
+    Number.isFinite(intervalRaw) && intervalRaw >= 1
+      ? Math.min(12, Math.floor(intervalRaw))
+      : 1;
+  const recurrenceUntil =
+    String(formData.get("recurrenceUntil") ?? "").trim() || null;
+  const validFreq =
+    frequency === "daily" ||
+    frequency === "weekly" ||
+    frequency === "monthly"
+      ? frequency
+      : "none";
+
   const [created] = await db
     .insert(events)
     .values({
@@ -100,9 +118,55 @@ export async function createEvent(
       clientContactId: parsed.data.clientContactId,
       notes: parsed.data.notes || null,
       customFields,
+      recurrenceFrequency: validFreq,
+      recurrenceInterval: validFreq === "none" ? 1 : recurrenceInterval,
+      recurrenceUntil: validFreq === "none" ? null : recurrenceUntil,
       ownerId: profile.id,
     })
     .returning();
+
+  // Materialise recurrence occurrences (children) — best effort. Parent
+  // (the first row) is already the "series head" and holds the recurrence
+  // metadata; each child stores recurrence_parent_id = parent.id but is
+  // otherwise an independent editable event.
+  if (validFreq !== "none" && created.startAt) {
+    try {
+      const occs = expandRecurrence({
+        startAt: created.startAt,
+        endAt: created.endAt,
+        frequency: validFreq,
+        interval: recurrenceInterval,
+        until: recurrenceUntil,
+      });
+      // Drop the first — it's the parent we already inserted.
+      const children = occs.slice(1);
+      if (children.length > 0) {
+        await db.insert(events).values(
+          children.map((o) => ({
+            name: parsed.data.name,
+            pillarId: parsed.data.pillarId,
+            type: parsed.data.type,
+            status: parsed.data.status,
+            description: parsed.data.description || null,
+            location: parsed.data.location || null,
+            startAt: o.startAt,
+            endAt: o.endAt,
+            capacity: parsed.data.capacity,
+            clientContactId: parsed.data.clientContactId,
+            notes: parsed.data.notes || null,
+            customFields,
+            recurrenceFrequency: "none" as const,
+            recurrenceInterval: 1,
+            recurrenceUntil: null,
+            recurrenceParentId: created.id,
+            ownerId: profile.id,
+          })),
+        );
+      }
+    } catch (err) {
+      console.error("[events/new] recurrence expansion failed:", err);
+    }
+  }
 
   await logAudit({
     userId: profile.id,

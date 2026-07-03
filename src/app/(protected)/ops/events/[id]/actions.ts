@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -143,6 +143,54 @@ export async function deleteEvent(id: string): Promise<void> {
     action: "delete",
     diff: { snapshot: before },
   });
+
+  redirect("/ops/events");
+}
+
+/**
+ * Delete an entire recurrence series: the head (if `id` is the head) or the
+ * head + its siblings (if `id` is a child). Cascade audit one entry per
+ * deleted row.
+ */
+export async function deleteEventSeries(id: string): Promise<void> {
+  const profile = await requireRole("admin_grupo", "admin_pilar");
+
+  const anchor = await db.query.events.findFirst({
+    where: eq(events.id, id),
+  });
+  if (!anchor) redirect("/ops/events");
+
+  // Determine the head id — if this is a child, its parent is the head.
+  const headId = anchor.recurrenceParentId ?? anchor.id;
+
+  // Everything to delete: the head itself + every event whose parent is head.
+  const all = await db
+    .select()
+    .from(events)
+    .where(
+      or(eq(events.id, headId), eq(events.recurrenceParentId, headId))!,
+    );
+
+  await db
+    .delete(events)
+    .where(
+      or(eq(events.id, headId), eq(events.recurrenceParentId, headId))!,
+    );
+
+  for (const row of all) {
+    try {
+      await logAudit({
+        userId: profile.id,
+        pillarId: row.pillarId,
+        entityType: "event",
+        entityId: row.id,
+        action: "delete",
+        diff: { snapshot: row, series: true },
+      });
+    } catch (err) {
+      console.error("[events] audit on series delete failed:", err);
+    }
+  }
 
   redirect("/ops/events");
 }

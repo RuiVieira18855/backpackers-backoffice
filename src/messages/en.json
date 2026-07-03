@@ -12,7 +12,14 @@
     "selectRow": "Select row",
     "delete": "Delete",
     "deleting": "Deleting…",
-    "deleteConfirm": "Are you sure you want to delete {count, plural, one {1 record} other {# records}}? This cannot be undone."
+    "deleteConfirm": "Are you sure you want to delete {count, plural, one {1 record} other {# records}}? This cannot be undone.",
+    "changeStage": "Change stage…",
+    "stagePickerLabel": "Change stage",
+    "assignOwner": "Assign…",
+    "ownerPickerLabel": "Assign owner",
+    "unassign": "no owner",
+    "addTag": "Add tag",
+    "addTagPrompt": "Tag(s) to add (comma-separated):"
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -483,7 +490,22 @@
       "saving": "Saving…",
       "delete": "Delete contact",
       "deleting": "Deleting…",
-      "deleteConfirm": "Are you sure you want to delete contact \"{name}\"? This action cannot be undone."
+      "deleteConfirm": "Are you sure you want to delete contact \"{name}\"? This action cannot be undone.",
+      "mergeCta": "Merge with…"
+    },
+    "mergeManual": {
+      "title": "Merge contacts",
+      "subtitle": "Pick a contact to merge into \"{name}\". This contact stays; the other is removed after events and projects move over.",
+      "backToContact": "Back to contact",
+      "keeper": "This contact (keeper)",
+      "searchLabel": "Search for a contact to merge",
+      "searchPlaceholder": "Name, email or company",
+      "noMatches": "No contacts match the search.",
+      "hint": "Before merging, double-check it's the same person. Events and projects move to the keeper; missing email/phone/notes are backfilled. Cannot be undone.",
+      "mergeCta": "Merge",
+      "merging": "Merging…",
+      "cancel": "Cancel",
+      "confirm": "Merge \"{name}\" into the current contact? Cannot be undone."
     },
     "pipeline": {
       "title": "Pipeline",
@@ -616,6 +638,19 @@
       "selectPlaceholder": "Choose…",
       "create": "Create event",
       "creating": "Creating…",
+      "recurrence": {
+        "legend": "Recurrence",
+        "hint": "If set, occurrences are materialised automatically (max 26). Each stays independently editable.",
+        "frequency": "Frequency",
+        "interval": "Every",
+        "until": "Until (optional)",
+        "freq": {
+          "none": "Doesn't repeat",
+          "daily": "Every day",
+          "weekly": "Every week",
+          "monthly": "Every month"
+        }
+      },
       "errors": {
         "nameRequired": "Name is required.",
         "pillarRequired": "You must choose a pillar."
@@ -629,7 +664,14 @@
       "deleting": "Deleting…",
       "deleteConfirm": "Are you sure you want to delete event \"{name}\"? This action cannot be undone.",
       "addToCalendar": "Add to calendar",
-      "customFields": "Custom fields"
+      "customFields": "Custom fields",
+      "recurringBadge": "Recurring",
+      "deleteJustThis": "Delete just this event",
+      "deleteJustThisHint": "Other events in the series stay.",
+      "deleteSeries": "Delete entire series",
+      "deleteSeriesHint": "Removes the series head and every occurrence.",
+      "deleteConfirmOne": "Delete only \"{name}\"?",
+      "deleteConfirmSeries": "This will delete \"{name}\" and ALL series occurrences. Confirm?"
     },
     "projectStatuses": {
       "planned": "Planned",

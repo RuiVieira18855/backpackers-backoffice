@@ -99,6 +99,13 @@
       "when": 1782596374496,
       "tag": "0013_worthless_thundra",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1783117995332,
+      "tag": "0014_massive_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

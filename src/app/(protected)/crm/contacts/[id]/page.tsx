@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CalendarPlus, ChevronLeft, FolderPlus } from "lucide-react";
+import { CalendarPlus, ChevronLeft, FolderPlus, Merge } from "lucide-react";
 import { desc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -80,10 +80,18 @@ export default async function ContactDetailPage({ params }: Props) {
               {contact.pillar?.name ?? ""}
             </p>
           </div>
-          <DeleteContactButton
-            contactId={contact.id}
-            contactName={contact.fullName}
-          />
+          <div className="flex items-center gap-2">
+            <Button asChild variant="outline" size="sm">
+              <Link href={`/crm/contacts/${contact.id}/merge`}>
+                <Merge className="mr-2 h-3.5 w-3.5" />
+                {t("mergeCta")}
+              </Link>
+            </Button>
+            <DeleteContactButton
+              contactId={contact.id}
+              contactName={contact.fullName}
+            />
+          </div>
         </div>
         <div className="mt-4">
           <ContactChannels email={contact.email} phone={contact.phone} />

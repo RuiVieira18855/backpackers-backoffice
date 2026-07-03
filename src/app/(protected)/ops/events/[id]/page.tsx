@@ -57,6 +57,12 @@ export default async function EventDetailPage({ params }: Props) {
             <p className="mt-2 text-base text-muted-foreground">
               {event.pillar?.name ?? ""}
               {event.location ? ` · ${event.location}` : ""}
+              {(event.recurrenceFrequency !== "none" ||
+                event.recurrenceParentId) && (
+                <span className="ml-2 inline-flex items-center rounded-full bg-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-wider">
+                  {t("recurringBadge")}
+                </span>
+              )}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -68,7 +74,14 @@ export default async function EventDetailPage({ params }: Props) {
                 </a>
               </Button>
             )}
-            <DeleteEventButton eventId={event.id} eventName={event.name} />
+            <DeleteEventButton
+              eventId={event.id}
+              eventName={event.name}
+              isSeries={
+                event.recurrenceFrequency !== "none" ||
+                Boolean(event.recurrenceParentId)
+              }
+            />
           </div>
         </div>
       </div>

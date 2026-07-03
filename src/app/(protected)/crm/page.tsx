@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, getAllProfiles, requireProfile } from "@/lib/dal";
 import { ExportButton } from "@/components/export-button";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
@@ -56,6 +56,13 @@ export default async function CrmPage({
   const profile = await requireProfile();
   const canBulkDelete =
     profile.role === "super_user" || profile.role === "admin_grupo";
+  const allOwners = await getAllProfiles();
+  const ownerOptions = allOwners
+    .filter((p) => p.role !== "member" || p.skills?.includes("crm"))
+    .map((p) => ({
+      id: p.id,
+      label: p.fullName ?? p.email,
+    }));
 
   const sp = await searchParams;
   const spForHeaders = {
@@ -264,6 +271,7 @@ export default async function CrmPage({
                 }))}
                 spForHeaders={spForHeaders}
                 canBulkDelete={canBulkDelete}
+                owners={ownerOptions}
               />
             </CardContent>
           </Card>

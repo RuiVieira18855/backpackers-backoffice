@@ -12,7 +12,14 @@
     "selectRow": "Seleccionar linha",
     "delete": "Eliminar",
     "deleting": "A eliminar…",
-    "deleteConfirm": "Tens a certeza que queres eliminar {count, plural, one {1 registo} other {# registos}}? Esta acção não pode ser desfeita."
+    "deleteConfirm": "Tens a certeza que queres eliminar {count, plural, one {1 registo} other {# registos}}? Esta acção não pode ser desfeita.",
+    "changeStage": "Mudar fase…",
+    "stagePickerLabel": "Mudar fase",
+    "assignOwner": "Atribuir…",
+    "ownerPickerLabel": "Atribuir responsável",
+    "unassign": "sem responsável",
+    "addTag": "Adicionar tag",
+    "addTagPrompt": "Tag(s) a adicionar (separadas por vírgula):"
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -483,7 +490,22 @@
       "saving": "A guardar…",
       "delete": "Eliminar contacto",
       "deleting": "A eliminar…",
-      "deleteConfirm": "Tens a certeza que queres eliminar o contacto «{name}»? Esta acção não pode ser desfeita."
+      "deleteConfirm": "Tens a certeza que queres eliminar o contacto «{name}»? Esta acção não pode ser desfeita.",
+      "mergeCta": "Fundir com…"
+    },
+    "mergeManual": {
+      "title": "Fundir contactos",
+      "subtitle": "Escolhe um contacto para fundir dentro de «{name}». Este contacto fica; o outro é eliminado depois de transferir eventos e projectos.",
+      "backToContact": "Voltar ao contacto",
+      "keeper": "Este contacto (mantém-se)",
+      "searchLabel": "Procurar contacto a fundir",
+      "searchPlaceholder": "Nome, e-mail ou empresa",
+      "noMatches": "Nenhum contacto corresponde à pesquisa.",
+      "hint": "Antes de fundir, verifica se é mesmo a mesma pessoa. Eventos e projectos passam para o contacto que fica; e-mail/telefone/notas em falta são copiados. Esta acção não pode ser desfeita.",
+      "mergeCta": "Fundir",
+      "merging": "A fundir…",
+      "cancel": "Cancelar",
+      "confirm": "Fundir «{name}» no contacto actual? Não pode ser desfeito."
     },
     "pipeline": {
       "title": "Pipeline",
@@ -615,6 +637,19 @@
       "selectPlaceholder": "Escolher…",
       "create": "Criar evento",
       "creating": "A criar…",
+      "recurrence": {
+        "legend": "Recorrência",
+        "hint": "Se preenchido, cria automaticamente as ocorrências (máx 26). Cada uma fica editável isoladamente.",
+        "frequency": "Frequência",
+        "interval": "A cada",
+        "until": "Até (opcional)",
+        "freq": {
+          "none": "Não repete",
+          "daily": "Todos os dias",
+          "weekly": "Todas as semanas",
+          "monthly": "Todos os meses"
+        }
+      },
       "errors": {
         "nameRequired": "O nome é obrigatório.",
         "pillarRequired": "Tens de escolher um pilar."
@@ -628,7 +663,14 @@
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o evento «{name}»? Esta acção não pode ser desfeita.",
       "addToCalendar": "Adicionar ao calendário",
-      "customFields": "Campos personalizados"
+      "customFields": "Campos personalizados",
+      "recurringBadge": "Recorrente",
+      "deleteJustThis": "Eliminar só este evento",
+      "deleteJustThisHint": "Os outros da série mantêm-se.",
+      "deleteSeries": "Eliminar toda a série",
+      "deleteSeriesHint": "Apaga o evento-raiz e todas as ocorrências.",
+      "deleteConfirmOne": "Eliminar apenas «{name}»?",
+      "deleteConfirmSeries": "Vai apagar «{name}» e TODAS as ocorrências da série. Confirmas?"
     },
     "projectStatuses": {
       "planned": "Planeado",
