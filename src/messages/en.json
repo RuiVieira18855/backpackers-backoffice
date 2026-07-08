@@ -361,7 +361,10 @@
       "delete": "Delete deal",
       "deleting": "Deleting…",
       "deleteConfirm": "Are you sure you want to delete deal \"{name}\"?",
-      "customFields": "Custom fields"
+      "customFields": "Custom fields",
+      "generateInvoice": "Generate invoice",
+      "generatingInvoice": "Generating…",
+      "generateInvoiceConfirm": "Generate a pending invoice from deal \"{name}\"?"
     },
     "pipeline": {
       "title": "Deals pipeline",
@@ -736,13 +739,18 @@
         "tasksCount": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
         "addTask": "Add task",
         "noTasks": "No tasks in this project yet.",
-        "customFields": "Custom fields"
+        "customFields": "Custom fields",
+        "hoursSectionTitle": "Hours logged",
+        "hoursTotal": "Total: {hours}h",
+        "hoursByUser": "By person",
+        "recentEntries": "Recent entries"
       }
     },
     "tasks": {
       "title": "Tasks",
       "subtitle": "Group to-dos — optionally linked to projects or events.",
       "newTask": "New task",
+      "openKanban": "Kanban view",
       "empty": "No tasks yet. Create the first one.",
       "count": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
       "allTasks": "All",
@@ -787,6 +795,23 @@
         "deleting": "Deleting…",
         "deleteConfirm": "Are you sure you want to delete task \"{title}\"?"
       }
+    },
+    "kanban": {
+      "title": "Tasks kanban",
+      "subtitle": "Drag tasks between statuses. Changes save automatically.",
+      "backToList": "Back to tasks",
+      "totalTasks": "{count, plural, =0 {no tasks} one {1 task} other {# tasks}}",
+      "empty": "No tasks in this status.",
+      "filterAll": "All",
+      "filterMine": "Only mine"
+    },
+    "timeTracking": {
+      "hours": "Hours",
+      "date": "Date",
+      "description": "Description",
+      "descriptionPlaceholder": "What was done? (optional)",
+      "log": "Log",
+      "logging": "Logging…"
     }
   },
   "docs": {

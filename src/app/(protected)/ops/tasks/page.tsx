@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { LayoutGrid, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
@@ -79,12 +79,20 @@ export default async function TasksListPage({
           </h1>
           <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button asChild>
-          <Link href="/ops/tasks/new">
-            <Plus className="mr-2 h-4 w-4" />
-            {t("newTask")}
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link href="/ops/tasks/kanban">
+              <LayoutGrid className="mr-2 h-4 w-4" />
+              {t("openKanban")}
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link href="/ops/tasks/new">
+              <Plus className="mr-2 h-4 w-4" />
+              {t("newTask")}
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Mine / All toggle */}

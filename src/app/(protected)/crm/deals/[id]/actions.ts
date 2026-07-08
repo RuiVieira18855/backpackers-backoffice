@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { deals } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { deals, transactions } from "@/lib/db/schema";
+import { hasSkill, requireProfile } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import {
   getCustomFieldDefs,
@@ -161,4 +161,62 @@ export async function moveDealStage(
     diff: { stageChange: { from: before.stage, to: stage } },
   });
   return { ok: true };
+}
+
+/**
+ * Generate a pending income transaction pre-filled from a won deal.
+ *
+ * Requires:
+ *   - deal.stage === 'won'
+ *   - caller has the `finance` skill (or super_user)
+ *
+ * Creates the transaction as `pending` so the user can review + adjust
+ * date, plan, invoice number before marking paid. Redirects to
+ * /finance/[newTxId] on success.
+ */
+export async function generateInvoiceFromDeal(dealId: string): Promise<void> {
+  const profile = await requireProfile();
+  const canInvoice = await hasSkill("finance");
+  if (!canInvoice) {
+    redirect(`/crm/deals/${dealId}`);
+  }
+
+  const deal = await db.query.deals.findFirst({
+    where: eq(deals.id, dealId),
+  });
+  if (!deal) redirect("/crm/deals");
+  if (deal.stage !== "won") redirect(`/crm/deals/${dealId}`);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const amount = deal.value ? String(deal.value) : "0";
+
+  const [created] = await db
+    .insert(transactions)
+    .values({
+      type: "income",
+      description: deal.name,
+      amount,
+      currency: deal.currency ?? "EUR",
+      status: "pending",
+      date: today,
+      pillarId: deal.pillarId,
+      notes: deal.description ?? null,
+      createdBy: profile.id,
+    })
+    .returning();
+
+  try {
+    await logAudit({
+      userId: profile.id,
+      pillarId: deal.pillarId,
+      entityType: "transaction",
+      entityId: created.id,
+      action: "create",
+      diff: { fromDealId: dealId, snapshot: created },
+    });
+  } catch {
+    /* audit best-effort */
+  }
+
+  redirect(`/finance/${created.id}`);
 }

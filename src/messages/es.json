@@ -361,7 +361,10 @@
       "delete": "Eliminar deal",
       "deleting": "Eliminando…",
       "deleteConfirm": "¿Seguro que quieres eliminar el deal «{name}»?",
-      "customFields": "Campos personalizados"
+      "customFields": "Campos personalizados",
+      "generateInvoice": "Generar factura",
+      "generatingInvoice": "Generando…",
+      "generateInvoiceConfirm": "¿Generar una factura pendiente desde el deal «{name}»?"
     },
     "pipeline": {
       "title": "Pipeline de deals",
@@ -736,13 +739,18 @@
         "tasksCount": "{count, plural, =0 {Sin tareas} one {1 tarea} other {# tareas}}",
         "addTask": "Añadir tarea",
         "noTasks": "Aún no hay tareas en este proyecto.",
-        "customFields": "Campos personalizados"
+        "customFields": "Campos personalizados",
+        "hoursSectionTitle": "Horas registradas",
+        "hoursTotal": "Total: {hours}h",
+        "hoursByUser": "Por persona",
+        "recentEntries": "Registros recientes"
       }
     },
     "tasks": {
       "title": "Tareas",
       "subtitle": "To-dos del grupo — opcionalmente ligadas a proyectos o eventos.",
       "newTask": "Nueva tarea",
+      "openKanban": "Vista kanban",
       "empty": "Aún no hay tareas. Crea la primera.",
       "count": "{count, plural, =0 {Sin tareas} one {1 tarea} other {# tareas}}",
       "allTasks": "Todas",
@@ -787,6 +795,23 @@
         "deleting": "Eliminando…",
         "deleteConfirm": "¿Seguro que quieres eliminar la tarea «{title}»?"
       }
+    },
+    "kanban": {
+      "title": "Kanban de tareas",
+      "subtitle": "Arrastra tareas entre estados. Los cambios se guardan automáticamente.",
+      "backToList": "Volver a tareas",
+      "totalTasks": "{count, plural, =0 {sin tareas} one {1 tarea} other {# tareas}}",
+      "empty": "Sin tareas en este estado.",
+      "filterAll": "Todas",
+      "filterMine": "Solo las mías"
+    },
+    "timeTracking": {
+      "hours": "Horas",
+      "date": "Fecha",
+      "description": "Descripción",
+      "descriptionPlaceholder": "¿Qué se hizo? (opcional)",
+      "log": "Registrar",
+      "logging": "Registrando…"
     }
   },
   "docs": {

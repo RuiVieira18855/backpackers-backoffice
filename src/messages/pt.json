@@ -361,7 +361,10 @@
       "delete": "Eliminar deal",
       "deleting": "A eliminar…",
       "deleteConfirm": "Tens a certeza que queres eliminar o deal «{name}»?",
-      "customFields": "Campos personalizados"
+      "customFields": "Campos personalizados",
+      "generateInvoice": "Gerar factura",
+      "generatingInvoice": "A gerar…",
+      "generateInvoiceConfirm": "Gerar uma factura pendente a partir do deal «{name}»?"
     },
     "pipeline": {
       "title": "Pipeline de deals",
@@ -735,13 +738,18 @@
         "tasksCount": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
         "addTask": "Adicionar tarefa",
         "noTasks": "Ainda não existem tarefas neste projecto.",
-        "customFields": "Campos personalizados"
+        "customFields": "Campos personalizados",
+        "hoursSectionTitle": "Horas registadas",
+        "hoursTotal": "Total: {hours}h",
+        "hoursByUser": "Por pessoa",
+        "recentEntries": "Registos recentes"
       }
     },
     "tasks": {
       "title": "Tarefas",
       "subtitle": "To-dos do grupo — opcionalmente ligadas a projectos ou eventos.",
       "newTask": "Nova tarefa",
+      "openKanban": "Vista kanban",
       "empty": "Ainda não existem tarefas. Cria a primeira.",
       "count": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
       "allTasks": "Todas",
@@ -796,6 +804,23 @@
       "tasksDescription": "To-dos e responsáveis.",
       "open": "Abrir",
       "myOpen": "Tenho {count} por fazer →"
+    },
+    "kanban": {
+      "title": "Kanban de tarefas",
+      "subtitle": "Arrasta tarefas entre estados. As alterações são guardadas automaticamente.",
+      "backToList": "Voltar às tarefas",
+      "totalTasks": "{count, plural, =0 {sem tarefas} one {1 tarefa} other {# tarefas}}",
+      "empty": "Sem tarefas neste estado.",
+      "filterAll": "Todas",
+      "filterMine": "Só as minhas"
+    },
+    "timeTracking": {
+      "hours": "Horas",
+      "date": "Data",
+      "description": "Descrição",
+      "descriptionPlaceholder": "O que foi feito? (opcional)",
+      "log": "Registar",
+      "logging": "A registar…"
     }
   },
   "docs": {

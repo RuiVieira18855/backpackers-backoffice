@@ -5,13 +5,14 @@ import { asc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, deals } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, hasSkill, requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { DealForm } from "@/components/deals/deal-form";
 import { getTemplatesForScope } from "@/lib/templates";
 import { getCustomFieldDefs } from "@/lib/custom-fields";
-import { updateDeal } from "./actions";
+import { updateDeal, generateInvoiceFromDeal } from "./actions";
 import { DeleteDealButton } from "./delete-button";
+import { GenerateInvoiceButton } from "./generate-invoice-button";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -25,17 +26,26 @@ export default async function DealDetailPage({ params }: Props) {
   });
   if (!deal) notFound();
 
-  const [pillars, allContacts, descriptionTemplates, customFieldDefs] =
-    await Promise.all([
-      getAllPillars(),
-      db.query.contacts.findMany({
-        orderBy: [asc(contacts.fullName)],
-        limit: 500,
-        columns: { id: true, fullName: true, company: true },
-      }),
-      getTemplatesForScope("deal_description"),
-      getCustomFieldDefs("deal"),
-    ]);
+  const [
+    pillars,
+    allContacts,
+    descriptionTemplates,
+    customFieldDefs,
+    canInvoice,
+  ] = await Promise.all([
+    getAllPillars(),
+    db.query.contacts.findMany({
+      orderBy: [asc(contacts.fullName)],
+      limit: 500,
+      columns: { id: true, fullName: true, company: true },
+    }),
+    getTemplatesForScope("deal_description"),
+    getCustomFieldDefs("deal"),
+    hasSkill("finance"),
+  ]);
+
+  const showInvoiceButton = deal.stage === "won" && canInvoice;
+  void generateInvoiceFromDeal;
 
   return (
     <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -60,7 +70,15 @@ export default async function DealDetailPage({ params }: Props) {
               </p>
             )}
           </div>
-          <DeleteDealButton dealId={deal.id} dealName={deal.name} />
+          <div className="flex items-center gap-2">
+            {showInvoiceButton && (
+              <GenerateInvoiceButton
+                dealId={deal.id}
+                dealName={deal.name}
+              />
+            )}
+            <DeleteDealButton dealId={deal.id} dealName={deal.name} />
+          </div>
         </div>
       </div>
 
