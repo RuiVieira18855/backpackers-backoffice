@@ -9,13 +9,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getConnection } from "@/lib/oauth/store";
+import { isGoogleConfigured } from "@/lib/oauth/google";
+import { isMicrosoftConfigured } from "@/lib/oauth/microsoft";
 import { ProfileForm } from "./profile-form";
+import { CalendarSyncCard } from "./calendar-sync-card";
 
 export default async function SettingsPage() {
   const profile = await requireProfile();
   const t = await getTranslations("settings");
   const tRoles = await getTranslations("roles");
-  const pillars = await getAllPillars();
+  const [pillars, googleConn, microsoftConn] = await Promise.all([
+    getAllPillars(),
+    getConnection(profile.id, "google").catch(() => null),
+    getConnection(profile.id, "microsoft").catch(() => null),
+  ]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
@@ -33,6 +41,32 @@ export default async function SettingsPage() {
         defaultPillarId={profile.defaultPillarId}
         roleLabel={tRoles(profile.role as never)}
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
+      />
+
+      <CalendarSyncCard
+        google={
+          googleConn
+            ? {
+                provider: "google",
+                externalEmail: googleConn.externalEmail,
+                defaultPillarId: googleConn.defaultPillarId,
+                lastSyncedAt: googleConn.lastSyncedAt,
+              }
+            : null
+        }
+        microsoft={
+          microsoftConn
+            ? {
+                provider: "microsoft",
+                externalEmail: microsoftConn.externalEmail,
+                defaultPillarId: microsoftConn.defaultPillarId,
+                lastSyncedAt: microsoftConn.lastSyncedAt,
+              }
+            : null
+        }
+        pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
+        googleConfigured={isGoogleConfigured()}
+        microsoftConfigured={isMicrosoftConfigured()}
       />
 
       <Card>

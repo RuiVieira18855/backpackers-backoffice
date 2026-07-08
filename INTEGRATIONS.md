@@ -157,3 +157,106 @@ proprietária a manter.
 Se aparecer um requisito específico (ex.: planos diferenciados,
 funcionalidades por skill, integração com um AI proxy próprio), abre-se
 um turno de extensão pontual.
+
+---
+
+# Integrações externas (opcionais)
+
+## Google Calendar sync
+
+**Setup uma vez:**
+
+1. Vai a https://console.cloud.google.com/apis/credentials → cria um
+   projecto → **Create Credentials → OAuth client ID** (Web application).
+2. **Authorized redirect URIs**: adiciona
+   `https://<TEU-URL-BACKOFFICE>/api/oauth/google/callback` (produção) e
+   `http://localhost:3000/api/oauth/google/callback` (dev).
+3. Copia Client ID + Client Secret.
+4. Enable the API: https://console.cloud.google.com/apis/library → procura
+   "Google Calendar API" → Enable.
+5. Vercel → Environment Variables:
+   ```
+   GOOGLE_CLIENT_ID=…
+   GOOGLE_CLIENT_SECRET=…
+   GOOGLE_REDIRECT_URI=https://<TEU-URL-BACKOFFICE>/api/oauth/google/callback
+   ```
+6. Redeploy.
+
+**Cada utilizador (self-service):**
+
+- Vai a `/settings` → card "Sync de calendário" → clica **Ligar** ao lado
+  do Google Calendar. Confirma no ecrã Google → volta ao backoffice.
+- Escolhe o **pilar de destino** (onde os eventos importados vão parar).
+- Clica **Sincronizar agora**. Puxa eventos dos últimos 7 dias até 90 dias
+  no futuro. Upsert idempotente por `google_event_id`.
+- Sync é one-way (Google → Backpackers). Edições locais nunca são
+  sobrepostas — só os campos vazios em eventos existentes são preenchidos.
+
+**Scope pedido:** `calendar.readonly` (não modifica nada em Google).
+
+## Outlook / Microsoft 365 calendar sync
+
+**Setup uma vez:**
+
+1. Vai a https://portal.azure.com → Azure Active Directory → App
+   registrations → **New registration**.
+2. **Redirect URI (Web)**:
+   `https://<TEU-URL-BACKOFFICE>/api/oauth/microsoft/callback`.
+3. Copia Application (client) ID.
+4. Certificates & secrets → **New client secret** → copia o value.
+5. API permissions → Add → Microsoft Graph → **Delegated** →
+   `Calendars.Read`, `offline_access`, `openid`, `email`, `profile`.
+   Grant admin consent.
+6. Vercel → Environment Variables:
+   ```
+   MICROSOFT_CLIENT_ID=…
+   MICROSOFT_CLIENT_SECRET=…
+   MICROSOFT_REDIRECT_URI=https://<TEU-URL-BACKOFFICE>/api/oauth/microsoft/callback
+   MICROSOFT_TENANT=common
+   ```
+   (Usa `common` para multi-tenant. Se for single-tenant, mete o teu
+   tenant id no lugar.)
+7. Redeploy.
+
+**Uso é idêntico ao Google** — botão **Ligar** ao lado do Outlook em
+`/settings`.
+
+## Não incluído (ainda)
+
+- **Push sync** (backpackers → Google/Outlook) — requer mirror de
+  create/update/delete + resolução de conflitos. Sprint próprio.
+- **Automatic scheduled sync** — precisa de pg_cron ou cron externo. Por
+  agora, botão "Sincronizar agora" manual.
+- **Múltiplas contas por utilizador** — 1 conexão por (user, provider).
+
+---
+
+# Email transaccional (Resend)
+
+**Setup uma vez:**
+
+1. Cria conta em https://resend.com (free tier: 3000 emails/mês,
+   100/dia).
+2. **API Keys** → cria uma → copia (`re_xxxxxxxxxxxx`).
+3. (Opcional, mas recomendado para produção): **Domains** → adiciona o
+   teu domínio → configura os DNS records (DKIM + SPF). Sem isto, só
+   podes enviar para o email da conta Resend.
+4. Vercel → Environment Variables:
+   ```
+   RESEND_API_KEY=re_xxxxxxxxxxxx
+   RESEND_FROM_EMAIL=Backpackers <noreply@your-domain.com>
+   ```
+   Sem `RESEND_FROM_EMAIL` o helper usa `onboarding@resend.dev` (só
+   entrega ao email da conta Resend).
+5. Redeploy.
+
+**Validar:** `/admin/resend-test` → mete o teu email → **Enviar**. Se
+receberes, está a funcionar.
+
+**Onde é usado:**
+- Confirmação automática do `/book` (público) para o lead.
+- Acção `send_email` nos workflows (`/admin/workflows`).
+- Futuras integrações (recovery, notificações, relatórios agendados).
+
+Se `RESEND_API_KEY` não estiver definido, todos os pontos acima ficam em
+no-op silencioso — o resto da app funciona na mesma.

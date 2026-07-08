@@ -903,6 +903,25 @@
       "hint": "Descarga un JSON con perfil, entitlements, notificaciones, horas registradas y todos los registros de auditoría donde apareces (como actor o objetivo). Datos del grupo (contactos, eventos, etc.) no incluidos.",
       "cta": "Descargar JSON"
     },
+    "calendarSync": {
+      "title": "Sincronizar calendario",
+      "subtitle": "Importa eventos de Google Calendar u Outlook al backoffice. Unidireccional por ahora — las ediciones locales nunca se sobrescriben.",
+      "note": "Sincronización manual. Rango: 7 días atrás a 90 días adelante. Requiere OAuth configurado en Vercel — ver INTEGRATIONS.md.",
+      "notConnected": "No conectado.",
+      "notConfigured": "OAuth aún no configurado en esta instalación. Ver INTEGRATIONS.md.",
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "disconnectConfirm": "¿Desconectar {label}? Los eventos ya importados se mantienen, pero dejan de sincronizarse.",
+      "syncNow": "Sincronizar ahora",
+      "syncing": "Sincronizando…",
+      "syncedAlert": "Sync completado. Insertados: {inserted}, actualizados: {updated}, omitidos: {skipped}.",
+      "syncFailedAlert": "Sync falló: {error}",
+      "lastSynced": "Última sync:",
+      "pillarLabel": "Pilar donde aterrizan los eventos importados",
+      "pillarNone": "— no sincronizar —",
+      "pillarHint": "Obligatorio para sincronizar. Los eventos por defecto van a este pilar.",
+      "readyToSync": "Listo para sincronizar."
+    },
     "theme": {
       "section": "Tema",
       "hint": "Se aplica en este navegador. Por defecto sigue el sistema.",
@@ -1164,6 +1183,22 @@
         "action": "Acción",
         "user": "Usuario"
       }
+    },
+    "resendTest": {
+      "title": "Probar email (Resend)",
+      "subtitle": "Verifica que RESEND_API_KEY está configurado. El botón envía un email de canario.",
+      "backToAdmin": "Volver a administración",
+      "statusTitle": "Estado",
+      "statusConfigured": "RESEND_API_KEY definido. Listo para enviar.",
+      "statusNotConfigured": "RESEND_API_KEY no está definido. Añádelo en Vercel → Env Vars y redeploya.",
+      "to": "Enviar a",
+      "sendCta": "Enviar prueba",
+      "sending": "Enviando…",
+      "setupTitle": "Cómo configurar",
+      "step1": "Crea una cuenta en resend.com y genera una API key.",
+      "step2": "Recomendado: añade un dominio verificado (DKIM + SPF).",
+      "step3": "Vercel → Settings → Environment Variables → añade RESEND_API_KEY y (opcional) RESEND_FROM_EMAIL.",
+      "step4": "Redeploya y vuelve aquí a probar."
     },
     "templates": {
       "title": "Templates",

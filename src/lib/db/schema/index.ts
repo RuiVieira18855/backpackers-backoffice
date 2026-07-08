@@ -11,3 +11,4 @@ export * from "./apps";
 export * from "./time-tracking";
 export * from "./workflows";
 export * from "./webhooks";
+export * from "./oauth";

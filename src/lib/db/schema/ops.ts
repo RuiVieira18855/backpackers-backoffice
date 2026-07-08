@@ -99,6 +99,9 @@ export const events = pgTable(
     recurrenceInterval: integer("recurrence_interval").notNull().default(1),
     recurrenceUntil: date("recurrence_until"),
     recurrenceParentId: uuid("recurrence_parent_id"),
+    googleEventId: text("google_event_id"),
+    microsoftEventId: text("microsoft_event_id"),
+    lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

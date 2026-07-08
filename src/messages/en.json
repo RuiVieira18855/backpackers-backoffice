@@ -903,6 +903,25 @@
       "hint": "Download a JSON containing your profile, entitlements, notifications, logged hours and every audit log entry where you appear (as actor or target). Group data (contacts, events, etc.) is not included.",
       "cta": "Download JSON"
     },
+    "calendarSync": {
+      "title": "Calendar sync",
+      "subtitle": "Import events from Google Calendar or Outlook into the backoffice. One-way for now — local edits are never overwritten.",
+      "note": "Manual sync. Range: 7 days back to 90 days forward. Requires OAuth credentials in Vercel — see INTEGRATIONS.md.",
+      "notConnected": "Not connected.",
+      "notConfigured": "OAuth is not configured on this install. See INTEGRATIONS.md.",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "disconnectConfirm": "Disconnect {label}? Already imported events stay, but stop syncing.",
+      "syncNow": "Sync now",
+      "syncing": "Syncing…",
+      "syncedAlert": "Sync done. Inserted: {inserted}, updated: {updated}, skipped: {skipped}.",
+      "syncFailedAlert": "Sync failed: {error}",
+      "lastSynced": "Last synced:",
+      "pillarLabel": "Pillar where imported events land",
+      "pillarNone": "— don't sync —",
+      "pillarHint": "Required in order to sync. Imported events default to this pillar.",
+      "readyToSync": "Ready to sync."
+    },
     "theme": {
       "section": "Theme",
       "hint": "Applies to this browser. Default follows your system.",
@@ -1164,6 +1183,22 @@
         "action": "Action",
         "user": "User"
       }
+    },
+    "resendTest": {
+      "title": "Test email (Resend)",
+      "subtitle": "Verify RESEND_API_KEY is configured. The button sends a canary email.",
+      "backToAdmin": "Back to admin",
+      "statusTitle": "Status",
+      "statusConfigured": "RESEND_API_KEY is set. Ready to send.",
+      "statusNotConfigured": "RESEND_API_KEY is not set. Add it in Vercel → Env Vars and redeploy.",
+      "to": "Send to",
+      "sendCta": "Send test",
+      "sending": "Sending…",
+      "setupTitle": "How to set up",
+      "step1": "Create an account at resend.com and generate an API key.",
+      "step2": "Recommended: add a verified domain (DKIM + SPF).",
+      "step3": "Vercel → Settings → Environment Variables → add RESEND_API_KEY and (optional) RESEND_FROM_EMAIL.",
+      "step4": "Redeploy and come back to test."
     },
     "templates": {
       "title": "Templates",
