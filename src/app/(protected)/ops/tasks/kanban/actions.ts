@@ -7,6 +7,7 @@ import { tasks } from "@/lib/db/schema";
 import { requireProfile } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import { runWorkflows } from "@/lib/workflows";
+import { dispatchWebhook } from "@/lib/webhooks";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
 type Status = (typeof STATUSES)[number];
@@ -64,6 +65,13 @@ export async function moveTaskToStatus(
       userId: profile.id,
       entityType: "task",
       entityId: updated.id,
+    });
+    await dispatchWebhook("task.completed", {
+      id: updated.id,
+      title: updated.title,
+      assigneeId: updated.assigneeId,
+      projectId: updated.projectId,
+      pillarId: updated.pillarId,
     });
   }
 

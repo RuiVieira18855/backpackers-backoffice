@@ -109,6 +109,8 @@
     "templates": "Templates",
     "customFields": "Custom fields",
     "workflows": "Automações",
+    "webhooks": "Webhooks",
+    "audit": "Auditoria",
     "financeLabel": "Finanças",
     "finance": "Movimentos",
     "addIncome": "Adicionar receita",
@@ -308,7 +310,8 @@
     "opsSummaryHint": "Visão rápida do volume desde 1 de Janeiro.",
     "eventsYtd": "Eventos criados",
     "tasksDone": "Tarefas concluídas",
-    "tasksOpen": "Tarefas em aberto"
+    "tasksOpen": "Tarefas em aberto",
+    "printCta": "Exportar PDF"
   },
   "templates": {
     "picker": {
@@ -904,6 +907,11 @@
       "avatarType": "Formato inválido. Usa PNG, JPG, WEBP ou GIF.",
       "avatarTooLarge": "Imagem maior que 1 MB. Comprime ou usa outra."
     },
+    "gdpr": {
+      "title": "Exportar os meus dados (GDPR)",
+      "hint": "Descarrega um JSON com o perfil, entitlements, notificações, horas registadas e todos os registos de auditoria em que apareces (como actor ou alvo). Dados do grupo (contactos, eventos, etc.) não incluídos.",
+      "cta": "Descarregar JSON"
+    },
     "theme": {
       "section": "Tema",
       "hint": "Aplica-se a este browser. Predefinição segue o sistema.",
@@ -1085,7 +1093,9 @@
       "actionTypes": {
         "create_task": "Criar tarefa",
         "send_notification": "Enviar notificação in-app",
-        "append_note": "Adicionar nota (por implementar)"
+        "append_note": "Adicionar nota à entidade",
+        "send_email": "Enviar email",
+        "trigger_webhook": "Disparar webhook"
       },
       "form": {
         "name": "Nome",
@@ -1109,10 +1119,59 @@
         "notifBody": "Corpo (opcional)",
         "notifLink": "Link in-app (ex: /crm/contacts/…)",
         "notePlaceholder": "Nota a adicionar",
+        "emailTo": "Para (deixa vazio = usa email da entidade)",
+        "emailSubject": "Assunto (podes usar {{campo}})",
+        "emailBody": "Corpo do email (podes usar {{campo}} — ex: {{fullName}})",
+        "webhookEventPlaceholder": "Evento a disparar…",
         "create": "Criar",
         "save": "Guardar",
         "saving": "A guardar…",
         "cancel": "Cancelar"
+      }
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "subtitle": "Envia HTTP POST assinados a sistemas externos quando eventos internos disparam.",
+      "backToAdmin": "Voltar à administração",
+      "backToList": "Voltar aos webhooks",
+      "newWebhook": "Novo webhook",
+      "empty": "Ainda não há webhooks.",
+      "inactive": "inactivo",
+      "securityNote": "Cada webhook tem um secret rotativo. O receiver deve computar HMAC-SHA256(secret, raw_body) e comparar com o header X-Backpackers-Signature (formato: sha256=<hex>).",
+      "secretTitle": "Secret partilhado",
+      "secretHint": "Usa este secret para verificar o header X-Backpackers-Signature no receiver.",
+      "testCta": "Enviar teste",
+      "rotateCta": "Rodar secret",
+      "rotateConfirm": "Rodar o secret? O receiver terá de usar o novo secret imediatamente.",
+      "delete": "Eliminar",
+      "deleteConfirm": "Eliminar o webhook «{name}»?",
+      "deliveries": "Entregas recentes",
+      "deliveriesHint": "{count} entregas registadas.",
+      "noDeliveries": "Ainda não houve entregas para este webhook.",
+      "form": {
+        "name": "Nome",
+        "namePlaceholder": "ex: Notify CRM externo",
+        "url": "URL",
+        "events": "Eventos a subscrever",
+        "eventsHint": "Escolhe pelo menos um evento.",
+        "isActive": "Webhook activo",
+        "create": "Criar",
+        "save": "Guardar",
+        "saving": "A guardar…",
+        "cancel": "Cancelar"
+      }
+    },
+    "audit": {
+      "title": "Auditoria",
+      "subtitle": "Registo imutável de todas as mutações. Filtra por entidade, acção ou utilizador.",
+      "backToAdmin": "Voltar à administração",
+      "count": "{count, plural, =0 {Sem registos} one {1 registo} other {# registos}}",
+      "empty": "Sem registos para os filtros escolhidos.",
+      "byUser": "por",
+      "filters": {
+        "entity": "Entidade",
+        "action": "Acção",
+        "user": "Utilizador"
       }
     },
     "templates": {

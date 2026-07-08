@@ -13,6 +13,7 @@ import {
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
 import { runWorkflows } from "@/lib/workflows";
+import { dispatchWebhook } from "@/lib/webhooks";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -127,6 +128,13 @@ export async function updateContact(
       userId: profile.id,
       entityType: "contact",
       entityId: updated.id,
+    });
+    await dispatchWebhook("contact.stage_changed", {
+      id: updated.id,
+      fullName: updated.fullName,
+      from: before.stage,
+      to: updated.stage,
+      pillarId: updated.pillarId,
     });
   }
 

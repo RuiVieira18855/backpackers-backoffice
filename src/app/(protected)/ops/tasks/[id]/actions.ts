@@ -10,6 +10,7 @@ import { requireProfile, requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import { createNotification } from "@/lib/notifications";
 import { runWorkflows } from "@/lib/workflows";
+import { dispatchWebhook } from "@/lib/webhooks";
 import type { TaskFormState } from "@/components/tasks/task-form";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -113,6 +114,13 @@ export async function updateTask(
       userId: profile.id,
       entityType: "task",
       entityId: updated.id,
+    });
+    await dispatchWebhook("task.completed", {
+      id: updated.id,
+      title: updated.title,
+      assigneeId: updated.assigneeId,
+      projectId: updated.projectId,
+      pillarId: updated.pillarId,
     });
   }
 

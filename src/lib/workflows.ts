@@ -1,9 +1,18 @@
 import "server-only";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { tasks, workflows } from "@/lib/db/schema";
+import {
+  contacts,
+  deals,
+  events,
+  projects,
+  tasks,
+  workflows,
+} from "@/lib/db/schema";
 import { logAudit } from "@/lib/audit";
 import { createNotification } from "@/lib/notifications";
+import { htmlToText, sendEmail } from "@/lib/email";
+import { dispatchWebhook, type WebhookEvent } from "@/lib/webhooks";
 
 // -----------------------------------------------------------------------------
 // Vocabulary
@@ -49,7 +58,21 @@ export type Action =
     }
   | {
       type: "append_note";
+      /** Text to append. Prefixed with a timestamp separator. */
       text: string;
+      /** Which entity's notes column to write to. Defaults to the trigger's source. */
+      entityType?: "contact" | "deal" | "task" | "event" | "project";
+    }
+  | {
+      type: "send_email";
+      /** Email address. If omitted, uses entity.email when available. */
+      to?: string;
+      subject: string;
+      body: string;
+    }
+  | {
+      type: "trigger_webhook";
+      event: WebhookEvent;
     };
 
 // -----------------------------------------------------------------------------
@@ -169,13 +192,68 @@ async function executeAction(
         return { ok: true };
       }
       case "append_note": {
-        // No-op for MVP — append_note requires knowing which column and
-        // reading the current value. Left as a placeholder for a
-        // follow-up turn when we add write-back helpers per entity type.
-        return {
-          ok: false,
-          error: "append_note not implemented in MVP; ignoring",
-        };
+        // Which entity's notes column to write to. Defaults to the trigger's
+        // source (actor.entityType). Only tables with a `notes` column are
+        // supported.
+        const target = action.entityType ?? actor.entityType;
+        const idToUpdate = actor.entityId;
+        const stamped = `\n\n[${new Date().toISOString()}] ${action.text}`;
+        // sql.identifier lets us pick the table dynamically without unsafe
+        // string interpolation of the target row id (which goes through a
+        // parameter placeholder).
+        const table =
+          target === "contact"
+            ? contacts
+            : target === "deal"
+              ? deals
+              : target === "task"
+                ? tasks
+                : target === "event"
+                  ? events
+                  : target === "project"
+                    ? projects
+                    : null;
+        if (!table) {
+          return { ok: false, error: `append_note: unknown entity ${target}` };
+        }
+        await db.execute(
+          sql`update ${table} set notes = coalesce(notes, '') || ${stamped} where id = ${idToUpdate}::uuid`,
+        );
+        return { ok: true };
+      }
+      case "send_email": {
+        // Resolve recipient. Explicit `to` wins; otherwise fall back to a
+        // top-level entity.email if present.
+        const to =
+          action.to ??
+          (typeof entity.email === "string" ? entity.email : null);
+        if (!to) {
+          return { ok: false, error: "send_email: no recipient available" };
+        }
+        // Rudimentary {{field}} substitution on subject + body — safe on
+        // scalar fields only.
+        const subject = interpolate(action.subject, entity);
+        const body = interpolate(action.body, entity);
+        const html = `<div style="font-family:sans-serif;color:#0E2A44">${escapeHtml(body).replace(/\n/g, "<br>")}</div>`;
+        const result = await sendEmail({
+          to,
+          subject,
+          html,
+          text: htmlToText(html),
+        });
+        if (!result.ok && !result.skipped) {
+          return { ok: false, error: result.error };
+        }
+        return { ok: true };
+      }
+      case "trigger_webhook": {
+        await dispatchWebhook(action.event, {
+          fromWorkflowId: workflowId,
+          sourceEntityType: actor.entityType,
+          sourceEntityId: actor.entityId,
+          entity,
+        });
+        return { ok: true };
       }
       default: {
         return { ok: false, error: `unknown action type` };
@@ -187,6 +265,22 @@ async function executeAction(
       error: err instanceof Error ? err.message : String(err),
     };
   }
+}
+
+// Helpers used by send_email
+function interpolate(template: string, entity: EntityLike): string {
+  return template.replace(/\{\{\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\}\}/g, (_, k) => {
+    const v = entity[k];
+    return v == null ? "" : String(v);
+  });
+}
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 // -----------------------------------------------------------------------------

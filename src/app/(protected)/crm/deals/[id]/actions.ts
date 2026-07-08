@@ -12,6 +12,7 @@ import {
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
 import { runWorkflows } from "@/lib/workflows";
+import { dispatchWebhook } from "@/lib/webhooks";
 import type { DealFormState } from "@/components/deals/deal-form";
 
 const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] as const;
@@ -112,6 +113,14 @@ export async function updateDeal(
       entityType: "deal",
       entityId: updated.id,
     });
+    await dispatchWebhook("deal.won", {
+      id: updated.id,
+      name: updated.name,
+      value: updated.value,
+      currency: updated.currency,
+      contactId: updated.contactId,
+      pillarId: updated.pillarId,
+    });
   }
 
   redirect(`/crm/deals/${updated.id}`);
@@ -176,6 +185,14 @@ export async function moveDealStage(
       userId: profile.id,
       entityType: "deal",
       entityId: updated.id,
+    });
+    await dispatchWebhook("deal.won", {
+      id: updated.id,
+      name: updated.name,
+      value: updated.value,
+      currency: updated.currency,
+      contactId: updated.contactId,
+      pillarId: updated.pillarId,
     });
   }
   return { ok: true };

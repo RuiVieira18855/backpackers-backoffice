@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Boxes, FileText, Settings, Shield, Workflow } from "lucide-react";
+import {
+  Boxes,
+  ClipboardCheck,
+  FileText,
+  Settings,
+  Shield,
+  Webhook,
+  Workflow,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import {
   Card,
@@ -13,7 +21,14 @@ import { requireSkill } from "@/lib/dal";
 type Section = {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
-  titleKey: "users" | "templates" | "customFields" | "apps" | "workflows";
+  titleKey:
+    | "users"
+    | "templates"
+    | "customFields"
+    | "apps"
+    | "workflows"
+    | "webhooks"
+    | "audit";
 };
 
 const SECTIONS: Section[] = [
@@ -22,6 +37,8 @@ const SECTIONS: Section[] = [
   { href: "/admin/templates", icon: FileText, titleKey: "templates" },
   { href: "/admin/custom-fields", icon: Settings, titleKey: "customFields" },
   { href: "/admin/workflows", icon: Workflow, titleKey: "workflows" },
+  { href: "/admin/webhooks", icon: Webhook, titleKey: "webhooks" },
+  { href: "/admin/audit", icon: ClipboardCheck, titleKey: "audit" },
 ];
 
 export default async function AdminLandingPage() {
@@ -32,6 +49,8 @@ export default async function AdminLandingPage() {
   const tCustomFields = await getTranslations("admin.customFields");
   const tApps = await getTranslations("admin.apps");
   const tWorkflows = await getTranslations("admin.workflows");
+  const tWebhooks = await getTranslations("admin.webhooks");
+  const tAudit = await getTranslations("admin.audit");
 
   const labels = {
     apps: { title: tApps("title"), subtitle: tApps("cardSubtitle") },
@@ -48,6 +67,11 @@ export default async function AdminLandingPage() {
       title: tWorkflows("title"),
       subtitle: tWorkflows("subtitle"),
     },
+    webhooks: {
+      title: tWebhooks("title"),
+      subtitle: tWebhooks("subtitle"),
+    },
+    audit: { title: tAudit("title"), subtitle: tAudit("subtitle") },
   };
 
   return (

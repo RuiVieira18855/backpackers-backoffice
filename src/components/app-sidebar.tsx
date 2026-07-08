@@ -19,6 +19,7 @@ import {
   Users,
   UserPlus,
   Wallet,
+  Webhook,
   Workflow,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -190,6 +191,12 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
             </SidebarLink>
             <SidebarLink href="/admin/workflows" icon={Workflow}>
               {t("workflows")}
+            </SidebarLink>
+            <SidebarLink href="/admin/webhooks" icon={Webhook}>
+              {t("webhooks")}
+            </SidebarLink>
+            <SidebarLink href="/admin/audit" icon={FileText}>
+              {t("audit")}
             </SidebarLink>
           </SidebarGroup>
         </>

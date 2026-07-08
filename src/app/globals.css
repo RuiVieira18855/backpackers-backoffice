@@ -181,3 +181,44 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-bebas), Impact, sans-serif;
   letter-spacing: 0.02em;
 }
+
+/* ---------- Print styles (Reports PDF export) ---------------------------- */
+@media print {
+  /* Hide app chrome — sidebar, header, nav, footer */
+  aside,
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+
+  /* Reset the main content to fill the page cleanly */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Cards render flat with visible borders */
+  .rounded-md,
+  .rounded-lg,
+  .rounded-xl {
+    border-radius: 0 !important;
+  }
+
+  /* Force break inside cards to page-break-avoid */
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+
+  /* Charts often break print sizing — give them a fixed height */
+  .recharts-wrapper {
+    width: 100% !important;
+    height: 240px !important;
+  }
+}

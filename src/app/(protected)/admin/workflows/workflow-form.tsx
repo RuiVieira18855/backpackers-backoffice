@@ -23,6 +23,15 @@ const ACTION_TYPES = [
   "create_task",
   "send_notification",
   "append_note",
+  "send_email",
+  "trigger_webhook",
+] as const;
+
+const WEBHOOK_EVENTS = [
+  "contact.created",
+  "contact.stage_changed",
+  "deal.won",
+  "task.completed",
 ] as const;
 
 type Trigger = (typeof TRIGGERS)[number];
@@ -45,7 +54,9 @@ type Action =
       body?: string;
       link?: string;
     }
-  | { type: "append_note"; text: string };
+  | { type: "append_note"; text: string; entityType?: string }
+  | { type: "send_email"; to?: string; subject: string; body: string }
+  | { type: "trigger_webhook"; event: string };
 
 type Owner = { id: string; label: string };
 
@@ -441,6 +452,77 @@ export function WorkflowForm({
                 }
               />
             )}
+
+            {a.type === "send_email" && (
+              <div className="grid sm:grid-cols-2 gap-2">
+                <Input
+                  placeholder={t("form.emailTo")}
+                  value={a.to ?? ""}
+                  onChange={(e) =>
+                    setActions((cur) =>
+                      cur.map((x, j) =>
+                        j === i && x.type === "send_email"
+                          ? { ...x, to: e.target.value }
+                          : x,
+                      ),
+                    )
+                  }
+                />
+                <Input
+                  placeholder={t("form.emailSubject")}
+                  value={a.subject}
+                  onChange={(e) =>
+                    setActions((cur) =>
+                      cur.map((x, j) =>
+                        j === i && x.type === "send_email"
+                          ? { ...x, subject: e.target.value }
+                          : x,
+                      ),
+                    )
+                  }
+                />
+                <div className="sm:col-span-2">
+                  <textarea
+                    rows={3}
+                    placeholder={t("form.emailBody")}
+                    value={a.body}
+                    onChange={(e) =>
+                      setActions((cur) =>
+                        cur.map((x, j) =>
+                          j === i && x.type === "send_email"
+                            ? { ...x, body: e.target.value }
+                            : x,
+                        ),
+                      )
+                    }
+                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs"
+                  />
+                </div>
+              </div>
+            )}
+
+            {a.type === "trigger_webhook" && (
+              <select
+                value={a.event}
+                onChange={(e) =>
+                  setActions((cur) =>
+                    cur.map((x, j) =>
+                      j === i && x.type === "trigger_webhook"
+                        ? { ...x, event: e.target.value }
+                        : x,
+                    ),
+                  )
+                }
+                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
+              >
+                <option value="">{t("form.webhookEventPlaceholder")}</option>
+                {WEBHOOK_EVENTS.map((ev) => (
+                  <option key={ev} value={ev}>
+                    {ev}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         ))}
         <Button
@@ -490,5 +572,11 @@ function changeActionType(prev: Action, next: ActionType): Action {
       return { type: "send_notification", targetUserId: "", title: "" };
     case "append_note":
       return { type: "append_note", text: "" };
+    case "send_email":
+      return { type: "send_email", subject: "", body: "" };
+    case "trigger_webhook":
+      return { type: "trigger_webhook", event: "contact.created" };
+    default:
+      return prev;
   }
 }

@@ -109,6 +109,8 @@
     "templates": "Templates",
     "customFields": "Custom fields",
     "workflows": "Automations",
+    "webhooks": "Webhooks",
+    "audit": "Audit",
     "financeLabel": "Finance",
     "finance": "Transactions",
     "addIncome": "Add income",
@@ -308,7 +310,8 @@
     "opsSummaryHint": "Quick volume snapshot since Jan 1.",
     "eventsYtd": "Events created",
     "tasksDone": "Tasks done",
-    "tasksOpen": "Tasks open"
+    "tasksOpen": "Tasks open",
+    "printCta": "Export PDF"
   },
   "templates": {
     "picker": {
@@ -895,6 +898,11 @@
       "avatarType": "Invalid format. Use PNG, JPG, WEBP or GIF.",
       "avatarTooLarge": "Image larger than 1 MB. Compress or use another."
     },
+    "gdpr": {
+      "title": "Export my data (GDPR)",
+      "hint": "Download a JSON containing your profile, entitlements, notifications, logged hours and every audit log entry where you appear (as actor or target). Group data (contacts, events, etc.) is not included.",
+      "cta": "Download JSON"
+    },
     "theme": {
       "section": "Theme",
       "hint": "Applies to this browser. Default follows your system.",
@@ -1076,7 +1084,9 @@
       "actionTypes": {
         "create_task": "Create task",
         "send_notification": "Send in-app notification",
-        "append_note": "Append note (not implemented)"
+        "append_note": "Append note to entity",
+        "send_email": "Send email",
+        "trigger_webhook": "Trigger webhook"
       },
       "form": {
         "name": "Name",
@@ -1100,10 +1110,59 @@
         "notifBody": "Body (optional)",
         "notifLink": "In-app link (e.g. /crm/contacts/…)",
         "notePlaceholder": "Note to append",
+        "emailTo": "To (empty = use entity email)",
+        "emailSubject": "Subject (supports {{field}})",
+        "emailBody": "Email body (supports {{field}} — e.g. {{fullName}})",
+        "webhookEventPlaceholder": "Event to trigger…",
         "create": "Create",
         "save": "Save",
         "saving": "Saving…",
         "cancel": "Cancel"
+      }
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "subtitle": "Send signed HTTP POST to external systems when internal events fire.",
+      "backToAdmin": "Back to admin",
+      "backToList": "Back to webhooks",
+      "newWebhook": "New webhook",
+      "empty": "No webhooks yet.",
+      "inactive": "inactive",
+      "securityNote": "Each webhook has a rotating secret. Receivers should compute HMAC-SHA256(secret, raw_body) and compare against the X-Backpackers-Signature header (format: sha256=<hex>).",
+      "secretTitle": "Shared secret",
+      "secretHint": "Use this to verify the X-Backpackers-Signature header on your receiver.",
+      "testCta": "Send test",
+      "rotateCta": "Rotate secret",
+      "rotateConfirm": "Rotate the secret? The receiver must switch to the new secret immediately.",
+      "delete": "Delete",
+      "deleteConfirm": "Delete webhook \"{name}\"?",
+      "deliveries": "Recent deliveries",
+      "deliveriesHint": "{count} deliveries logged.",
+      "noDeliveries": "No deliveries yet for this webhook.",
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "e.g. External CRM notify",
+        "url": "URL",
+        "events": "Events to subscribe",
+        "eventsHint": "Pick at least one event.",
+        "isActive": "Webhook active",
+        "create": "Create",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel"
+      }
+    },
+    "audit": {
+      "title": "Audit",
+      "subtitle": "Immutable log of every mutation. Filter by entity, action or user.",
+      "backToAdmin": "Back to admin",
+      "count": "{count, plural, =0 {No entries} one {1 entry} other {# entries}}",
+      "empty": "No entries for the current filters.",
+      "byUser": "by",
+      "filters": {
+        "entity": "Entity",
+        "action": "Action",
+        "user": "User"
       }
     },
     "templates": {

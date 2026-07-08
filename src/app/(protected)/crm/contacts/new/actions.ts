@@ -12,6 +12,7 @@ import {
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
 import { runWorkflows } from "@/lib/workflows";
+import { dispatchWebhook } from "@/lib/webhooks";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -116,6 +117,14 @@ export async function createContact(
     userId: profile.id,
     entityType: "contact",
     entityId: created.id,
+  });
+  await dispatchWebhook("contact.created", {
+    id: created.id,
+    fullName: created.fullName,
+    email: created.email,
+    pillarId: created.pillarId,
+    stage: created.stage,
+    type: created.type,
   });
 
   redirect(`/crm/contacts/${created.id}`);

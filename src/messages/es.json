@@ -109,6 +109,8 @@
     "templates": "Templates",
     "customFields": "Custom fields",
     "workflows": "Automatizaciones",
+    "webhooks": "Webhooks",
+    "audit": "Auditoría",
     "financeLabel": "Finanzas",
     "finance": "Movimientos",
     "addIncome": "Añadir ingreso",
@@ -308,7 +310,8 @@
     "opsSummaryHint": "Visión rápida del volumen desde el 1 de enero.",
     "eventsYtd": "Eventos creados",
     "tasksDone": "Tareas hechas",
-    "tasksOpen": "Tareas abiertas"
+    "tasksOpen": "Tareas abiertas",
+    "printCta": "Exportar PDF"
   },
   "templates": {
     "picker": {
@@ -895,6 +898,11 @@
       "avatarType": "Formato no válido. Usa PNG, JPG, WEBP o GIF.",
       "avatarTooLarge": "Imagen mayor que 1 MB. Comprime o usa otra."
     },
+    "gdpr": {
+      "title": "Exportar mis datos (GDPR)",
+      "hint": "Descarga un JSON con perfil, entitlements, notificaciones, horas registradas y todos los registros de auditoría donde apareces (como actor o objetivo). Datos del grupo (contactos, eventos, etc.) no incluidos.",
+      "cta": "Descargar JSON"
+    },
     "theme": {
       "section": "Tema",
       "hint": "Se aplica en este navegador. Por defecto sigue el sistema.",
@@ -1076,7 +1084,9 @@
       "actionTypes": {
         "create_task": "Crear tarea",
         "send_notification": "Enviar notificación in-app",
-        "append_note": "Añadir nota (sin implementar)"
+        "append_note": "Añadir nota a la entidad",
+        "send_email": "Enviar email",
+        "trigger_webhook": "Disparar webhook"
       },
       "form": {
         "name": "Nombre",
@@ -1100,10 +1110,59 @@
         "notifBody": "Cuerpo (opcional)",
         "notifLink": "Link in-app (ej: /crm/contacts/…)",
         "notePlaceholder": "Nota a añadir",
+        "emailTo": "Para (vacío = email de la entidad)",
+        "emailSubject": "Asunto (soporta {{campo}})",
+        "emailBody": "Cuerpo (soporta {{campo}} — ej: {{fullName}})",
+        "webhookEventPlaceholder": "Evento a disparar…",
         "create": "Crear",
         "save": "Guardar",
         "saving": "Guardando…",
         "cancel": "Cancelar"
+      }
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "subtitle": "Envía HTTP POST firmados a sistemas externos cuando disparan eventos internos.",
+      "backToAdmin": "Volver a administración",
+      "backToList": "Volver a webhooks",
+      "newWebhook": "Nuevo webhook",
+      "empty": "Aún no hay webhooks.",
+      "inactive": "inactivo",
+      "securityNote": "Cada webhook tiene un secret rotativo. El receiver debe computar HMAC-SHA256(secret, raw_body) y comparar con el header X-Backpackers-Signature (formato: sha256=<hex>).",
+      "secretTitle": "Secret compartido",
+      "secretHint": "Úsalo para verificar el header X-Backpackers-Signature en tu receiver.",
+      "testCta": "Enviar prueba",
+      "rotateCta": "Rotar secret",
+      "rotateConfirm": "¿Rotar el secret? El receiver debe pasar al nuevo secret de inmediato.",
+      "delete": "Eliminar",
+      "deleteConfirm": "¿Eliminar el webhook «{name}»?",
+      "deliveries": "Entregas recientes",
+      "deliveriesHint": "{count} entregas registradas.",
+      "noDeliveries": "Aún no hay entregas para este webhook.",
+      "form": {
+        "name": "Nombre",
+        "namePlaceholder": "ej: Notificar CRM externo",
+        "url": "URL",
+        "events": "Eventos a suscribir",
+        "eventsHint": "Elige al menos un evento.",
+        "isActive": "Webhook activo",
+        "create": "Crear",
+        "save": "Guardar",
+        "saving": "Guardando…",
+        "cancel": "Cancelar"
+      }
+    },
+    "audit": {
+      "title": "Auditoría",
+      "subtitle": "Registro inmutable de todas las mutaciones. Filtra por entidad, acción o usuario.",
+      "backToAdmin": "Volver a administración",
+      "count": "{count, plural, =0 {Sin registros} one {1 registro} other {# registros}}",
+      "empty": "Sin registros para los filtros elegidos.",
+      "byUser": "por",
+      "filters": {
+        "entity": "Entidad",
+        "action": "Acción",
+        "user": "Usuario"
       }
     },
     "templates": {

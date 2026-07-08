@@ -26,6 +26,7 @@ import {
   transactions,
 } from "@/lib/db/schema";
 import { hasSkill, requireProfile } from "@/lib/dal";
+import { PrintButton } from "@/components/print-button";
 
 function fmtEur(n: number, max = 0): string {
   return new Intl.NumberFormat("pt-PT", {
@@ -189,12 +190,17 @@ export default async function ReportsPage() {
     : [];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-10">
-      <div>
-        <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none">
-          {t("title")}
-        </h1>
-        <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>
+    <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-10 print:py-4 print:space-y-6">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
+            {t("subtitle")}
+          </p>
+        </div>
+        <PrintButton label={t("printCta")} />
       </div>
 
       {/* Headline KPIs */}

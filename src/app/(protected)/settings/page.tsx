@@ -1,5 +1,14 @@
+import { Download } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { getAllPillars, requireProfile } from "@/lib/dal";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ProfileForm } from "./profile-form";
 
 export default async function SettingsPage() {
@@ -25,6 +34,21 @@ export default async function SettingsPage() {
         roleLabel={tRoles(profile.role as never)}
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}
       />
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t("gdpr.title")}</CardTitle>
+          <CardDescription>{t("gdpr.hint")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="outline" size="sm">
+            <a href="/api/gdpr/export" download>
+              <Download className="mr-2 h-3.5 w-3.5" />
+              {t("gdpr.cta")}
+            </a>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
