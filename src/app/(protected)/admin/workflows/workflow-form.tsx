@@ -15,6 +15,8 @@ const TRIGGERS = [
   "contact.stage_changed",
   "deal.won",
   "task.completed",
+  "task.due_soon",
+  "transaction.overdue",
 ] as const;
 
 const CONDITION_OPS = ["=", "!=", "contains", "in"] as const;

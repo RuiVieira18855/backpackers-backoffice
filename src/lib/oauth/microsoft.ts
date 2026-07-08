@@ -25,7 +25,9 @@ export const MS_SCOPES = [
   "email",
   "profile",
   "offline_access",
-  "Calendars.Read",
+  // Write scope so we can mirror local events. Users who connected before
+  // this change need to re-connect to grant it.
+  "Calendars.ReadWrite",
 ];
 
 export function microsoftClientEnv() {
@@ -187,4 +189,88 @@ export async function listMicrosoftEvents(
   }
   const data = (await res.json()) as { value?: MicrosoftCalendarEvent[] };
   return data.value ?? [];
+}
+
+// ---------- Push helpers ----------
+
+const MS_EVENTS = "https://graph.microsoft.com/v1.0/me/events";
+
+type LocalEventPayload = {
+  name: string;
+  description: string | null;
+  location: string | null;
+  startAt: Date;
+  endAt: Date | null;
+};
+
+function toMicrosoftEventBody(ev: LocalEventPayload) {
+  const start = ev.startAt.toISOString().replace("Z", "");
+  const end = (ev.endAt ?? new Date(ev.startAt.getTime() + 3600_000))
+    .toISOString()
+    .replace("Z", "");
+  return {
+    subject: ev.name,
+    body: ev.description
+      ? { contentType: "text", content: ev.description }
+      : undefined,
+    location: ev.location ? { displayName: ev.location } : undefined,
+    start: { dateTime: start, timeZone: "UTC" },
+    end: { dateTime: end, timeZone: "UTC" },
+  };
+}
+
+export async function createMicrosoftEvent(
+  accessToken: string,
+  ev: LocalEventPayload,
+): Promise<string> {
+  const res = await fetch(MS_EVENTS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(toMicrosoftEventBody(ev)),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Microsoft create event failed: ${res.status} ${await res.text()}`,
+    );
+  }
+  const data = (await res.json()) as { id: string };
+  return data.id;
+}
+
+export async function patchMicrosoftEvent(
+  accessToken: string,
+  eventId: string,
+  ev: LocalEventPayload,
+): Promise<void> {
+  const res = await fetch(`${MS_EVENTS}/${encodeURIComponent(eventId)}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(toMicrosoftEventBody(ev)),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Microsoft patch event failed: ${res.status} ${await res.text()}`,
+    );
+  }
+}
+
+export async function deleteMicrosoftEvent(
+  accessToken: string,
+  eventId: string,
+): Promise<void> {
+  const res = await fetch(`${MS_EVENTS}/${encodeURIComponent(eventId)}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!res.ok && res.status !== 404) {
+    throw new Error(
+      `Microsoft delete event failed: ${res.status} ${await res.text()}`,
+    );
+  }
 }

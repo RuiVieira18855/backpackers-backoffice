@@ -22,7 +22,9 @@ export const GOOGLE_SCOPES = [
   "openid",
   "email",
   "profile",
-  "https://www.googleapis.com/auth/calendar.readonly",
+  // Write scope so we can push local events to the user's calendar.
+  // Users who connected before this change need to re-connect to grant it.
+  "https://www.googleapis.com/auth/calendar.events",
 ];
 
 export function googleClientEnv() {
@@ -167,4 +169,87 @@ export async function listGoogleEvents(
   }
   const data = (await res.json()) as { items?: GoogleCalendarEvent[] };
   return data.items ?? [];
+}
+
+// ---------- Push helpers ----------
+
+type LocalEventPayload = {
+  name: string;
+  description: string | null;
+  location: string | null;
+  startAt: Date;
+  endAt: Date | null;
+};
+
+function toGoogleEventBody(ev: LocalEventPayload) {
+  const start = ev.startAt.toISOString();
+  const end = (ev.endAt ?? new Date(ev.startAt.getTime() + 3600_000)).toISOString();
+  return {
+    summary: ev.name,
+    description: ev.description ?? undefined,
+    location: ev.location ?? undefined,
+    start: { dateTime: start },
+    end: { dateTime: end },
+  };
+}
+
+/** Create an event in the primary Google calendar. Returns the new id. */
+export async function createGoogleEvent(
+  accessToken: string,
+  ev: LocalEventPayload,
+): Promise<string> {
+  const res = await fetch(GOOGLE_CALENDAR_EVENTS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(toGoogleEventBody(ev)),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Google create event failed: ${res.status} ${await res.text()}`,
+    );
+  }
+  const data = (await res.json()) as { id: string };
+  return data.id;
+}
+
+export async function patchGoogleEvent(
+  accessToken: string,
+  eventId: string,
+  ev: LocalEventPayload,
+): Promise<void> {
+  const res = await fetch(`${GOOGLE_CALENDAR_EVENTS}/${encodeURIComponent(eventId)}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(toGoogleEventBody(ev)),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Google patch event failed: ${res.status} ${await res.text()}`,
+    );
+  }
+}
+
+export async function deleteGoogleEvent(
+  accessToken: string,
+  eventId: string,
+): Promise<void> {
+  const res = await fetch(
+    `${GOOGLE_CALENDAR_EVENTS}/${encodeURIComponent(eventId)}`,
+    {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    },
+  );
+  // Google returns 410 (Gone) if already deleted — treat as OK.
+  if (!res.ok && res.status !== 410 && res.status !== 404) {
+    throw new Error(
+      `Google delete event failed: ${res.status} ${await res.text()}`,
+    );
+  }
 }

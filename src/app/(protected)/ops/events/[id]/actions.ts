@@ -12,6 +12,7 @@ import {
   getCustomFieldDefs,
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
+import { deleteExternalMirrors, pushEventToExternal } from "@/lib/oauth/sync";
 import type { EventFormState } from "@/components/events/event-form";
 
 const TYPES = ["tour", "team_building", "workshop", "meeting", "retreat", "other"] as const;
@@ -120,6 +121,19 @@ export async function updateEvent(
     diff: { before, after: updated },
   });
 
+  // Mirror the change to the owner's external calendar. Best-effort.
+  await pushEventToExternal({
+    id: updated.id,
+    ownerId: updated.ownerId,
+    name: updated.name,
+    description: updated.description,
+    location: updated.location,
+    startAt: updated.startAt,
+    endAt: updated.endAt,
+    googleEventId: updated.googleEventId,
+    microsoftEventId: updated.microsoftEventId,
+  });
+
   redirect(`/ops/events/${updated.id}`);
 }
 
@@ -134,6 +148,14 @@ export async function deleteEvent(id: string): Promise<void> {
   }
 
   await db.delete(events).where(eq(events.id, id));
+
+  // Remove the external mirror(s) if any. Best-effort — failure is
+  // logged but the local delete stands.
+  await deleteExternalMirrors({
+    ownerId: before.ownerId,
+    googleEventId: before.googleEventId,
+    microsoftEventId: before.microsoftEventId,
+  });
 
   await logAudit({
     userId: profile.id,
@@ -176,6 +198,19 @@ export async function deleteEventSeries(id: string): Promise<void> {
     .where(
       or(eq(events.id, headId), eq(events.recurrenceParentId, headId))!,
     );
+
+  // Remove external mirrors for every row in the series.
+  for (const row of all) {
+    try {
+      await deleteExternalMirrors({
+        ownerId: row.ownerId,
+        googleEventId: row.googleEventId,
+        microsoftEventId: row.microsoftEventId,
+      });
+    } catch (err) {
+      console.error("[events] series external delete failed:", err);
+    }
+  }
 
   for (const row of all) {
     try {

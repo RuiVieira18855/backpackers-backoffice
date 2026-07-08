@@ -1092,7 +1092,9 @@
         "contact.created": "Contact created",
         "contact.stage_changed": "Contact stage changed",
         "deal.won": "Deal won",
-        "task.completed": "Task completed"
+        "task.completed": "Task completed",
+        "task.due_soon": "Task due (today/tomorrow)",
+        "transaction.overdue": "Transaction overdue"
       },
       "ops": {
         "=": "equals",

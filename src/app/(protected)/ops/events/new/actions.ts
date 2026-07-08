@@ -12,6 +12,7 @@ import {
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
 import { expandRecurrence } from "@/lib/recurrence";
+import { pushEventToExternal } from "@/lib/oauth/sync";
 import type { EventFormState } from "@/components/events/event-form";
 
 const TYPES = ["tour", "team_building", "workshop", "meeting", "retreat", "other"] as const;
@@ -175,6 +176,19 @@ export async function createEvent(
     entityId: created.id,
     action: "create",
     diff: { snapshot: created },
+  });
+
+  // Push mirror to owner's external calendar (Google/Outlook), best-effort.
+  await pushEventToExternal({
+    id: created.id,
+    ownerId: created.ownerId,
+    name: created.name,
+    description: created.description,
+    location: created.location,
+    startAt: created.startAt,
+    endAt: created.endAt,
+    googleEventId: created.googleEventId,
+    microsoftEventId: created.microsoftEventId,
   });
 
   redirect(`/ops/events/${created.id}`);

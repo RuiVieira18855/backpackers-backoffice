@@ -221,13 +221,56 @@ um turno de extensão pontual.
 **Uso é idêntico ao Google** — botão **Ligar** ao lado do Outlook em
 `/settings`.
 
-## Não incluído (ainda)
+## Push sync (backpackers → external)
 
-- **Push sync** (backpackers → Google/Outlook) — requer mirror de
-  create/update/delete + resolução de conflitos. Sprint próprio.
-- **Automatic scheduled sync** — precisa de pg_cron ou cron externo. Por
-  agora, botão "Sincronizar agora" manual.
-- **Múltiplas contas por utilizador** — 1 conexão por (user, provider).
+**Também activo.** Quando um utilizador com conexão Google/Outlook cria,
+edita ou apaga um evento no backoffice em que é `ownerId`, a alteração
+é replicada para o calendário externo dessa pessoa:
+
+- **Create local** → cria no Google/Outlook, guarda o external id de volta
+  em `events.google_event_id` / `events.microsoft_event_id`.
+- **Update local** → PATCH ao external usando o id guardado.
+- **Delete local** → DELETE ao external (410/404 são ignorados).
+
+Best-effort: falhas de push só logam, o commit local nunca é revertido.
+
+**Nota importante sobre scopes**: se ligaste o Google/Outlook ANTES desta
+actualização, tens de **Desligar + Ligar de novo** em `/settings` porque
+os scopes mudaram de leitura para leitura+escrita.
+
+## Auto-sync agendado (Vercel Cron)
+
+`vercel.json` regista `/api/cron/hourly` para correr **de hora a hora**.
+Faz três coisas por chamada:
+
+1. Puxa eventos externos para cada conexão que tenha `default_pillar_id`
+   definido (idêntico ao botão "Sincronizar agora").
+2. Fires `task.due_soon` para tarefas com `due_date IN (hoje, amanhã)` e
+   `status != done` → workflows correm as suas acções.
+3. Fires `transaction.overdue` para transacções `pending` com
+   `due_date < hoje` → workflows.
+
+**Setup:**
+
+1. Vercel → Settings → **Environment Variables** → adiciona
+   `CRON_SECRET=<gera-um-token-forte>` (32+ chars).
+2. Redeploy. O Vercel Cron começa a chamar automaticamente.
+3. Podes testar manualmente:
+   ```
+   curl -H "Authorization: Bearer <o-teu-CRON_SECRET>" \
+        https://<TEU-BACKOFFICE>/api/cron/hourly
+   ```
+   Devolve JSON com o report da execução.
+
+Sem `CRON_SECRET`, o endpoint responde 401 a qualquer request.
+
+## Ficou de fora (sprints próprios)
+
+- **Múltiplas contas por utilizador por provider** — actualmente 1
+  conexão por (user, provider). Refactor médio, valor discutível.
+- **Two-way conflict resolution avançado** — hoje é last-write-wins
+  simples: pull não sobrepõe campos não-nulos; push só corre em
+  edições feitas no backoffice. Basta para 90% dos casos.
 
 ---
 

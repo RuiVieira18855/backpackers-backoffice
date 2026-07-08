@@ -23,6 +23,9 @@ export const TRIGGERS = [
   "contact.stage_changed",
   "deal.won",
   "task.completed",
+  // Scheduled — fired by the hourly cron in /api/cron/hourly
+  "task.due_soon",
+  "transaction.overdue",
 ] as const;
 export type WorkflowTrigger = (typeof TRIGGERS)[number];
 

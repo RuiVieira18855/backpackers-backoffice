@@ -3,16 +3,22 @@ import { and, eq, isNotNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { events, oauthConnections } from "@/lib/db/schema";
 import {
+  createGoogleEvent,
+  deleteGoogleEvent,
   getValidGoogleToken,
   listGoogleEvents,
+  patchGoogleEvent,
   type GoogleCalendarEvent,
 } from "./google";
 import {
+  createMicrosoftEvent,
+  deleteMicrosoftEvent,
   getValidMicrosoftToken,
   listMicrosoftEvents,
+  patchMicrosoftEvent,
   type MicrosoftCalendarEvent,
 } from "./microsoft";
-import { setSyncMetadata, type OAuthProvider } from "./store";
+import { getConnection, setSyncMetadata, type OAuthProvider } from "./store";
 
 export type SyncResult = {
   inserted: number;
@@ -164,6 +170,120 @@ async function upsertGoogleEvents(
   }
 
   return { inserted, updated, skipped };
+}
+
+// -----------------------------------------------------------------------------
+// Push helpers (backpackers → external)
+// -----------------------------------------------------------------------------
+//
+// Called best-effort from the event server actions after a successful local
+// mutation. Failure only logs — the primary action already committed.
+//
+// Design rules:
+//  - Only push events whose ownerId has an active OAuth connection.
+//  - Never push events that came from external (they already have an id).
+//    Instead patch them in the same provider if the user edits them.
+//  - Deletes propagate to whichever provider(s) had the mirror.
+
+type LocalEventForPush = {
+  id: string;
+  ownerId: string | null;
+  name: string;
+  description: string | null;
+  location: string | null;
+  startAt: Date | null;
+  endAt: Date | null;
+  googleEventId: string | null;
+  microsoftEventId: string | null;
+};
+
+/**
+ * Best-effort: mirror a newly created / updated event to whichever
+ * external calendar the owner has connected. Silently skips when there's
+ * no owner, no connection, or no startAt. Stores the returned external
+ * id back on the event row so subsequent updates are a patch.
+ */
+export async function pushEventToExternal(
+  ev: LocalEventForPush,
+): Promise<void> {
+  if (!ev.ownerId || !ev.startAt) return;
+
+  const payload = {
+    name: ev.name,
+    description: ev.description,
+    location: ev.location,
+    startAt: ev.startAt,
+    endAt: ev.endAt,
+  };
+
+  try {
+    const googleConn = await getConnection(ev.ownerId, "google");
+    if (googleConn) {
+      const token = await getValidGoogleToken(ev.ownerId);
+      if (token) {
+        if (ev.googleEventId) {
+          await patchGoogleEvent(token, ev.googleEventId, payload);
+        } else {
+          const newId = await createGoogleEvent(token, payload);
+          await db
+            .update(events)
+            .set({ googleEventId: newId, lastSyncedAt: new Date() })
+            .where(eq(events.id, ev.id));
+        }
+      }
+    }
+  } catch (err) {
+    console.error("[push/google] failed:", err);
+  }
+
+  try {
+    const msConn = await getConnection(ev.ownerId, "microsoft");
+    if (msConn) {
+      const token = await getValidMicrosoftToken(ev.ownerId);
+      if (token) {
+        if (ev.microsoftEventId) {
+          await patchMicrosoftEvent(token, ev.microsoftEventId, payload);
+        } else {
+          const newId = await createMicrosoftEvent(token, payload);
+          await db
+            .update(events)
+            .set({ microsoftEventId: newId, lastSyncedAt: new Date() })
+            .where(eq(events.id, ev.id));
+        }
+      }
+    }
+  } catch (err) {
+    console.error("[push/microsoft] failed:", err);
+  }
+}
+
+/**
+ * Best-effort: remove the event's mirror(s) from external calendar(s) when
+ * the local row is deleted. Requires the deleted row's owner + external ids.
+ */
+export async function deleteExternalMirrors(row: {
+  ownerId: string | null;
+  googleEventId: string | null;
+  microsoftEventId: string | null;
+}): Promise<void> {
+  if (!row.ownerId) return;
+
+  if (row.googleEventId) {
+    try {
+      const token = await getValidGoogleToken(row.ownerId);
+      if (token) await deleteGoogleEvent(token, row.googleEventId);
+    } catch (err) {
+      console.error("[push/google/delete] failed:", err);
+    }
+  }
+  if (row.microsoftEventId) {
+    try {
+      const token = await getValidMicrosoftToken(row.ownerId);
+      if (token) await deleteMicrosoftEvent(token, row.microsoftEventId);
+    } catch (err) {
+      console.error("[push/microsoft/delete] failed:", err);
+    }
+  }
 }
 
 async function upsertMicrosoftEvents(

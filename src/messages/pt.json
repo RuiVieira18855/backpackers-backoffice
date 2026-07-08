@@ -1101,7 +1101,9 @@
         "contact.created": "Contacto criado",
         "contact.stage_changed": "Contacto mudou de fase",
         "deal.won": "Deal ganho",
-        "task.completed": "Tarefa concluída"
+        "task.completed": "Tarefa concluída",
+        "task.due_soon": "Tarefa a vencer (hoje/amanhã)",
+        "transaction.overdue": "Movimento em atraso"
       },
       "ops": {
         "=": "igual a",
