@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
 import { requireProfile } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
+import { runWorkflows } from "@/lib/workflows";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
 type Status = (typeof STATUSES)[number];
@@ -57,6 +58,14 @@ export async function moveTaskToStatus(
       after: { status: updated.status },
     },
   });
+
+  if (newStatus === "done" && before.status !== "done") {
+    await runWorkflows("task.completed", updated, {
+      userId: profile.id,
+      entityType: "task",
+      entityId: updated.id,
+    });
+  }
 
   revalidatePath("/ops/tasks/kanban");
   revalidatePath("/ops/tasks");

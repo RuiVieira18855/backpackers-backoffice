@@ -9,6 +9,7 @@ import { tasks } from "@/lib/db/schema";
 import { requireProfile, requireRole } from "@/lib/dal";
 import { logAudit } from "@/lib/audit";
 import { createNotification } from "@/lib/notifications";
+import { runWorkflows } from "@/lib/workflows";
 import type { TaskFormState } from "@/components/tasks/task-form";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -105,6 +106,15 @@ export async function updateTask(
     action: "update",
     diff: { before, after: updated },
   });
+
+  // Fire task.completed workflow when the update crosses into 'done'.
+  if (updated.status === "done" && before.status !== "done") {
+    await runWorkflows("task.completed", updated, {
+      userId: profile.id,
+      entityType: "task",
+      entityId: updated.id,
+    });
+  }
 
   // Notify on assignee CHANGE — only when the new assignee differs from the
   // previous one (and isn't the actor performing the update).

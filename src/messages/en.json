@@ -108,6 +108,7 @@
     "apps": "Apps & Access",
     "templates": "Templates",
     "customFields": "Custom fields",
+    "workflows": "Automations",
     "financeLabel": "Finance",
     "finance": "Transactions",
     "addIncome": "Add income",
@@ -1044,6 +1045,65 @@
         "sortOrder": "Order",
         "create": "Add",
         "creating": "Adding…"
+      }
+    },
+    "workflows": {
+      "title": "Automations",
+      "subtitle": "Trigger → conditions → actions rules. Run inline whenever the backoffice mutates the source entity.",
+      "backToAdmin": "Back to admin",
+      "backToList": "Back to automations",
+      "newWorkflow": "New automation",
+      "newHint": "Pick a trigger, add optional conditions and the actions to execute.",
+      "empty": "No automations yet. Create the first one.",
+      "inactive": "inactive",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "delete": "Delete",
+      "deleteConfirm": "Delete automation \"{name}\"?",
+      "engineNote": "Actions run inline after the primary mutation succeeds. Failures are logged but never block the user.",
+      "triggers": {
+        "contact.created": "Contact created",
+        "contact.stage_changed": "Contact stage changed",
+        "deal.won": "Deal won",
+        "task.completed": "Task completed"
+      },
+      "ops": {
+        "=": "equals",
+        "!=": "not equals",
+        "contains": "contains",
+        "in": "is in (list)"
+      },
+      "actionTypes": {
+        "create_task": "Create task",
+        "send_notification": "Send in-app notification",
+        "append_note": "Append note (not implemented)"
+      },
+      "form": {
+        "name": "Name",
+        "description": "Description",
+        "trigger": "Trigger",
+        "isActive": "Automation active",
+        "conditions": "Conditions (AND)",
+        "conditionsHint": "All conditions must be true for actions to run. Empty = always runs.",
+        "fieldPlaceholder": "Field (e.g. stage, pillarId, type)",
+        "valuePlaceholder": "Value",
+        "addCondition": "Add condition",
+        "actions": "Actions",
+        "actionsHint": "Executed in order. Failure on one doesn't stop the rest.",
+        "addAction": "Add action",
+        "taskTitle": "Task title",
+        "taskUnassigned": "— unassigned —",
+        "dueOffsetPlaceholder": "Due: N days from today",
+        "taskDescription": "Task description",
+        "notifTarget": "Recipient",
+        "notifTitle": "Title",
+        "notifBody": "Body (optional)",
+        "notifLink": "In-app link (e.g. /crm/contacts/…)",
+        "notePlaceholder": "Note to append",
+        "create": "Create",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel"
       }
     },
     "templates": {

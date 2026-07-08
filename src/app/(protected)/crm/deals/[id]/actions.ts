@@ -11,6 +11,7 @@ import {
   getCustomFieldDefs,
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
+import { runWorkflows } from "@/lib/workflows";
 import type { DealFormState } from "@/components/deals/deal-form";
 
 const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] as const;
@@ -104,6 +105,15 @@ export async function updateDeal(
     diff: { before, after: updated },
   });
 
+  // Fire deal.won workflow only when this update crossed into 'won'.
+  if (updated.stage === "won" && before.stage !== "won") {
+    await runWorkflows("deal.won", updated, {
+      userId: profile.id,
+      entityType: "deal",
+      entityId: updated.id,
+    });
+  }
+
   redirect(`/crm/deals/${updated.id}`);
 }
 
@@ -160,6 +170,14 @@ export async function moveDealStage(
     action: "update",
     diff: { stageChange: { from: before.stage, to: stage } },
   });
+
+  if (stage === "won" && before.stage !== "won") {
+    await runWorkflows("deal.won", updated, {
+      userId: profile.id,
+      entityType: "deal",
+      entityId: updated.id,
+    });
+  }
   return { ok: true };
 }
 

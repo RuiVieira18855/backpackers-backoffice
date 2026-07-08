@@ -19,6 +19,7 @@ import {
   Users,
   UserPlus,
   Wallet,
+  Workflow,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/dal";
@@ -186,6 +187,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
             </SidebarLink>
             <SidebarLink href="/admin/custom-fields" icon={Settings}>
               {t("customFields")}
+            </SidebarLink>
+            <SidebarLink href="/admin/workflows" icon={Workflow}>
+              {t("workflows")}
             </SidebarLink>
           </SidebarGroup>
         </>

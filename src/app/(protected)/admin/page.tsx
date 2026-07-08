@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Boxes, FileText, Settings, Shield } from "lucide-react";
+import { Boxes, FileText, Settings, Shield, Workflow } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import {
   Card,
@@ -13,7 +13,7 @@ import { requireSkill } from "@/lib/dal";
 type Section = {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
-  titleKey: "users" | "templates" | "customFields" | "apps";
+  titleKey: "users" | "templates" | "customFields" | "apps" | "workflows";
 };
 
 const SECTIONS: Section[] = [
@@ -21,6 +21,7 @@ const SECTIONS: Section[] = [
   { href: "/admin/apps", icon: Boxes, titleKey: "apps" },
   { href: "/admin/templates", icon: FileText, titleKey: "templates" },
   { href: "/admin/custom-fields", icon: Settings, titleKey: "customFields" },
+  { href: "/admin/workflows", icon: Workflow, titleKey: "workflows" },
 ];
 
 export default async function AdminLandingPage() {
@@ -30,6 +31,7 @@ export default async function AdminLandingPage() {
   const tTemplates = await getTranslations("admin.templates");
   const tCustomFields = await getTranslations("admin.customFields");
   const tApps = await getTranslations("admin.apps");
+  const tWorkflows = await getTranslations("admin.workflows");
 
   const labels = {
     apps: { title: tApps("title"), subtitle: tApps("cardSubtitle") },
@@ -41,6 +43,10 @@ export default async function AdminLandingPage() {
     customFields: {
       title: tCustomFields("title"),
       subtitle: tCustomFields("subtitle"),
+    },
+    workflows: {
+      title: tWorkflows("title"),
+      subtitle: tWorkflows("subtitle"),
     },
   };
 

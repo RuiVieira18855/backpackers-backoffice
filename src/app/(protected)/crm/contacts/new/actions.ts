@@ -11,6 +11,7 @@ import {
   getCustomFieldDefs,
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
+import { runWorkflows } from "@/lib/workflows";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -108,6 +109,13 @@ export async function createContact(
     entityId: created.id,
     action: "create",
     diff: { snapshot: created },
+  });
+
+  // Fire automation workflows — best-effort, never blocks the create.
+  await runWorkflows("contact.created", created, {
+    userId: profile.id,
+    entityType: "contact",
+    entityId: created.id,
   });
 
   redirect(`/crm/contacts/${created.id}`);

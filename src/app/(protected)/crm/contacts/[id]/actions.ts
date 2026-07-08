@@ -12,6 +12,7 @@ import {
   getCustomFieldDefs,
   parseCustomFieldsFromFormData,
 } from "@/lib/custom-fields";
+import { runWorkflows } from "@/lib/workflows";
 import type { ContactFormState } from "@/components/contacts/contact-form";
 
 const CONTACT_TYPES = ["lead", "customer", "partner", "vendor"] as const;
@@ -119,6 +120,15 @@ export async function updateContact(
     action: "update",
     diff: { before, after: updated },
   });
+
+  // Fire stage-change workflows only when stage actually changed.
+  if (before.stage !== updated.stage) {
+    await runWorkflows("contact.stage_changed", updated, {
+      userId: profile.id,
+      entityType: "contact",
+      entityId: updated.id,
+    });
+  }
 
   redirect(`/crm/contacts/${updated.id}`);
 }

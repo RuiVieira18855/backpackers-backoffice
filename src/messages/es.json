@@ -108,6 +108,7 @@
     "apps": "Apps & Accesos",
     "templates": "Templates",
     "customFields": "Custom fields",
+    "workflows": "Automatizaciones",
     "financeLabel": "Finanzas",
     "finance": "Movimientos",
     "addIncome": "Añadir ingreso",
@@ -1044,6 +1045,65 @@
         "sortOrder": "Orden",
         "create": "Añadir",
         "creating": "Añadiendo…"
+      }
+    },
+    "workflows": {
+      "title": "Automatizaciones",
+      "subtitle": "Reglas trigger → condiciones → acciones. Se ejecutan inline al mutar la entidad fuente.",
+      "backToAdmin": "Volver a administración",
+      "backToList": "Volver a automatizaciones",
+      "newWorkflow": "Nueva automatización",
+      "newHint": "Elige el trigger, añade condiciones opcionales y las acciones a ejecutar.",
+      "empty": "Aún no hay automatizaciones. Crea la primera.",
+      "inactive": "inactiva",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "delete": "Eliminar",
+      "deleteConfirm": "¿Eliminar la automatización «{name}»?",
+      "engineNote": "Las acciones se ejecutan inline tras la mutación primaria. Los fallos se registran pero nunca bloquean al usuario.",
+      "triggers": {
+        "contact.created": "Contacto creado",
+        "contact.stage_changed": "Contacto cambió de fase",
+        "deal.won": "Deal ganado",
+        "task.completed": "Tarea completada"
+      },
+      "ops": {
+        "=": "igual a",
+        "!=": "distinto de",
+        "contains": "contiene",
+        "in": "está en (lista)"
+      },
+      "actionTypes": {
+        "create_task": "Crear tarea",
+        "send_notification": "Enviar notificación in-app",
+        "append_note": "Añadir nota (sin implementar)"
+      },
+      "form": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "trigger": "Trigger",
+        "isActive": "Automatización activa",
+        "conditions": "Condiciones (AND)",
+        "conditionsHint": "Todas deben ser ciertas para ejecutar las acciones. Vacío = siempre corre.",
+        "fieldPlaceholder": "Campo (ej: stage, pillarId, type)",
+        "valuePlaceholder": "Valor",
+        "addCondition": "Añadir condición",
+        "actions": "Acciones",
+        "actionsHint": "Se ejecutan en orden. Un fallo no detiene el resto.",
+        "addAction": "Añadir acción",
+        "taskTitle": "Título de la tarea",
+        "taskUnassigned": "— sin responsable —",
+        "dueOffsetPlaceholder": "Plazo: N días desde hoy",
+        "taskDescription": "Descripción de la tarea",
+        "notifTarget": "Destinatario",
+        "notifTitle": "Título",
+        "notifBody": "Cuerpo (opcional)",
+        "notifLink": "Link in-app (ej: /crm/contacts/…)",
+        "notePlaceholder": "Nota a añadir",
+        "create": "Crear",
+        "save": "Guardar",
+        "saving": "Guardando…",
+        "cancel": "Cancelar"
       }
     },
     "templates": {
