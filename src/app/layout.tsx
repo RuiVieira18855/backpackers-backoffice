@@ -3,6 +3,8 @@ import { Inter, Bebas_Neue, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ToastProvider } from "@/components/ui/toast";
+import { ConfirmDialogProvider } from "@/components/ui/confirm-dialog";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,7 +50,11 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <ConfirmDialogProvider>{children}</ConfirmDialogProvider>
+            </ToastProvider>
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>

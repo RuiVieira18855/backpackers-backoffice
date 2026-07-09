@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { deleteTask } from "./actions";
 
 export function DeleteTaskButton({
@@ -14,12 +15,20 @@ export function DeleteTaskButton({
   taskTitle: string;
 }) {
   const t = useTranslations("ops.tasks.detail");
+  const tCommon = useTranslations("common");
+  const confirm = useConfirm();
   const [pending, startTransition] = useTransition();
 
-  function onClick() {
-    if (!window.confirm(t("deleteConfirm", { title: taskTitle }))) return;
+  const onClick = async () => {
+    const ok = await confirm({
+      title: t("deleteConfirm", { title: taskTitle }),
+      confirmLabel: t("delete"),
+      cancelLabel: tCommon("cancel"),
+      destructive: true,
+    });
+    if (!ok) return;
     startTransition(() => deleteTask(taskId));
-  }
+  };
 
   return (
     <Button

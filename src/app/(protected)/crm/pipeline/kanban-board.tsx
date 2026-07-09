@@ -16,6 +16,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 import { moveContactToStage } from "./actions";
 
 const STAGES = [
@@ -41,10 +42,13 @@ export function KanbanBoard({ contacts }: { contacts: KanbanContact[] }) {
   const t = useTranslations("crm.pipeline");
   const tStages = useTranslations("crm.stages");
   const tTypes = useTranslations("crm.types");
+  const tKanban = useTranslations("crm.pipeline");
   const router = useRouter();
+  const toast = useToast();
   const [pending, startTransition] = useTransition();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [items, setItems] = useState(contacts);
+  void tKanban;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -84,10 +88,9 @@ export function KanbanBoard({ contacts }: { contacts: KanbanContact[] }) {
     startTransition(async () => {
       const result = await moveContactToStage(contactId, newStage);
       if (!result.ok) {
-        // Rollback on failure
         setItems(prev);
+        toast.error(result.error ?? "Error");
       }
-      // Server already revalidates, but router.refresh ensures audit log etc reload
       router.refresh();
     });
   }

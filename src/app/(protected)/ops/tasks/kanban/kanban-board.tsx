@@ -16,6 +16,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 import { moveTaskToStatus } from "./actions";
 
 const STATUSES = ["todo", "doing", "blocked", "done"] as const;
@@ -47,6 +48,7 @@ export function KanbanBoard({ tasks }: { tasks: KanbanTask[] }) {
   const tStatuses = useTranslations("ops.taskStatuses");
   const tPriorities = useTranslations("ops.taskPriorities");
   const router = useRouter();
+  const toast = useToast();
   const [pending, startTransition] = useTransition();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [items, setItems] = useState(tasks);
@@ -85,7 +87,10 @@ export function KanbanBoard({ tasks }: { tasks: KanbanTask[] }) {
 
     startTransition(async () => {
       const result = await moveTaskToStatus(taskId, newStatus);
-      if (!result.ok) setItems(prev);
+      if (!result.ok) {
+        setItems(prev);
+        toast.error(result.error ?? "Error");
+      }
       router.refresh();
     });
   }

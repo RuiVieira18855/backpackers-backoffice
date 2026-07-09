@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import {
   Card,
   CardContent,
@@ -94,7 +96,10 @@ function ProviderRow({
   configured: boolean;
 }) {
   const t = useTranslations("settings.calendarSync");
+  const tCommon = useTranslations("common");
   const router = useRouter();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [pending, startTransition] = useTransition();
 
   const connected = conn != null;
@@ -103,7 +108,7 @@ function ProviderRow({
     startTransition(async () => {
       const r = await syncCalendarNow(provider);
       if (r.ok) {
-        alert(
+        toast.success(
           t("syncedAlert", {
             inserted: r.inserted,
             updated: r.updated,
@@ -111,16 +116,22 @@ function ProviderRow({
           }),
         );
       } else {
-        alert(t("syncFailedAlert", { error: r.error ?? "?" }));
+        toast.error(t("syncFailedAlert", { error: r.error ?? "?" }));
       }
       router.refresh();
     });
 
-  const handleDisconnect = () => {
-    if (!window.confirm(t("disconnectConfirm", { label: providerLabel })))
-      return;
+  const handleDisconnect = async () => {
+    const ok = await confirm({
+      title: t("disconnectConfirm", { label: providerLabel }),
+      confirmLabel: t("disconnect"),
+      cancelLabel: tCommon("cancel"),
+      destructive: true,
+    });
+    if (!ok) return;
     startTransition(async () => {
       await disconnectCalendar(provider);
+      toast.info(t("disconnectedToast", { label: providerLabel }));
       router.refresh();
     });
   };

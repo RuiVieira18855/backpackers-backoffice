@@ -7,6 +7,8 @@ import { Tag, Trash2, UserCheck, Workflow, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { SortableHeader } from "@/components/sortable-header";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import {
   bulkAddTag,
   bulkAssignOwner,
@@ -60,7 +62,10 @@ export function ContactsBulkBar({
   const tStages = useTranslations("crm.stages");
   const tTypes = useTranslations("crm.types");
   const tBulk = useTranslations("bulk");
+  const tCommon = useTranslations("common");
   const router = useRouter();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();
 
@@ -86,18 +91,24 @@ export function ContactsBulkBar({
 
   const clearSelection = () => setSelected(new Set());
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     const ids = Array.from(selected);
     if (ids.length === 0) return;
-    const confirmMsg = tBulk("deleteConfirm", { count: ids.length });
-    if (!confirm(confirmMsg)) return;
+    const ok = await confirm({
+      title: tBulk("deleteConfirm", { count: ids.length }),
+      confirmLabel: tBulk("delete"),
+      cancelLabel: tCommon("cancel"),
+      destructive: true,
+    });
+    if (!ok) return;
     startTransition(async () => {
       const res = await bulkDeleteContacts(ids);
       if (res.ok) {
         clearSelection();
+        toast.success(tBulk("deleteToast", { count: res.count ?? ids.length }));
         router.refresh();
       } else {
-        alert(res.error ?? "Error");
+        toast.error(res.error ?? "Error");
       }
     });
   };
@@ -109,9 +120,10 @@ export function ContactsBulkBar({
       const res = await bulkUpdateContactStage(ids, stage);
       if (res.ok) {
         clearSelection();
+        toast.success(tBulk("stageToast", { count: res.count ?? ids.length }));
         router.refresh();
       } else {
-        alert(res.error ?? "Error");
+        toast.error(res.error ?? "Error");
       }
     });
   };
@@ -123,9 +135,10 @@ export function ContactsBulkBar({
       const res = await bulkAssignOwner(ids, ownerId);
       if (res.ok) {
         clearSelection();
+        toast.success(tBulk("ownerToast", { count: res.count ?? ids.length }));
         router.refresh();
       } else {
-        alert(res.error ?? "Error");
+        toast.error(res.error ?? "Error");
       }
     });
   };
@@ -139,9 +152,10 @@ export function ContactsBulkBar({
       const res = await bulkAddTag(ids, tag);
       if (res.ok) {
         clearSelection();
+        toast.success(tBulk("tagToast", { count: res.count ?? ids.length }));
         router.refresh();
       } else {
-        alert(res.error ?? "Error");
+        toast.error(res.error ?? "Error");
       }
     });
   };

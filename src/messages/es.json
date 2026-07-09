@@ -19,7 +19,11 @@
     "ownerPickerLabel": "Asignar responsable",
     "unassign": "sin responsable",
     "addTag": "Añadir tag",
-    "addTagPrompt": "Tag(s) a añadir (separadas por coma):"
+    "addTagPrompt": "Tag(s) a añadir (separadas por coma):",
+    "deleteToast": "{count, plural, one {1 registro eliminado} other {# registros eliminados}}.",
+    "stageToast": "{count, plural, one {Fase actualizada en 1 registro} other {Fase actualizada en # registros}}.",
+    "ownerToast": "{count, plural, one {Responsable asignado en 1 registro} other {Responsable asignado en # registros}}.",
+    "tagToast": "{count, plural, one {Tags aplicadas en 1 registro} other {Tags aplicadas en # registros}}."
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -368,7 +372,8 @@
       "customFields": "Campos personalizados",
       "generateInvoice": "Generar factura",
       "generatingInvoice": "Generando…",
-      "generateInvoiceConfirm": "¿Generar una factura pendiente desde el deal «{name}»?"
+      "generateInvoiceConfirm": "¿Generar una factura pendiente desde el deal «{name}»?",
+      "deletedToast": "Deal «{name}» eliminado."
     },
     "pipeline": {
       "title": "Pipeline de deals",
@@ -912,6 +917,7 @@
       "connect": "Conectar",
       "disconnect": "Desconectar",
       "disconnectConfirm": "¿Desconectar {label}? Los eventos ya importados se mantienen, pero dejan de sincronizarse.",
+      "disconnectedToast": "{label} desconectado.",
       "syncNow": "Sincronizar ahora",
       "syncing": "Sincronizando…",
       "syncedAlert": "Sync completado. Insertados: {inserted}, actualizados: {updated}, omitidos: {skipped}.",
@@ -1087,6 +1093,9 @@
       "deactivate": "Desactivar",
       "delete": "Eliminar",
       "deleteConfirm": "¿Eliminar la automatización «{name}»?",
+      "activatedToast": "Automatización activada.",
+      "deactivatedToast": "Automatización desactivada.",
+      "deletedToast": "Automatización «{name}» eliminada.",
       "engineNote": "Las acciones se ejecutan inline tras la mutación primaria. Los fallos se registran pero nunca bloquean al usuario.",
       "triggers": {
         "contact.created": "Contacto creado",
@@ -1155,6 +1164,9 @@
       "testCta": "Enviar prueba",
       "rotateCta": "Rotar secret",
       "rotateConfirm": "¿Rotar el secret? El receiver debe pasar al nuevo secret de inmediato.",
+      "testSentToast": "Prueba enviada. Mira la lista de entregas abajo.",
+      "rotatedToast": "Secret rotado. Actualiza el receiver con el nuevo valor.",
+      "deletedToast": "Webhook «{name}» eliminado.",
       "delete": "Eliminar",
       "deleteConfirm": "¿Eliminar el webhook «{name}»?",
       "deliveries": "Entregas recientes",

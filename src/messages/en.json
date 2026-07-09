@@ -19,7 +19,11 @@
     "ownerPickerLabel": "Assign owner",
     "unassign": "no owner",
     "addTag": "Add tag",
-    "addTagPrompt": "Tag(s) to add (comma-separated):"
+    "addTagPrompt": "Tag(s) to add (comma-separated):",
+    "deleteToast": "{count, plural, one {1 record deleted} other {# records deleted}}.",
+    "stageToast": "{count, plural, one {Stage updated on 1 record} other {Stage updated on # records}}.",
+    "ownerToast": "{count, plural, one {Owner assigned on 1 record} other {Owner assigned on # records}}.",
+    "tagToast": "{count, plural, one {Tags applied on 1 record} other {Tags applied on # records}}."
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -368,7 +372,8 @@
       "customFields": "Custom fields",
       "generateInvoice": "Generate invoice",
       "generatingInvoice": "Generating…",
-      "generateInvoiceConfirm": "Generate a pending invoice from deal \"{name}\"?"
+      "generateInvoiceConfirm": "Generate a pending invoice from deal \"{name}\"?",
+      "deletedToast": "Deal \"{name}\" deleted."
     },
     "pipeline": {
       "title": "Deals pipeline",
@@ -912,6 +917,7 @@
       "connect": "Connect",
       "disconnect": "Disconnect",
       "disconnectConfirm": "Disconnect {label}? Already imported events stay, but stop syncing.",
+      "disconnectedToast": "{label} disconnected.",
       "syncNow": "Sync now",
       "syncing": "Syncing…",
       "syncedAlert": "Sync done. Inserted: {inserted}, updated: {updated}, skipped: {skipped}.",
@@ -1087,6 +1093,9 @@
       "deactivate": "Deactivate",
       "delete": "Delete",
       "deleteConfirm": "Delete automation \"{name}\"?",
+      "activatedToast": "Automation activated.",
+      "deactivatedToast": "Automation deactivated.",
+      "deletedToast": "Automation \"{name}\" deleted.",
       "engineNote": "Actions run inline after the primary mutation succeeds. Failures are logged but never block the user.",
       "triggers": {
         "contact.created": "Contact created",
@@ -1155,6 +1164,9 @@
       "testCta": "Send test",
       "rotateCta": "Rotate secret",
       "rotateConfirm": "Rotate the secret? The receiver must switch to the new secret immediately.",
+      "testSentToast": "Test sent. See the deliveries list below.",
+      "rotatedToast": "Secret rotated. Update the receiver with the new value.",
+      "deletedToast": "Webhook \"{name}\" deleted.",
       "delete": "Delete",
       "deleteConfirm": "Delete webhook \"{name}\"?",
       "deliveries": "Recent deliveries",

@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { deleteContact } from "./actions";
 
 export function DeleteContactButton({
@@ -14,12 +15,20 @@ export function DeleteContactButton({
   contactName: string;
 }) {
   const t = useTranslations("crm.detail");
+  const tCommon = useTranslations("common");
+  const confirm = useConfirm();
   const [pending, startTransition] = useTransition();
 
-  function onClick() {
-    if (!window.confirm(t("deleteConfirm", { name: contactName }))) return;
+  const onClick = async () => {
+    const ok = await confirm({
+      title: t("deleteConfirm", { name: contactName }),
+      confirmLabel: t("delete"),
+      cancelLabel: tCommon("cancel"),
+      destructive: true,
+    });
+    if (!ok) return;
     startTransition(() => deleteContact(contactId));
-  }
+  };
 
   return (
     <Button

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useConfirm } from "@/components/ui/confirm-dialog";
+import { useToast } from "@/components/ui/toast";
 import { deleteDeal } from "./actions";
 
 type Props = {
@@ -14,13 +16,23 @@ type Props = {
 
 export function DeleteDealButton({ dealId, dealName }: Props) {
   const t = useTranslations("deals.detail");
+  const tCommon = useTranslations("common");
+  const confirm = useConfirm();
+  const toast = useToast();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  const handle = () => {
-    if (!confirm(t("deleteConfirm", { name: dealName }))) return;
+  const handle = async () => {
+    const ok = await confirm({
+      title: t("deleteConfirm", { name: dealName }),
+      confirmLabel: t("delete"),
+      cancelLabel: tCommon("cancel"),
+      destructive: true,
+    });
+    if (!ok) return;
     startTransition(async () => {
       await deleteDeal(dealId);
+      toast.info(t("deletedToast", { name: dealName }));
       router.refresh();
     });
   };

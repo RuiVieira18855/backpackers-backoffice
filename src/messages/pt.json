@@ -19,7 +19,11 @@
     "ownerPickerLabel": "Atribuir responsável",
     "unassign": "sem responsável",
     "addTag": "Adicionar tag",
-    "addTagPrompt": "Tag(s) a adicionar (separadas por vírgula):"
+    "addTagPrompt": "Tag(s) a adicionar (separadas por vírgula):",
+    "deleteToast": "{count, plural, one {1 registo eliminado} other {# registos eliminados}}.",
+    "stageToast": "{count, plural, one {Fase actualizada em 1 registo} other {Fase actualizada em # registos}}.",
+    "ownerToast": "{count, plural, one {Responsável atribuído em 1 registo} other {Responsável atribuído em # registos}}.",
+    "tagToast": "{count, plural, one {Tags aplicadas em 1 registo} other {Tags aplicadas em # registos}}."
   },
   "common": {
     "appName": "Backpackers Backoffice",
@@ -368,7 +372,8 @@
       "customFields": "Campos personalizados",
       "generateInvoice": "Gerar factura",
       "generatingInvoice": "A gerar…",
-      "generateInvoiceConfirm": "Gerar uma factura pendente a partir do deal «{name}»?"
+      "generateInvoiceConfirm": "Gerar uma factura pendente a partir do deal «{name}»?",
+      "deletedToast": "Deal «{name}» eliminado."
     },
     "pipeline": {
       "title": "Pipeline de deals",
@@ -921,6 +926,7 @@
       "connect": "Ligar",
       "disconnect": "Desligar",
       "disconnectConfirm": "Desligar {label}? Os eventos já importados mantêm-se, mas deixam de sincronizar.",
+      "disconnectedToast": "{label} desligado.",
       "syncNow": "Sincronizar agora",
       "syncing": "A sincronizar…",
       "syncedAlert": "Sync concluído. Inseridos: {inserted}, actualizados: {updated}, ignorados: {skipped}.",
@@ -1096,6 +1102,9 @@
       "deactivate": "Desactivar",
       "delete": "Eliminar",
       "deleteConfirm": "Eliminar a automação «{name}»?",
+      "activatedToast": "Automação activada.",
+      "deactivatedToast": "Automação desactivada.",
+      "deletedToast": "Automação «{name}» eliminada.",
       "engineNote": "As acções correm inline quando a mutação primária termina com sucesso. Falhas são registadas mas nunca bloqueiam o utilizador.",
       "triggers": {
         "contact.created": "Contacto criado",
@@ -1164,6 +1173,9 @@
       "testCta": "Enviar teste",
       "rotateCta": "Rodar secret",
       "rotateConfirm": "Rodar o secret? O receiver terá de usar o novo secret imediatamente.",
+      "testSentToast": "Teste enviado. Vê a lista de entregas abaixo.",
+      "rotatedToast": "Secret rodado. Actualiza o receiver com o novo valor.",
+      "deletedToast": "Webhook «{name}» eliminado.",
       "delete": "Eliminar",
       "deleteConfirm": "Eliminar o webhook «{name}»?",
       "deliveries": "Entregas recentes",
