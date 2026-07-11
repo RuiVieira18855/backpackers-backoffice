@@ -24,14 +24,14 @@ const actionSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("create_task"),
     title: z.string().min(1),
-    assigneeId: z.string().uuid().optional(),
+    assigneeId: z.uuid().optional(),
     dueOffsetDays: z.number().int().min(0).max(365).optional(),
     description: z.string().optional(),
-    pillarId: z.string().uuid().optional(),
+    pillarId: z.uuid().optional(),
   }),
   z.object({
     type: z.literal("send_notification"),
-    targetUserId: z.string().uuid(),
+    targetUserId: z.uuid(),
     title: z.string().min(1),
     body: z.string().optional(),
     link: z.string().optional(),
@@ -101,7 +101,7 @@ export async function createWorkflow(
     isActive: raw.isActive,
   });
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",
@@ -155,7 +155,7 @@ export async function updateWorkflow(
     isActive: raw.isActive,
   });
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutGrid, Merge, Plus, Target, Upload } from "lucide-react";
+import { LayoutGrid, Merge, Plus, Target, Upload, Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import {
@@ -7,6 +7,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
 import { getAllPillars, getAllProfiles, requireProfile } from "@/lib/dal";
@@ -243,17 +244,16 @@ export default async function CrmPage({
       </p>
 
       {rows.length === 0 ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-muted-foreground">{t("empty")}</p>
-            <Button asChild className="mt-6">
-              <Link href="/crm/contacts/new">
-                <Plus className="mr-2 h-4 w-4" />
-                {t("newContact")}
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<Users className="h-5 w-5" />}
+          title={t("empty")}
+          description={t("emptyDescription")}
+          action={{ label: t("newContact"), href: "/crm/contacts/new" }}
+          secondary={{
+            label: t("importContacts"),
+            href: "/crm/contacts/import",
+          }}
+        />
       ) : (
         <>
           <Card>

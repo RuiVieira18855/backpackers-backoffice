@@ -25,9 +25,9 @@ const schema = z.object({
   vendor: z.string().optional(),
   status: z.enum(STATUSES),
   dueDate: z.string().nullable(),
-  pillarId: z.string().uuid().nullable(),
-  eventId: z.string().uuid().nullable(),
-  projectId: z.string().uuid().nullable(),
+  pillarId: z.uuid().nullable(),
+  eventId: z.uuid().nullable(),
+  projectId: z.uuid().nullable(),
   notes: z.string().optional(),
 });
 
@@ -66,7 +66,7 @@ export async function createTransaction(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

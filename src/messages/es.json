@@ -139,6 +139,7 @@
     "noCategories": "Datos insuficientes para agrupar.",
     "count": "{count, plural, =0 {Sin movimientos} one {1 movimiento} other {# movimientos}}",
     "empty": "Aún no hay movimientos.",
+    "emptyDescription": "Añade el primer ingreso o gasto para empezar a seguir el cashflow.",
     "types": {
       "income": "Ingreso",
       "expense": "Gasto"
@@ -329,7 +330,9 @@
     "newDeal": "Nuevo deal",
     "pipeline": "Pipeline",
     "count": "{count, plural, =0 {Sin deals} one {1 deal} other {# deals}}",
-    "empty": "Aún no hay deals. Crea el primero.",
+    "empty": "Aún no hay deals.",
+    "emptyDescription": "Crea el primer deal para empezar a seguir oportunidades en el pipeline.",
+    "openPipeline": "Vista pipeline",
     "stages": {
       "lead": "Lead",
       "qualified": "Cualificado",
@@ -433,7 +436,9 @@
       "startOver": "Empezar de nuevo"
     },
     "contactsCount": "{count, plural, =0 {Sin contactos} one {1 contacto} other {# contactos}}",
-    "empty": "Aún no hay contactos. Crea el primero.",
+    "empty": "Aún no hay contactos.",
+    "emptyDescription": "Crea el primer contacto o importa una lista existente para empezar a mapear tu ecosistema.",
+    "importContacts": "Importar CSV",
     "openKanban": "Vista pipeline",
     "openDeals": "Deals",
     "dedup": {
@@ -760,7 +765,8 @@
       "subtitle": "To-dos del grupo — opcionalmente ligadas a proyectos o eventos.",
       "newTask": "Nueva tarea",
       "openKanban": "Vista kanban",
-      "empty": "Aún no hay tareas. Crea la primera.",
+      "empty": "Aún no hay tareas.",
+      "emptyDescription": "Crea la primera tarea o abre el kanban para organizar el trabajo por estado.",
       "count": "{count, plural, =0 {Sin tareas} one {1 tarea} other {# tareas}}",
       "allTasks": "Todas",
       "myTasks": "Las mías",
@@ -1267,6 +1273,24 @@
         "cannotGrantSuperUser": "Solo super usuarios pueden asignar el rol super usuario.",
         "inviteFailed": "No se pudo crear el usuario. Comprueba que el email no esté ya registrado."
       }
+    }
+  },
+  "ai": {
+    "dealCopilot": {
+      "title": "Copilot del deal",
+      "description": "Resumen del estado y sugerencia de los próximos 2-3 pasos concretos.",
+      "cta": "Sugerir próximos pasos",
+      "regenerate": "Regenerar",
+      "disclaimer": "Sugerencia generada por IA — valida antes de actuar.",
+      "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
+    },
+    "projectCopilot": {
+      "title": "Copilot del proyecto",
+      "description": "Analiza la lista actual de tareas y sugiere los huecos que faltan.",
+      "cta": "Sugerir tareas que faltan",
+      "regenerate": "Regenerar",
+      "disclaimer": "Sugerencia generada por IA — valida antes de crear tareas.",
+      "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
     }
   }
 }

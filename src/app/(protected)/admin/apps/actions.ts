@@ -111,7 +111,7 @@ export async function createApp(
 
   const parsed = newAppSchema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",
@@ -176,7 +176,7 @@ export async function updateApp(
 
   const parsed = updateAppSchema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",

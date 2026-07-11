@@ -21,7 +21,7 @@ const ALLOWED_AVATAR_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gi
 
 const schema = z.object({
   fullName: z.string().min(1).max(120),
-  defaultPillarId: z.string().uuid().nullable(),
+  defaultPillarId: z.uuid().nullable(),
 });
 
 export async function updateOwnProfile(

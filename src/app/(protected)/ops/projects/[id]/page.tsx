@@ -22,6 +22,7 @@ import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { updateProject } from "./actions";
 import { DeleteProjectButton } from "./delete-button";
 import { LogHoursForm } from "./log-hours-form";
+import { ProjectCopilot } from "./ai-copilot";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -132,6 +133,8 @@ export default async function ProjectDetailPage({ params }: Props) {
           <DeleteProjectButton projectId={project.id} projectName={project.name} />
         </div>
       </div>
+
+      <ProjectCopilot projectId={project.id} />
 
       <ProjectForm
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}

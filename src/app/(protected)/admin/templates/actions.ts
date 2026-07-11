@@ -22,7 +22,7 @@ const schema = z.object({
   name: z.string().min(1).max(120),
   body: z.string().min(1),
   scope: z.enum(SCOPES),
-  pillarId: z.string().uuid().nullable(),
+  pillarId: z.uuid().nullable(),
 });
 
 export type TemplateFormState = {

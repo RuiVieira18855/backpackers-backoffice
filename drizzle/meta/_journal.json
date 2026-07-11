@@ -134,6 +134,13 @@
       "when": 1783547028822,
       "tag": "0018_boring_bug",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1783763144974,
+      "tag": "0019_ai_usage",
+      "breakpoints": true
     }
   ]
 }

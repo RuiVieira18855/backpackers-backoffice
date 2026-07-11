@@ -21,7 +21,7 @@ const schema = z.object({
   pillarSlug: z.string().min(1),
   type: z.enum(TYPES),
   fullName: z.string().min(2),
-  email: z.string().email(),
+  email: z.email(),
   phone: z.string().optional(),
   preferredDate: z.string().min(8), // YYYY-MM-DD
   partySize: z.string().regex(/^\d+$/),

@@ -56,7 +56,7 @@ export async function createCustomFieldDef(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",

@@ -35,11 +35,11 @@ const CONTACT_SOURCES = [
 
 const schema = z.object({
   fullName: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   type: z.enum(CONTACT_TYPES),
   stage: z.enum(CONTACT_STAGES),
   source: z.enum(CONTACT_SOURCES).optional(),
-  email: z.string().email().optional().or(z.literal("")),
+  email: z.email().optional().or(z.literal("")),
   phone: z.string().optional(),
   company: z.string().optional(),
   jobTitle: z.string().optional(),
@@ -75,7 +75,7 @@ export async function createContact(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

@@ -17,10 +17,10 @@ const STATUSES = ["planned", "active", "on_hold", "completed", "cancelled"] as c
 
 const schema = z.object({
   name: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   status: z.enum(STATUSES),
   description: z.string().optional(),
-  clientContactId: z.string().uuid().nullable(),
+  clientContactId: z.uuid().nullable(),
   startDate: z.string().nullable(),
   targetDate: z.string().nullable(),
   notes: z.string().optional(),
@@ -54,7 +54,7 @@ export async function createProject(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

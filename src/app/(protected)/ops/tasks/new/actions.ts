@@ -15,13 +15,13 @@ const PRIORITIES = ["low", "normal", "high", "urgent"] as const;
 
 const schema = z.object({
   title: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   status: z.enum(STATUSES),
   priority: z.enum(PRIORITIES),
   description: z.string().optional(),
-  assigneeId: z.string().uuid().nullable(),
-  projectId: z.string().uuid().nullable(),
-  eventId: z.string().uuid().nullable(),
+  assigneeId: z.uuid().nullable(),
+  projectId: z.uuid().nullable(),
+  eventId: z.uuid().nullable(),
   dueDate: z.string().nullable(),
 });
 
@@ -53,7 +53,7 @@ export async function createTask(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

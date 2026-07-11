@@ -13,6 +13,7 @@ import { getCustomFieldDefs } from "@/lib/custom-fields";
 import { updateDeal, generateInvoiceFromDeal } from "./actions";
 import { DeleteDealButton } from "./delete-button";
 import { GenerateInvoiceButton } from "./generate-invoice-button";
+import { DealCopilot } from "./ai-copilot";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -81,6 +82,8 @@ export default async function DealDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      <DealCopilot dealId={deal.id} />
 
       <DealForm
         pillars={pillars.map((p) => ({ id: p.id, name: p.name }))}

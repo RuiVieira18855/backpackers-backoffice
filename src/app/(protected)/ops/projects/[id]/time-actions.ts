@@ -14,7 +14,7 @@ export type LogHoursState = {
 };
 
 const schema = z.object({
-  projectId: z.string().uuid(),
+  projectId: z.uuid(),
   hours: z.string().regex(/^\d+(\.\d{1,2})?$/),
   date: z.string(),
   description: z.string().optional(),
@@ -38,7 +38,7 @@ export async function logHours(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",

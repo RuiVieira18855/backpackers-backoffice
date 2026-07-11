@@ -16,9 +16,9 @@ const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] a
 
 const schema = z.object({
   name: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   stage: z.enum(STAGES),
-  contactId: z.string().uuid().nullable(),
+  contactId: z.uuid().nullable(),
   value: z.string().regex(/^(\d+(\.\d{1,2})?)?$/),
   currency: z.string().min(1).max(8),
   expectedCloseDate: z.string().nullable(),
@@ -53,7 +53,7 @@ export async function createDeal(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

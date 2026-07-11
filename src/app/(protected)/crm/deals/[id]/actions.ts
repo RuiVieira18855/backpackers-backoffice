@@ -18,11 +18,11 @@ import type { DealFormState } from "@/components/deals/deal-form";
 const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] as const;
 
 const schema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   stage: z.enum(STAGES),
-  contactId: z.string().uuid().nullable(),
+  contactId: z.uuid().nullable(),
   value: z.string().regex(/^(\d+(\.\d{1,2})?)?$/),
   currency: z.string().min(1).max(8),
   expectedCloseDate: z.string().nullable(),

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Plus,
+  Receipt,
   TrendingDown,
   TrendingUp,
   Wallet,
@@ -15,6 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
 import { getAllPillars, requireSkill } from "@/lib/dal";
@@ -497,17 +499,12 @@ export default async function FinancePage({
       </p>
 
       {rows.length === 0 ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-muted-foreground">{t("empty")}</p>
-            <Button asChild className="mt-6">
-              <Link href="/finance/new">
-                <Plus className="mr-2 h-4 w-4" />
-                {t("addTransaction")}
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<Receipt className="h-5 w-5" />}
+          title={t("empty")}
+          description={t("emptyDescription")}
+          action={{ label: t("addTransaction"), href: "/finance/new" }}
+        />
       ) : (
         <Card>
           <CardContent className="p-0">

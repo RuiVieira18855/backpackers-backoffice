@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { LayoutGrid, Plus } from "lucide-react";
+import { CheckSquare, LayoutGrid, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
@@ -197,17 +198,16 @@ export default async function TasksListPage({
       </p>
 
       {rows.length === 0 ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-muted-foreground">{t("empty")}</p>
-            <Button asChild className="mt-6">
-              <Link href="/ops/tasks/new">
-                <Plus className="mr-2 h-4 w-4" />
-                {t("newTask")}
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<CheckSquare className="h-5 w-5" />}
+          title={t("empty")}
+          description={t("emptyDescription")}
+          action={{ label: t("newTask"), href: "/ops/tasks/new" }}
+          secondary={{
+            label: t("openKanban"),
+            href: "/ops/tasks/kanban",
+          }}
+        />
       ) : (
         <Card>
           <CardContent className="p-0">

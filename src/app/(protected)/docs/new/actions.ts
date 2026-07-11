@@ -29,11 +29,11 @@ const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
 const schema = z.object({
   title: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   type: z.enum(TYPES),
   description: z.string().optional(),
-  eventId: z.string().uuid().nullable(),
-  projectId: z.string().uuid().nullable(),
+  eventId: z.uuid().nullable(),
+  projectId: z.uuid().nullable(),
 });
 
 function sanitizeFileName(name: string): string {
@@ -75,7 +75,7 @@ export async function uploadDocument(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

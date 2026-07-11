@@ -17,11 +17,11 @@ const ROLES = ["super_user", "admin_grupo", "admin_pilar", "member"] as const;
 const SKILL_VALUES = SKILLS;
 
 const schema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   role: z.enum(ROLES),
   skills: z.array(z.enum(SKILL_VALUES as never)),
-  pillarAccess: z.array(z.string().uuid()),
-  defaultPillarId: z.string().uuid().nullable(),
+  pillarAccess: z.array(z.uuid()),
+  defaultPillarId: z.uuid().nullable(),
 });
 
 export async function adminUpdateUser(
@@ -48,7 +48,7 @@ export async function adminUpdateUser(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

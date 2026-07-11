@@ -139,6 +139,7 @@
     "noCategories": "Not enough data to group.",
     "count": "{count, plural, =0 {No transactions} one {1 transaction} other {# transactions}}",
     "empty": "No transactions yet.",
+    "emptyDescription": "Add your first income or expense to start tracking cashflow.",
     "types": {
       "income": "Income",
       "expense": "Expense"
@@ -329,7 +330,9 @@
     "newDeal": "New deal",
     "pipeline": "Pipeline",
     "count": "{count, plural, =0 {No deals} one {1 deal} other {# deals}}",
-    "empty": "No deals yet. Create the first one.",
+    "empty": "No deals yet.",
+    "emptyDescription": "Create your first deal to start tracking opportunities in the pipeline.",
+    "openPipeline": "Pipeline view",
     "stages": {
       "lead": "Lead",
       "qualified": "Qualified",
@@ -397,7 +400,9 @@
     "subtitle": "Contacts, leads and partners — across pillars.",
     "newContact": "New contact",
     "contactsCount": "{count, plural, =0 {No contacts} one {1 contact} other {# contacts}}",
-    "empty": "No contacts yet. Create the first one.",
+    "empty": "No contacts yet.",
+    "emptyDescription": "Create your first contact or import an existing list to start mapping your ecosystem.",
+    "importContacts": "Import CSV",
     "openKanban": "Pipeline view",
     "openDeals": "Deals",
     "dedup": {
@@ -760,7 +765,8 @@
       "subtitle": "Group to-dos — optionally linked to projects or events.",
       "newTask": "New task",
       "openKanban": "Kanban view",
-      "empty": "No tasks yet. Create the first one.",
+      "empty": "No tasks yet.",
+      "emptyDescription": "Create your first task or open the kanban to organise work by status.",
       "count": "{count, plural, =0 {No tasks} one {1 task} other {# tasks}}",
       "allTasks": "All",
       "myTasks": "Mine",
@@ -1267,6 +1273,24 @@
         "cannotGrantSuperUser": "Only super users can grant the super user role.",
         "inviteFailed": "Could not create the user. Make sure the email isn't already registered."
       }
+    }
+  },
+  "ai": {
+    "dealCopilot": {
+      "title": "Deal copilot",
+      "description": "Summary of the current state and 2-3 concrete next actions.",
+      "cta": "Suggest next steps",
+      "regenerate": "Regenerate",
+      "disclaimer": "AI-generated suggestion — validate before acting.",
+      "notConfigured": "Copilot disabled. Set ANTHROPIC_API_KEY to enable."
+    },
+    "projectCopilot": {
+      "title": "Project copilot",
+      "description": "Reads the current task list and suggests the gaps still missing.",
+      "cta": "Suggest missing tasks",
+      "regenerate": "Regenerate",
+      "disclaimer": "AI-generated suggestion — validate before creating tasks.",
+      "notConfigured": "Copilot disabled. Set ANTHROPIC_API_KEY to enable."
     }
   }
 }

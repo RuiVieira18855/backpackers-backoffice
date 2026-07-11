@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { LayoutGrid, Plus } from "lucide-react";
+import { LayoutGrid, Plus, Target } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { and, desc, eq, sql, type SQL } from "drizzle-orm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { deals } from "@/lib/db/schema";
 import { getAllPillars, requireProfile } from "@/lib/dal";
@@ -142,17 +143,16 @@ export default async function DealsListPage({
       </p>
 
       {rows.length === 0 ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-muted-foreground">{t("empty")}</p>
-            <Button asChild className="mt-6">
-              <Link href="/crm/deals/new">
-                <Plus className="mr-2 h-4 w-4" />
-                {t("newDeal")}
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<Target className="h-5 w-5" />}
+          title={t("empty")}
+          description={t("emptyDescription")}
+          action={{ label: t("newDeal"), href: "/crm/deals/new" }}
+          secondary={{
+            label: t("openPipeline"),
+            href: "/crm/deals/pipeline",
+          }}
+        />
       ) : (
         <Card>
           <CardContent className="p-0">

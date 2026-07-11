@@ -20,7 +20,7 @@ const STATUSES = ["draft", "scheduled", "in_progress", "completed", "cancelled"]
 
 const schema = z.object({
   name: z.string().min(1),
-  pillarId: z.string().uuid(),
+  pillarId: z.uuid(),
   type: z.enum(TYPES),
   status: z.enum(STATUSES),
   description: z.string().optional(),
@@ -28,7 +28,7 @@ const schema = z.object({
   startAt: z.date().nullable(),
   endAt: z.date().nullable(),
   capacity: z.number().int().nonnegative().nullable(),
-  clientContactId: z.string().uuid().nullable(),
+  clientContactId: z.uuid().nullable(),
   notes: z.string().optional(),
 });
 
@@ -77,7 +77,7 @@ export async function createEvent(
 
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    const flat = parsed.error.flatten();
+    const flat = z.flattenError(parsed.error);
     const first = Object.entries(flat.fieldErrors)[0];
     return {
       error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Invalid data",

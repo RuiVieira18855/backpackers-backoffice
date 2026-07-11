@@ -139,6 +139,7 @@
     "noCategories": "Sem dados suficientes para agrupar.",
     "count": "{count, plural, =0 {Sem movimentos} one {1 movimento} other {# movimentos}}",
     "empty": "Ainda não existem movimentos.",
+    "emptyDescription": "Adiciona a primeira receita ou despesa para começar a acompanhar o cashflow.",
     "types": {
       "income": "Receita",
       "expense": "Despesa"
@@ -329,7 +330,9 @@
     "newDeal": "Novo deal",
     "pipeline": "Pipeline",
     "count": "{count, plural, =0 {Sem deals} one {1 deal} other {# deals}}",
-    "empty": "Ainda não existem deals. Cria o primeiro.",
+    "empty": "Ainda não existem deals.",
+    "emptyDescription": "Cria o primeiro deal para começar a acompanhar oportunidades no pipeline.",
+    "openPipeline": "Vista pipeline",
     "stages": {
       "lead": "Lead",
       "qualified": "Qualificado",
@@ -397,7 +400,9 @@
     "subtitle": "Contactos, leads e parceiros — transversal aos pilares.",
     "newContact": "Novo contacto",
     "contactsCount": "{count, plural, =0 {Sem contactos} one {1 contacto} other {# contactos}}",
-    "empty": "Ainda não existem contactos. Cria o primeiro.",
+    "empty": "Ainda não existem contactos.",
+    "emptyDescription": "Cria o primeiro contacto ou importa uma lista existente para começares a mapear o teu ecossistema.",
+    "importContacts": "Importar CSV",
     "openKanban": "Vista pipeline",
     "openDeals": "Deals",
     "dedup": {
@@ -759,7 +764,8 @@
       "subtitle": "To-dos do grupo — opcionalmente ligadas a projectos ou eventos.",
       "newTask": "Nova tarefa",
       "openKanban": "Vista kanban",
-      "empty": "Ainda não existem tarefas. Cria a primeira.",
+      "empty": "Ainda não existem tarefas.",
+      "emptyDescription": "Cria a primeira tarefa ou abre a vista kanban para organizares o trabalho por estado.",
       "count": "{count, plural, =0 {Sem tarefas} one {1 tarefa} other {# tarefas}}",
       "allTasks": "Todas",
       "myTasks": "As minhas",
@@ -1276,6 +1282,24 @@
         "cannotGrantSuperUser": "Só super-utilizadores podem atribuir o papel super-utilizador.",
         "inviteFailed": "Não foi possível criar o utilizador. Verifica que o e-mail não está já registado."
       }
+    }
+  },
+  "ai": {
+    "dealCopilot": {
+      "title": "Copilot do deal",
+      "description": "Sumário do estado e sugestão dos próximos 2-3 passos concretos.",
+      "cta": "Sugerir próximos passos",
+      "regenerate": "Gerar de novo",
+      "disclaimer": "Sugestão gerada por IA — valida antes de agir.",
+      "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
+    },
+    "projectCopilot": {
+      "title": "Copilot do projecto",
+      "description": "Analisa a lista actual de tarefas e sugere os gaps que faltam.",
+      "cta": "Sugerir tarefas em falta",
+      "regenerate": "Gerar de novo",
+      "disclaimer": "Sugestão gerada por IA — valida antes de criar tarefas.",
+      "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
     }
   }
 }
