@@ -43,7 +43,7 @@ export default async function DealsPipelinePage() {
   }));
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-10 space-y-6">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-6">
       <div className="flex items-end justify-between gap-3 flex-wrap">
         <div>
           <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
@@ -52,7 +52,7 @@ export default async function DealsPipelinePage() {
               {t("backToList")}
             </Link>
           </Button>
-          <h1 className="font-display text-5xl text-foreground leading-none">
+          <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
             {t("title")}
           </h1>
           <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>

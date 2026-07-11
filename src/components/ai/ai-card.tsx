@@ -69,7 +69,11 @@ export function AiCard({
           </p>
         ) : text ? (
           <>
-            <div className="whitespace-pre-wrap text-sm text-foreground leading-relaxed">
+            <div
+              role="region"
+              aria-live="polite"
+              className="whitespace-pre-wrap text-sm text-foreground leading-relaxed"
+            >
               {text}
             </div>
             <div className="flex items-center justify-between gap-2 pt-2">

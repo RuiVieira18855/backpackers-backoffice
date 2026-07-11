@@ -40,7 +40,7 @@ export default async function EditWebhookPage({ params }: Props) {
   const boundUpdate = updateWebhook.bind(null, id);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
           <Link href="/admin/webhooks">
@@ -50,7 +50,7 @@ export default async function EditWebhookPage({ params }: Props) {
         </Button>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-display text-5xl text-foreground leading-none">
+            <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
               {wh.name}
             </h1>
             <p className="mt-2 text-sm text-muted-foreground truncate">

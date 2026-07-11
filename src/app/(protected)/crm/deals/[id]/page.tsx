@@ -49,7 +49,7 @@ export default async function DealDetailPage({ params }: Props) {
   void generateInvoiceFromDeal;
 
   return (
-    <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
           <Link href="/crm/deals">
@@ -57,9 +57,9 @@ export default async function DealDetailPage({ params }: Props) {
             {t("backToList")}
           </Link>
         </Button>
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="font-display text-5xl text-foreground leading-none">
+            <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
               {deal.name}
             </h1>
             {deal.value && (

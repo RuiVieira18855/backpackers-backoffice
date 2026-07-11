@@ -79,10 +79,10 @@ export default async function NotificationsPage({
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-5xl text-foreground leading-none">
+          <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
             {t("title")}
           </h1>
           <p className="mt-2 text-base text-muted-foreground">{t("subtitle")}</p>

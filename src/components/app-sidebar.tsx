@@ -47,6 +47,7 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
 
   return (
     <aside
+      aria-label={t("title")}
       className={
         variant === "desktop"
           ? "hidden md:flex w-60 shrink-0 border-r border-border bg-card flex-col overflow-y-auto"

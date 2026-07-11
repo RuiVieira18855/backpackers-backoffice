@@ -79,7 +79,11 @@ export function UserMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="gap-3 h-auto py-1.5 pl-2 pr-3">
+        <Button
+          variant="ghost"
+          className="gap-3 h-auto py-1.5 pl-2 pr-3"
+          aria-label={displayName}
+        >
           <span className="hidden sm:flex flex-col items-end leading-tight">
             <span className="text-sm text-foreground">{displayName}</span>
             <span className="text-xs text-muted-foreground">{roleLabel}</span>

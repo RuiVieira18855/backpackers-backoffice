@@ -56,6 +56,7 @@ import {
   tasksTrend,
 } from "@/lib/trends";
 import { ActivityTrend } from "@/components/charts/activity-trend";
+import { WelcomeCard } from "@/components/dashboard/welcome-card";
 
 const ENTITY_LABEL: Record<string, string> = {
   contact: "Contacto",
@@ -455,18 +456,31 @@ export default async function DashboardPage() {
   ].filter(Boolean) as QA[];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-10">
       <div>
         <p className="text-sm text-muted-foreground">
           {t("hello", { name: profile.fullName || profile.email })}
         </p>
-        <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-6xl text-foreground leading-none mt-1">
           {t("title")}
         </h1>
         <p className="mt-3 text-base text-muted-foreground">
           {t(`greetings.${profile.role}` as never)}
         </p>
       </div>
+
+      <WelcomeCard
+        fullName={profile.fullName}
+        isEmpty={
+          (contactsCount[0]?.count ?? 0) === 0 &&
+          (upcomingEventsCount[0]?.count ?? 0) === 0 &&
+          (openTasksCount[0]?.count ?? 0) === 0 &&
+          (docsCount[0]?.count ?? 0) === 0
+        }
+        hasCrm={hasCrm}
+        hasOps={hasOps}
+        hasDocs={hasDocs}
+      />
 
       {/* Quick actions */}
       {quickActions.length > 0 && (

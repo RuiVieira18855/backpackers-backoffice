@@ -190,10 +190,10 @@ export default async function ReportsPage() {
     : [];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-10 print:py-4 print:space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-10 print:py-4 print:space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none">
+          <h1 className="font-display text-4xl sm:text-6xl text-foreground leading-none">
             {t("title")}
           </h1>
           <p className="mt-2 text-base text-muted-foreground">

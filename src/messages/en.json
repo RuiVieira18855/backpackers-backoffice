@@ -82,6 +82,9 @@
     "section": "Language",
     "current": "Language"
   },
+  "a11y": {
+    "skipToMain": "Skip to main content"
+  },
   "sidebar": {
     "title": "Menu",
     "dashboard": "Dashboard",
@@ -239,6 +242,16 @@
   "dashboard": {
     "hello": "Hello, {name}",
     "title": "Dashboard",
+    "welcome": {
+      "title": "Welcome to Outpost{name, select, other {, {name}}}",
+      "description": "You don't have any data yet. Start with one of these 4 steps to bring your backoffice to life.",
+      "steps": {
+        "contact": "Add the first contact",
+        "event": "Schedule the first event",
+        "project": "Create the first project",
+        "doc": "Upload the first document"
+      }
+    },
     "greetings": {
       "super_user": "Full access as super user.",
       "admin_grupo": "Cross-group access.",

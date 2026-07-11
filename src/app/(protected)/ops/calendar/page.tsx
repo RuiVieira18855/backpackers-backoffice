@@ -146,7 +146,7 @@ export default async function CalendarPage({
   ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
           <Link href="/ops">
@@ -156,7 +156,7 @@ export default async function CalendarPage({
         </Button>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="font-display text-5xl sm:text-6xl text-foreground leading-none">
+            <h1 className="font-display text-4xl sm:text-6xl text-foreground leading-none">
               {t("title")}
             </h1>
             <p className="mt-2 text-base text-muted-foreground">

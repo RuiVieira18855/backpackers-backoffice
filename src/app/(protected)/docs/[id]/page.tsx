@@ -53,7 +53,7 @@ export default async function DocumentDetailPage({ params }: Props) {
   const canInline = isImage || isPdf || isVideo;
 
   return (
-    <div className="max-w-4xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
           <Link href="/docs">
@@ -61,9 +61,9 @@ export default async function DocumentDetailPage({ params }: Props) {
             {t("backToList")}
           </Link>
         </Button>
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="font-display text-5xl text-foreground leading-none">
+            <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
               {doc.title}
             </h1>
             <p className="mt-2 text-base text-muted-foreground">

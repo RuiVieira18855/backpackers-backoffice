@@ -82,6 +82,9 @@
     "section": "Idioma",
     "current": "Idioma"
   },
+  "a11y": {
+    "skipToMain": "Saltar al contenido principal"
+  },
   "sidebar": {
     "title": "Menú",
     "dashboard": "Panel",
@@ -239,6 +242,16 @@
   "dashboard": {
     "hello": "Hola, {name}",
     "title": "Panel",
+    "welcome": {
+      "title": "Bienvenido a Outpost{name, select, other {, {name}}}",
+      "description": "Aún no tienes datos. Empieza por uno de estos 4 pasos para dar vida a tu backoffice.",
+      "steps": {
+        "contact": "Añade el primer contacto",
+        "event": "Agenda el primer evento",
+        "project": "Crea el primer proyecto",
+        "doc": "Sube el primer documento"
+      }
+    },
     "greetings": {
       "super_user": "Acceso total como super usuario.",
       "admin_grupo": "Acceso transversal al grupo.",

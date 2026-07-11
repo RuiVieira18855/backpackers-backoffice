@@ -10,7 +10,7 @@ export default async function NewWebhookPage() {
   await requireSkill("admin");
   const t = await getTranslations("admin.webhooks");
   return (
-    <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 space-y-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10 space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
           <Link href="/admin/webhooks">
@@ -18,7 +18,7 @@ export default async function NewWebhookPage() {
             {t("backToList")}
           </Link>
         </Button>
-        <h1 className="font-display text-5xl text-foreground leading-none">
+        <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
           {t("newWebhook")}
         </h1>
       </div>
