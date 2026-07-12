@@ -229,6 +229,7 @@
     "passwordHint": "Mínimo 8 caracteres.",
     "signIn": "Entrar",
     "signingIn": "A entrar…",
+    "rememberMe": "Lembrar o meu e-mail neste dispositivo",
     "signUp": "Criar conta",
     "signingUp": "A criar conta…",
     "noAccount": "Ainda não tens conta?",
@@ -1220,12 +1221,12 @@
       "deletedToast": "Automação «{name}» eliminada.",
       "engineNote": "As acções correm inline quando a mutação primária termina com sucesso. Falhas são registadas mas nunca bloqueiam o utilizador.",
       "triggers": {
-        "contact.created": "Contacto criado",
-        "contact.stage_changed": "Contacto mudou de fase",
-        "deal.won": "Deal ganho",
-        "task.completed": "Tarefa concluída",
-        "task.due_soon": "Tarefa a vencer (hoje/amanhã)",
-        "transaction.overdue": "Movimento em atraso"
+        "contact_created": "Contacto criado",
+        "contact_stage_changed": "Contacto mudou de fase",
+        "deal_won": "Deal ganho",
+        "task_completed": "Tarefa concluída",
+        "task_due_soon": "Tarefa a vencer (hoje/amanhã)",
+        "transaction_overdue": "Movimento em atraso"
       },
       "ops": {
         "=": "igual a",

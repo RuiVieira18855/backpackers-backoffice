@@ -106,7 +106,7 @@ export default async function WorkflowsAdminPage() {
                         )}
                       </CardTitle>
                       <CardDescription>
-                        {t(`triggers.${wf.triggerType}` as never)}
+                        {t(`triggers.${wf.triggerType.replaceAll(".", "_")}` as never)}
                         {wf.description ? ` · ${wf.description}` : ""}
                       </CardDescription>
                     </div>

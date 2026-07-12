@@ -229,6 +229,7 @@
     "passwordHint": "Minimum 8 characters.",
     "signIn": "Sign in",
     "signingIn": "Signing in…",
+    "rememberMe": "Remember my email on this device",
     "signUp": "Create account",
     "signingUp": "Creating account…",
     "noAccount": "Don't have an account yet?",
@@ -1211,12 +1212,12 @@
       "deletedToast": "Automation \"{name}\" deleted.",
       "engineNote": "Actions run inline after the primary mutation succeeds. Failures are logged but never block the user.",
       "triggers": {
-        "contact.created": "Contact created",
-        "contact.stage_changed": "Contact stage changed",
-        "deal.won": "Deal won",
-        "task.completed": "Task completed",
-        "task.due_soon": "Task due (today/tomorrow)",
-        "transaction.overdue": "Transaction overdue"
+        "contact_created": "Contact created",
+        "contact_stage_changed": "Contact stage changed",
+        "deal_won": "Deal won",
+        "task_completed": "Task completed",
+        "task_due_soon": "Task due (today/tomorrow)",
+        "transaction_overdue": "Transaction overdue"
       },
       "ops": {
         "=": "equals",

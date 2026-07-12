@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -9,13 +9,40 @@ import { Label } from "@/components/ui/label";
 import { signIn, type LoginState } from "./actions";
 
 const initialState: LoginState = {};
+const STORAGE_KEY = "outpost.rememberedEmail";
 
 export function LoginForm() {
   const t = useTranslations("auth");
   const [state, formAction, pending] = useActionState(signIn, initialState);
+  const [email, setEmail] = useState("");
+  const [remember, setRemember] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setEmail(saved);
+        setRemember(true);
+      }
+    } catch {
+      // localStorage unavailable — silently ignore
+    }
+  }, []);
+
+  function onSubmit() {
+    try {
+      if (remember && email) {
+        window.localStorage.setItem(STORAGE_KEY, email);
+      } else {
+        window.localStorage.removeItem(STORAGE_KEY);
+      }
+    } catch {
+      // ignore
+    }
+  }
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} onSubmit={onSubmit} className="space-y-5">
       <div className="space-y-2">
         <Label htmlFor="email">{t("email")}</Label>
         <Input
@@ -24,6 +51,8 @@ export function LoginForm() {
           type="email"
           autoComplete="email"
           required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="space-y-2">
@@ -36,6 +65,15 @@ export function LoginForm() {
           required
         />
       </div>
+      <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={remember}
+          onChange={(e) => setRemember(e.target.checked)}
+          className="h-4 w-4 rounded border-input"
+        />
+        {t("rememberMe")}
+      </label>
       {state?.error && (
         <p className="text-sm text-destructive" role="alert">
           {state.error}

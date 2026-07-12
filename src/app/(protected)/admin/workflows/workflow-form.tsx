@@ -158,7 +158,7 @@ export function WorkflowForm({
           >
             {TRIGGERS.map((tr) => (
               <option key={tr} value={tr}>
-                {t(`triggers.${tr}` as never)}
+                {t(`triggers.${tr.replaceAll(".", "_")}` as never)}
               </option>
             ))}
           </select>

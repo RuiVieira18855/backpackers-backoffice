@@ -31,8 +31,21 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t("title"),
     description: t("description"),
+    applicationName: "Outpost",
+    appleWebApp: {
+      capable: true,
+      title: "Outpost",
+      statusBarStyle: "black-translucent",
+    },
   };
 }
+
+export const viewport = {
+  themeColor: "#0E2A44",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+} as const;
 
 export default async function RootLayout({
   children,

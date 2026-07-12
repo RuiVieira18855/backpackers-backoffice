@@ -45,7 +45,7 @@ export default async function EditWorkflowPage({ params }: Props) {
               {wf.name}
             </h1>
             <p className="mt-2 text-base text-muted-foreground">
-              {t(`triggers.${wf.triggerType}` as never)}
+              {t(`triggers.${wf.triggerType.replaceAll(".", "_")}` as never)}
             </p>
           </div>
           <WorkflowSideActions
