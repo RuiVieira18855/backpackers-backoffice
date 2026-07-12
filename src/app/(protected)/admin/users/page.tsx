@@ -71,6 +71,11 @@ export default async function AdminUsersPage() {
                         className="block px-0 py-3 font-medium text-foreground"
                       >
                         {u.fullName ?? "—"}
+                        {u.disabledAt && (
+                          <span className="ml-2 inline-flex items-center rounded-full bg-destructive/15 px-2 py-0.5 text-[10px] uppercase tracking-wider text-destructive">
+                            {t("disable.badge")}
+                          </span>
+                        )}
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">

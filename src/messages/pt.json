@@ -329,7 +329,25 @@
     "eventsYtd": "Eventos criados",
     "tasksDone": "Tarefas concluídas",
     "tasksOpen": "Tarefas em aberto",
-    "printCta": "Exportar PDF"
+    "printCta": "Exportar PDF",
+    "funnel": {
+      "title": "Funil de vendas",
+      "hint": "Progressão dos deals do primeiro contacto até fechar. A conversão indica a percentagem que passou da fase anterior.",
+      "conversion": "{pct}% da fase anterior",
+      "barLabel": "{stage}: {count, plural, =0 {sem deals} one {1 deal} other {# deals}}"
+    },
+    "cohort": {
+      "title": "Coortes de contactos (6 meses)",
+      "hint": "Contactos agrupados pelo mês em que foram criados. Mostra quantos avançaram para activo e quantos fecharam (ganho/perdido).",
+      "col": {
+        "cohort": "Mês de origem",
+        "total": "Total",
+        "active": "Activos",
+        "won": "Ganhos",
+        "wonPct": "% Ganhos",
+        "lostPct": "% Perdidos"
+      }
+    }
   },
   "templates": {
     "picker": {
@@ -991,7 +1009,18 @@
       "noDefault": "Sem predefinição",
       "allPillars": "Todos",
       "isSelf": "Estás a editar a tua própria conta.",
-      "targetSuperUserLocked": "Este utilizador é super-utilizador. Só outro super-utilizador o pode editar."
+      "targetSuperUserLocked": "Este utilizador é super-utilizador. Só outro super-utilizador o pode editar.",
+      "disable": {
+        "badge": "Desactivado",
+        "disable": "Desactivar",
+        "enable": "Reactivar",
+        "confirmDisableTitle": "Desactivar {name}?",
+        "confirmDisableHint": "O histórico e propriedade de registos são preservados. O utilizador perde acesso ao backoffice até ser reactivado.",
+        "confirmEnableTitle": "Reactivar {name}?",
+        "disabledSince": "Desactivado desde {when}.",
+        "disabledToast": "Utilizador desactivado.",
+        "enabledToast": "Utilizador reactivado."
+      }
     },
     "skills": {
       "legend": "Skills (acessos por módulo)",
@@ -1075,6 +1104,10 @@
       "newSectionTitle": "Adicionar campo",
       "empty": "Ainda não há campos definidos.",
       "deleteConfirm": "Eliminar o campo «{name}»? Os valores guardados em registos existentes não desaparecem mas deixam de ser editáveis.",
+      "editTitle": "Editar «{name}»",
+      "editHint": "A entidade, chave e tipo são imutáveis. Alterar essas propriedades exige criar um novo campo.",
+      "editAriaLabel": "Editar {name}",
+      "updatedToast": "Campo actualizado.",
       "entities": {
         "contact": "Contacto",
         "event": "Evento",

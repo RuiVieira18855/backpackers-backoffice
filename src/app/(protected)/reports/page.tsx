@@ -27,6 +27,8 @@ import {
 } from "@/lib/db/schema";
 import { hasSkill, requireProfile } from "@/lib/dal";
 import { PrintButton } from "@/components/print-button";
+import { SalesFunnel } from "@/components/reports/sales-funnel";
+import { ContactCohort, type CohortRow } from "@/components/reports/contact-cohort";
 
 function fmtEur(n: number, max = 0): string {
   return new Intl.NumberFormat("pt-PT", {
@@ -166,6 +168,40 @@ export default async function ReportsPage() {
   );
   const finNet = finIncome - finExpense;
 
+  // Contact cohort by month of creation (last 6 months)
+  const cohortRows: CohortRow[] = hasCrm
+    ? await safe(
+        db
+          .execute(
+            sql`
+              SELECT
+                to_char(date_trunc('month', ${contacts.createdAt}), 'YYYY-MM') AS month,
+                count(*)::int AS total,
+                count(*) FILTER (WHERE ${contacts.stage} IN ('qualified','active'))::int AS active,
+                count(*) FILTER (WHERE ${contacts.stage} = 'closed_won')::int AS won,
+                count(*) FILTER (WHERE ${contacts.stage} = 'closed_lost')::int AS lost
+              FROM ${contacts}
+              WHERE ${contacts.createdAt} >= (now() - interval '6 months')
+              GROUP BY 1
+              ORDER BY 1 DESC
+            `,
+          )
+          .then((result) => {
+            const rows = Array.isArray(result)
+              ? (result as Array<Record<string, unknown>>)
+              : (Array.from(result as Iterable<Record<string, unknown>>));
+            return rows.map((row) => ({
+              month: String(row.month ?? ""),
+              total: Number(row.total ?? 0),
+              active: Number(row.active ?? 0),
+              won: Number(row.won ?? 0),
+              lost: Number(row.lost ?? 0),
+            })) as CohortRow[];
+          }),
+        [] as CohortRow[],
+      )
+    : [];
+
   // Top customers by event count
   const topCustomers = hasCrm
     ? await safe(
@@ -297,6 +333,12 @@ export default async function ReportsPage() {
           </Card>
         )}
       </section>
+
+      {/* Sales funnel */}
+      {hasCrm && <SalesFunnel rows={dealsByStage} />}
+
+      {/* Contact cohort */}
+      {hasCrm && <ContactCohort rows={cohortRows} />}
 
       {/* Deals by stage */}
       {hasCrm && dealsByStage.length > 0 && (

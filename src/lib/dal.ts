@@ -79,6 +79,10 @@ export const requireProfile = cache(async () => {
   if ("kind" in profile && profile.kind === "customer") {
     redirect("/no-access");
   }
+  // Disabled profiles: keep the row for audit + ownership, but block access.
+  if ("disabledAt" in profile && profile.disabledAt) {
+    redirect("/no-access");
+  }
   return profile;
 });
 
@@ -139,6 +143,7 @@ export const getAllProfiles = cache(async () => {
       skills: true,
       pillarAccess: true,
       defaultPillarId: true,
+      disabledAt: true,
     },
   });
 });

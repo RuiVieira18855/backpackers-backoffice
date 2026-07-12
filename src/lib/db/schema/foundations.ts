@@ -84,6 +84,7 @@ export const profiles = pgTable("profiles", {
   defaultPillarId: uuid("default_pillar_id").references(() => pillars.id, {
     onDelete: "set null",
   }),
+  disabledAt: timestamp("disabled_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),

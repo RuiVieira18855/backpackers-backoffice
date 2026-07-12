@@ -2,6 +2,7 @@ import "server-only";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { oauthConnections } from "@/lib/db/schema";
+import { decryptToken, encryptToken } from "./crypto";
 
 export type OAuthProvider = "google" | "microsoft";
 
@@ -33,7 +34,12 @@ export async function getConnection(
       ),
     )
     .limit(1);
-  return (row as OAuthConnectionRow | undefined) ?? null;
+  if (!row) return null;
+  return {
+    ...(row as OAuthConnectionRow),
+    accessToken: decryptToken(row.accessToken),
+    refreshToken: row.refreshToken ? decryptToken(row.refreshToken) : null,
+  };
 }
 
 /** Insert or update a user's connection. Called from OAuth callbacks. */
@@ -46,13 +52,15 @@ export async function upsertConnection(input: {
   scope: string | null;
   externalEmail: string | null;
 }): Promise<void> {
+  const encAccess = encryptToken(input.accessToken);
+  const encRefresh = input.refreshToken ? encryptToken(input.refreshToken) : null;
   await db
     .insert(oauthConnections)
     .values({
       userId: input.userId,
       provider: input.provider,
-      accessToken: input.accessToken,
-      refreshToken: input.refreshToken,
+      accessToken: encAccess,
+      refreshToken: encRefresh,
       expiresAt: input.expiresAt,
       scope: input.scope,
       externalEmail: input.externalEmail,
@@ -60,8 +68,8 @@ export async function upsertConnection(input: {
     .onConflictDoUpdate({
       target: [oauthConnections.userId, oauthConnections.provider],
       set: {
-        accessToken: input.accessToken,
-        refreshToken: input.refreshToken,
+        accessToken: encAccess,
+        refreshToken: encRefresh,
         expiresAt: input.expiresAt,
         scope: input.scope,
         externalEmail: input.externalEmail,
@@ -81,9 +89,9 @@ export async function updateTokens(
   await db
     .update(oauthConnections)
     .set({
-      accessToken,
+      accessToken: encryptToken(accessToken),
       expiresAt,
-      ...(refreshToken ? { refreshToken } : {}),
+      ...(refreshToken ? { refreshToken: encryptToken(refreshToken) } : {}),
       updatedAt: new Date(),
     })
     .where(

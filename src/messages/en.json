@@ -329,7 +329,25 @@
     "eventsYtd": "Events created",
     "tasksDone": "Tasks done",
     "tasksOpen": "Tasks open",
-    "printCta": "Export PDF"
+    "printCta": "Export PDF",
+    "funnel": {
+      "title": "Sales funnel",
+      "hint": "Deal progression from first contact to close. Conversion shows the percentage moved from the previous stage.",
+      "conversion": "{pct}% from previous stage",
+      "barLabel": "{stage}: {count, plural, =0 {no deals} one {1 deal} other {# deals}}"
+    },
+    "cohort": {
+      "title": "Contact cohorts (6 months)",
+      "hint": "Contacts grouped by their creation month. Shows how many progressed to active and how many closed (won/lost).",
+      "col": {
+        "cohort": "Origin month",
+        "total": "Total",
+        "active": "Active",
+        "won": "Won",
+        "wonPct": "% Won",
+        "lostPct": "% Lost"
+      }
+    }
   },
   "templates": {
     "picker": {
@@ -982,7 +1000,18 @@
       "noDefault": "No default",
       "allPillars": "All",
       "isSelf": "You're editing your own account.",
-      "targetSuperUserLocked": "This user is a super user. Only another super user can edit them."
+      "targetSuperUserLocked": "This user is a super user. Only another super user can edit them.",
+      "disable": {
+        "badge": "Disabled",
+        "disable": "Disable",
+        "enable": "Re-enable",
+        "confirmDisableTitle": "Disable {name}?",
+        "confirmDisableHint": "History and ownership of past records are preserved. The user loses backoffice access until re-enabled.",
+        "confirmEnableTitle": "Re-enable {name}?",
+        "disabledSince": "Disabled since {when}.",
+        "disabledToast": "User disabled.",
+        "enabledToast": "User re-enabled."
+      }
     },
     "skills": {
       "legend": "Skills (module access)",
@@ -1066,6 +1095,10 @@
       "newSectionTitle": "Add field",
       "empty": "No fields defined yet.",
       "deleteConfirm": "Delete the field \"{name}\"? Saved values on existing records stay in the database but become non-editable.",
+      "editTitle": "Edit \"{name}\"",
+      "editHint": "Entity, key and type are immutable. Changing them requires creating a new field.",
+      "editAriaLabel": "Edit {name}",
+      "updatedToast": "Field updated.",
       "entities": {
         "contact": "Contact",
         "event": "Event",

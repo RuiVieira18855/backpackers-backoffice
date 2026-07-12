@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { deleteCustomFieldDef } from "./actions";
+import { EditFieldDialog } from "./edit-dialog";
 
 type Row = {
   id: string;
@@ -78,15 +79,18 @@ export function CustomFieldsTable({ rows }: { rows: Row[] }) {
                   {r.required ? "✓" : "—"}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    disabled={pending}
-                    onClick={() => handleDelete(r.id, r.label)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
+                  <div className="flex items-center justify-end gap-1">
+                    <EditFieldDialog row={r} />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled={pending}
+                      onClick={() => handleDelete(r.id, r.label)}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

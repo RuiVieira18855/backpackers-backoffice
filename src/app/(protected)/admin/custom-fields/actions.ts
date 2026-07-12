@@ -104,6 +104,72 @@ export async function createCustomFieldDef(
   return {};
 }
 
+export async function updateCustomFieldDef(
+  id: string,
+  _prev: CustomFieldFormState | undefined,
+  formData: FormData,
+): Promise<CustomFieldFormState> {
+  const profile = await requireSkill("admin");
+
+  const before = await db.query.customFieldDefs.findFirst({
+    where: eq(customFieldDefs.id, id),
+  });
+  if (!before) return { error: "Not found" };
+
+  const raw = {
+    entityType: before.entityType,
+    key: before.key,
+    label: String(formData.get("label") ?? "").trim(),
+    type: before.type,
+    options: String(formData.get("options") ?? "").trim(),
+    required: formData.get("required") ? "on" : undefined,
+    sortOrder: String(formData.get("sortOrder") ?? String(before.sortOrder)),
+  };
+
+  if (!raw.label)
+    return { fieldErrors: { label: "Etiqueta obrigatória." } };
+
+  const parsed = schema.safeParse(raw);
+  if (!parsed.success) {
+    const flat = z.flattenError(parsed.error);
+    const first = Object.entries(flat.fieldErrors)[0];
+    return {
+      error: first ? `${first[0]}: ${first[1]?.[0] ?? ""}` : "Dados inválidos.",
+    };
+  }
+
+  try {
+    const [updated] = await db
+      .update(customFieldDefs)
+      .set({
+        label: parsed.data.label,
+        options:
+          before.type === "select"
+            ? parseOptions(parsed.data.options ?? "")
+            : [],
+        required: parsed.data.required === "on",
+        sortOrder: Number(parsed.data.sortOrder ?? "0"),
+        updatedAt: new Date(),
+      })
+      .where(eq(customFieldDefs.id, id))
+      .returning();
+
+    await logAudit({
+      userId: profile.id,
+      pillarId: null,
+      entityType: "custom_field_def",
+      entityId: id,
+      action: "update",
+      diff: { before, after: updated },
+    });
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : String(err) };
+  }
+
+  revalidatePath("/admin/custom-fields");
+  return {};
+}
+
 export async function deleteCustomFieldDef(id: string): Promise<void> {
   const profile = await requireSkill("admin");
   const before = await db.query.customFieldDefs.findFirst({

@@ -8,6 +8,7 @@ import { profiles } from "@/lib/db/schema";
 import { getAllPillars, requireSkill } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { UserForm } from "./user-form";
+import { DisableUserButton } from "./disable-button";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -34,9 +35,27 @@ export default async function AdminUserDetailPage({ params }: Props) {
             {t("backToList")}
           </Link>
         </Button>
-        <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
-          {user.fullName ?? user.email}
-        </h1>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 className="font-display text-4xl sm:text-5xl text-foreground leading-none">
+              {user.fullName ?? user.email}
+            </h1>
+            {user.disabledAt && (
+              <p className="mt-2 text-sm text-destructive">
+                {t("disable.disabledSince", {
+                  when: user.disabledAt.toISOString().slice(0, 10),
+                })}
+              </p>
+            )}
+          </div>
+          {user.id !== actor.id && (
+            <DisableUserButton
+              userId={user.id}
+              userLabel={user.fullName ?? user.email}
+              disabled={Boolean(user.disabledAt)}
+            />
+          )}
+        </div>
       </div>
 
       <UserForm

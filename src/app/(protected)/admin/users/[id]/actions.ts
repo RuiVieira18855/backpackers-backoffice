@@ -127,3 +127,66 @@ export async function adminUpdateUser(
 
   redirect(`/admin/users/${updated.id}`);
 }
+
+export type DisableResult = { ok: true } | { ok: false; error: string };
+
+export async function toggleUserDisabled(
+  targetId: string,
+  disable: boolean,
+): Promise<DisableResult> {
+  const actor = await requireSkill("admin");
+  if (actor.id === targetId) {
+    return { ok: false, error: "Não podes desactivar-te a ti próprio." };
+  }
+
+  const before = await db.query.profiles.findFirst({
+    where: eq(profiles.id, targetId),
+  });
+  if (!before) return { ok: false, error: "Utilizador não encontrado." };
+
+  const isActorSuper = actor.role === "super_user";
+  if (before.role === "super_user" && !isActorSuper) {
+    return {
+      ok: false,
+      error:
+        "Só um super-utilizador pode desactivar outro super-utilizador.",
+    };
+  }
+
+  // Never leave the group without an active super_user.
+  if (disable && before.role === "super_user") {
+    const activeSupers = await db.query.profiles.findMany({
+      where: eq(profiles.role, "super_user"),
+    });
+    const remaining = activeSupers.filter(
+      (p) => p.id !== targetId && !p.disabledAt,
+    );
+    if (remaining.length === 0) {
+      return {
+        ok: false,
+        error:
+          "Não podes desactivar o último super-utilizador activo.",
+      };
+    }
+  }
+
+  const [updated] = await db
+    .update(profiles)
+    .set({ disabledAt: disable ? new Date() : null })
+    .where(eq(profiles.id, targetId))
+    .returning();
+
+  await logAudit({
+    userId: actor.id,
+    pillarId: null,
+    entityType: "profile",
+    entityId: updated.id,
+    action: "update",
+    diff: {
+      before: { disabledAt: before.disabledAt },
+      after: { disabledAt: updated.disabledAt },
+    },
+  });
+
+  return { ok: true };
+}
