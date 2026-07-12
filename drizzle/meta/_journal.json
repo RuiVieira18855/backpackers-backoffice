@@ -148,6 +148,13 @@
       "when": 1783887982284,
       "tag": "0020_profiles_disabled",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1783896095470,
+      "tag": "0021_catalog_activities",
+      "breakpoints": true
     }
   ]
 }

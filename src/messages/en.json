@@ -89,6 +89,8 @@
     "title": "Menu",
     "dashboard": "Dashboard",
     "calendar": "Calendar",
+    "library": "Library",
+    "catalog": "Catalog",
     "quickActions": "Quick actions",
     "addContact": "Add contact",
     "addLead": "Add lead",
@@ -108,7 +110,7 @@
     "tasks": "Tasks",
     "myTasks": "My tasks",
     "documentsLabel": "Documents",
-    "documents": "Library",
+    "documents": "Documents",
     "appsLabel": "My apps",
     "adminLabel": "Administration",
     "users": "Users",
@@ -973,6 +975,21 @@
       "system": "System"
     }
   },
+  "library": {
+    "title": "Library",
+    "subtitle": "Living catalog of Backpackers activities — briefing, costs, flow, target audience. Reference before proposing.",
+    "backToList": "Back to library",
+    "editCta": "Edit",
+    "empty": "No activities published yet.",
+    "emptyDescription": "As soon as a super user creates the first activity, it will appear here.",
+    "field": {
+      "duration": "Duration",
+      "pax": "Participants",
+      "pricePerPax": "Price per pax",
+      "priceTarget": "Target event price",
+      "audience": "Target audience"
+    }
+  },
   "admin": {
     "title": "Administration",
     "landing": {
@@ -1087,6 +1104,50 @@
         "revoked": "Revoked"
       },
       "enforcementNote": "Access is enforced at the external app's login and on the AI proxy (server-side) via has_app_access(uid, app_key). Set «no access» to lock a user out."
+    },
+    "catalog": {
+      "title": "Activity catalog",
+      "subtitle": "The group's living library — Backpackers activities with costs, flow and operational briefing. Editable by super users.",
+      "backToAdmin": "Back to admin",
+      "backToList": "Back to catalog",
+      "newActivity": "New activity",
+      "empty": "No activities in the catalog yet.",
+      "emptyDescription": "Create the first activity — name, family, duration, pax, prices and briefing.",
+      "col": {
+        "family": "Family",
+        "name": "Name",
+        "price": "Price/pax",
+        "status": "Status"
+      },
+      "statusActive": "Visible",
+      "statusHidden": "Hidden",
+      "hide": "Hide",
+      "show": "Make visible",
+      "edit": "Edit {name}",
+      "delete": "Delete {name}",
+      "deleteConfirm": "Delete the activity \"{name}\" from the catalog? Existing deals are not affected.",
+      "deletedToast": "\"{name}\" removed from catalog.",
+      "hiddenToast": "\"{name}\" hidden from library.",
+      "shownToast": "\"{name}\" visible in library.",
+      "form": {
+        "code": "Code (slug)",
+        "name": "Name",
+        "tagline": "Tagline",
+        "family": "Family",
+        "pillar": "Pillar",
+        "noPillar": "No pillar / cross-cutting",
+        "duration": "Duration label",
+        "paxMin": "Pax min",
+        "paxMax": "Pax max",
+        "pricePerPaxMin": "Price/pax min (€)",
+        "pricePerPaxMax": "Price/pax max (€)",
+        "priceTargetMin": "Target event price min (€)",
+        "priceTargetMax": "Target event price max (€)",
+        "targetAudience": "Target audience",
+        "sortOrder": "Sort order",
+        "body": "Operational briefing (markdown)",
+        "bodyHint": "Minute-by-minute flow, equipment, risks, adaptations — in markdown. Shown in the library for reference."
+      }
     },
     "customFields": {
       "title": "Custom fields",

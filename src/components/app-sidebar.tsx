@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  Book,
   Boxes,
   Calendar,
   CalendarPlus,
@@ -9,6 +10,7 @@ import {
   FolderPlus,
   LayoutDashboard,
   LayoutGrid,
+  Library,
   ListTodo,
   Plus,
   Settings,
@@ -61,6 +63,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
         </SidebarLink>
         <SidebarLink href="/ops/calendar" icon={Calendar}>
           {t("calendar")}
+        </SidebarLink>
+        <SidebarLink href="/library" icon={Library}>
+          {t("library")}
         </SidebarLink>
       </SidebarGroup>
 
@@ -183,6 +188,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
             </SidebarLink>
             <SidebarLink href="/admin/apps" icon={Boxes}>
               {t("apps")}
+            </SidebarLink>
+            <SidebarLink href="/admin/catalog" icon={Book}>
+              {t("catalog")}
             </SidebarLink>
             <SidebarLink href="/admin/templates" icon={FileText}>
               {t("templates")}

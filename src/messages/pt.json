@@ -89,6 +89,8 @@
     "title": "Menu",
     "dashboard": "Dashboard",
     "calendar": "Calendário",
+    "library": "Biblioteca",
+    "catalog": "Catálogo",
     "quickActions": "Acções rápidas",
     "addContact": "Adicionar contacto",
     "addLead": "Adicionar lead",
@@ -108,7 +110,7 @@
     "tasks": "Tarefas",
     "myTasks": "As minhas tarefas",
     "documentsLabel": "Documentos",
-    "documents": "Biblioteca",
+    "documents": "Documentos",
     "appsLabel": "Minhas apps",
     "adminLabel": "Administração",
     "users": "Utilizadores",
@@ -982,6 +984,21 @@
       "system": "Sistema"
     }
   },
+  "library": {
+    "title": "Biblioteca",
+    "subtitle": "Catálogo vivo das actividades Backpackers — briefing, custos, fluxo, público-alvo. Consulta antes de propor.",
+    "backToList": "Voltar à biblioteca",
+    "editCta": "Editar",
+    "empty": "Ainda não há actividades publicadas.",
+    "emptyDescription": "Assim que um super-utilizador criar a primeira actividade, aparece aqui.",
+    "field": {
+      "duration": "Duração",
+      "pax": "Participantes",
+      "pricePerPax": "Preço por pax",
+      "priceTarget": "Preço-alvo evento",
+      "audience": "Público-alvo"
+    }
+  },
   "admin": {
     "title": "Administração",
     "landing": {
@@ -1096,6 +1113,50 @@
         "revoked": "Revogado"
       },
       "enforcementNote": "O acesso é validado no login da app externa e no proxy de IA (server-side) através de has_app_access(uid, app_key). Define «sem acesso» para impedir um utilizador de usar a app."
+    },
+    "catalog": {
+      "title": "Catálogo de actividades",
+      "subtitle": "Biblioteca vivível do grupo — actividades Backpackers com custos, fluxo e briefing operacional. Editável por super-utilizadores.",
+      "backToAdmin": "Voltar à administração",
+      "backToList": "Voltar ao catálogo",
+      "newActivity": "Nova actividade",
+      "empty": "Ainda não há actividades no catálogo.",
+      "emptyDescription": "Cria a primeira actividade — nome, família, duração, pax, preços e briefing.",
+      "col": {
+        "family": "Família",
+        "name": "Nome",
+        "price": "Preço/pax",
+        "status": "Estado"
+      },
+      "statusActive": "Visível",
+      "statusHidden": "Oculta",
+      "hide": "Ocultar",
+      "show": "Tornar visível",
+      "edit": "Editar {name}",
+      "delete": "Eliminar {name}",
+      "deleteConfirm": "Eliminar a actividade «{name}» do catálogo? Não afecta deals já criados.",
+      "deletedToast": "«{name}» removida do catálogo.",
+      "hiddenToast": "«{name}» ocultada — deixa de aparecer na biblioteca.",
+      "shownToast": "«{name}» visível na biblioteca.",
+      "form": {
+        "code": "Código (slug)",
+        "name": "Nome",
+        "tagline": "Tagline",
+        "family": "Família",
+        "pillar": "Pilar",
+        "noPillar": "Sem pilar / transversal",
+        "duration": "Duração (rótulo)",
+        "paxMin": "Pax mínimo",
+        "paxMax": "Pax máximo",
+        "pricePerPaxMin": "Preço/pax mínimo (€)",
+        "pricePerPaxMax": "Preço/pax máximo (€)",
+        "priceTargetMin": "Preço-alvo evento mín. (€)",
+        "priceTargetMax": "Preço-alvo evento máx. (€)",
+        "targetAudience": "Público-alvo",
+        "sortOrder": "Ordem",
+        "body": "Briefing operacional (markdown)",
+        "bodyHint": "Fluxo minuto-a-minuto, equipamento, riscos, adaptações — em markdown. Aparece na biblioteca para consulta."
+      }
     },
     "customFields": {
       "title": "Custom fields",

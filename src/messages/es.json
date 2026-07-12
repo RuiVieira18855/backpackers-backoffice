@@ -89,6 +89,8 @@
     "title": "Menú",
     "dashboard": "Panel",
     "calendar": "Calendario",
+    "library": "Biblioteca",
+    "catalog": "Catálogo",
     "quickActions": "Acciones rápidas",
     "addContact": "Añadir contacto",
     "addLead": "Añadir lead",
@@ -108,7 +110,7 @@
     "tasks": "Tareas",
     "myTasks": "Mis tareas",
     "documentsLabel": "Documentos",
-    "documents": "Biblioteca",
+    "documents": "Documentos",
     "appsLabel": "Mis apps",
     "adminLabel": "Administración",
     "users": "Usuarios",
@@ -973,6 +975,21 @@
       "system": "Sistema"
     }
   },
+  "library": {
+    "title": "Biblioteca",
+    "subtitle": "Catálogo vivo de las actividades Backpackers — briefing, costes, flujo, público objetivo. Consulta antes de proponer.",
+    "backToList": "Volver a la biblioteca",
+    "editCta": "Editar",
+    "empty": "Aún no hay actividades publicadas.",
+    "emptyDescription": "En cuanto un super usuario cree la primera actividad, aparecerá aquí.",
+    "field": {
+      "duration": "Duración",
+      "pax": "Participantes",
+      "pricePerPax": "Precio por pax",
+      "priceTarget": "Precio-objetivo evento",
+      "audience": "Público objetivo"
+    }
+  },
   "admin": {
     "title": "Administración",
     "landing": {
@@ -1087,6 +1104,50 @@
         "revoked": "Revocado"
       },
       "enforcementNote": "El acceso se valida en el login de la app externa y en el proxy de IA (server-side) vía has_app_access(uid, app_key). Define «sin acceso» para impedir el uso."
+    },
+    "catalog": {
+      "title": "Catálogo de actividades",
+      "subtitle": "Biblioteca viva del grupo — actividades Backpackers con costes, flujo y briefing operativo. Editable por super usuarios.",
+      "backToAdmin": "Volver a administración",
+      "backToList": "Volver al catálogo",
+      "newActivity": "Nueva actividad",
+      "empty": "Aún no hay actividades en el catálogo.",
+      "emptyDescription": "Crea la primera actividad — nombre, familia, duración, pax, precios y briefing.",
+      "col": {
+        "family": "Familia",
+        "name": "Nombre",
+        "price": "Precio/pax",
+        "status": "Estado"
+      },
+      "statusActive": "Visible",
+      "statusHidden": "Oculta",
+      "hide": "Ocultar",
+      "show": "Hacer visible",
+      "edit": "Editar {name}",
+      "delete": "Eliminar {name}",
+      "deleteConfirm": "¿Eliminar la actividad «{name}» del catálogo? No afecta a deals ya creados.",
+      "deletedToast": "«{name}» eliminada del catálogo.",
+      "hiddenToast": "«{name}» ocultada de la biblioteca.",
+      "shownToast": "«{name}» visible en la biblioteca.",
+      "form": {
+        "code": "Código (slug)",
+        "name": "Nombre",
+        "tagline": "Tagline",
+        "family": "Familia",
+        "pillar": "Pilar",
+        "noPillar": "Sin pilar / transversal",
+        "duration": "Etiqueta de duración",
+        "paxMin": "Pax mín.",
+        "paxMax": "Pax máx.",
+        "pricePerPaxMin": "Precio/pax mín. (€)",
+        "pricePerPaxMax": "Precio/pax máx. (€)",
+        "priceTargetMin": "Precio-objetivo evento mín. (€)",
+        "priceTargetMax": "Precio-objetivo evento máx. (€)",
+        "targetAudience": "Público objetivo",
+        "sortOrder": "Orden",
+        "body": "Briefing operativo (markdown)",
+        "bodyHint": "Flujo minuto a minuto, equipamiento, riesgos, adaptaciones — en markdown. Aparece en la biblioteca para consulta."
+      }
     },
     "customFields": {
       "title": "Custom fields",

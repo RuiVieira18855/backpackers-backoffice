@@ -13,3 +13,4 @@ export * from "./workflows";
 export * from "./webhooks";
 export * from "./oauth";
 export * from "./ai";
+export * from "./catalog";
