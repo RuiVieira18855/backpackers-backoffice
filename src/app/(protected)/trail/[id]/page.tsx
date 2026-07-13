@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, FileText } from "lucide-react";
 import { and, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -129,6 +129,15 @@ export default async function TrailResultPage({ params }: Props) {
           </p>
         </CardContent>
       </Card>
+
+      <div className="flex items-center justify-center pt-2">
+        <Button asChild size="lg">
+          <Link href={`/trail/${assessment.id}/report`}>
+            <FileText className="mr-2 h-4 w-4" />
+            {t("openFullReport")}
+          </Link>
+        </Button>
+      </div>
 
       <p className="text-xs text-muted-foreground italic text-center">
         {t("disclaimer")}

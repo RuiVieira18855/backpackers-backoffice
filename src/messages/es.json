@@ -1032,7 +1032,45 @@
       "rankingTitle": "6 valores ordenados por fuerza",
       "insightTitle": "Lectura corta",
       "insightBody": "Tu rasgo dominante es {dominant}, apoyado por {support1} y {support2}. El menor es {weakest} — no es debilidad; es donde el esfuerzo consciente tiene más impacto. Comparte este perfil con el equipo como reflexión, no como evaluación.",
+      "openFullReport": "Abrir informe extendido",
       "disclaimer": "Herramienta de auto-reflexión de Backpackers Labs. No sustituye evaluación psicométrica clínica."
+    },
+    "report": {
+      "kicker": "Informe TRAIL · Backpackers Labs",
+      "title": "Tu mapa TRILHA",
+      "back": "Volver al resumen",
+      "printCta": "Imprimir / PDF",
+      "cover": {
+        "for": "Perfil de {name} · Completado el {date}"
+      },
+      "snapshot": {
+        "title": "Instantánea de tu perfil",
+        "leadHigh": "Destaca la {dominant} ({score}/100).",
+        "leadSupport": "Sostenida por {s1} y {s2}.",
+        "leadLow": "Menos presente: {weakest} ({score}/100)."
+      },
+      "overall": {
+        "title": "Lectura general"
+      },
+      "pillar": {
+        "behaviors": "Comportamientos",
+        "strengths": "Puntos fuertes",
+        "shadows": "Sombras",
+        "yourBand": "Tu puntuación: {band} · {score}/100",
+        "bands": {
+          "low": "Baja",
+          "mid": "Media",
+          "high": "Alta"
+        },
+        "growth": "Caminos de crecimiento",
+        "interactions": "Cómo te relacionas con quienes tienen fuerte cada otro pilar",
+        "withValue": "Con quienes son fuertes en {value}"
+      },
+      "closing": {
+        "title": "Cómo usar este informe",
+        "body": "Este informe es herramienta de reflexión, no de evaluación. Léelo como espejo — lo que te reconoce, lo que te sorprende, lo que te incomoda. Compártelo con el equipo como conversación, no como clasificación. Vuelve a hacer el test dentro de 6 meses y compara.",
+        "disclaimer": "Backpackers Labs — TRAIL v1. No sustituye evaluación psicométrica clínica. Los perfiles pueden evolucionar con contexto y experiencia."
+      }
     }
   },
   "library": {

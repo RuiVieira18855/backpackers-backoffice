@@ -1041,7 +1041,45 @@
       "rankingTitle": "6 valores por ordem de força",
       "insightTitle": "Leitura curta",
       "insightBody": "O teu traço dominante é {dominant}, apoiado por {support1} e {support2}. O menos presente é {weakest} — não é fraqueza; é onde o esforço consciente terá mais efeito. Partilha este perfil com a equipa em contexto de reflexão, não de avaliação.",
+      "openFullReport": "Abrir relatório extenso",
       "disclaimer": "Ferramenta de auto-reflexão da Backpackers Labs. Não substitui avaliação psicométrica clínica."
+    },
+    "report": {
+      "kicker": "Relatório TRAIL · Backpackers Labs",
+      "title": "O teu mapa TRILHA",
+      "back": "Voltar ao resumo",
+      "printCta": "Imprimir / PDF",
+      "cover": {
+        "for": "Perfil de {name} · Concluído em {date}"
+      },
+      "snapshot": {
+        "title": "Instantâneo do teu perfil",
+        "leadHigh": "Sobressai a {dominant} ({score}/100).",
+        "leadSupport": "Sustentada por {s1} e {s2}.",
+        "leadLow": "Menos presente: {weakest} ({score}/100)."
+      },
+      "overall": {
+        "title": "Leitura geral"
+      },
+      "pillar": {
+        "behaviors": "Comportamentos",
+        "strengths": "Pontos fortes",
+        "shadows": "Sombras",
+        "yourBand": "A tua pontuação: {band} · {score}/100",
+        "bands": {
+          "low": "Baixa",
+          "mid": "Média",
+          "high": "Alta"
+        },
+        "growth": "Caminhos de crescimento",
+        "interactions": "Como te relacionas com quem tem cada outro pilar forte",
+        "withValue": "Com quem é forte em {value}"
+      },
+      "closing": {
+        "title": "Como usar este relatório",
+        "body": "Este relatório é ferramenta de reflexão, não de avaliação. Lê como espelho — o que te reconhece, o que te surpreende, o que te incomoda. Partilha com a equipa em contexto de conversa, não como classificação. Volta a fazer o teste daqui a 6 meses e compara.",
+        "disclaimer": "Backpackers Labs — TRAIL v1. Não substitui avaliação psicométrica clínica. Perfis podem evoluir com contexto e experiência."
+      }
     }
   },
   "library": {

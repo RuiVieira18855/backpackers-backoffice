@@ -1032,7 +1032,45 @@
       "rankingTitle": "6 values ranked by strength",
       "insightTitle": "Short read",
       "insightBody": "Your dominant trait is {dominant}, supported by {support1} and {support2}. The lowest is {weakest} — not a weakness; it's where conscious effort has the most leverage. Share this profile with the team as reflection, not evaluation.",
+      "openFullReport": "Open extended report",
       "disclaimer": "Self-reflection tool by Backpackers Labs. Does not replace clinical psychometric assessment."
+    },
+    "report": {
+      "kicker": "TRAIL report · Backpackers Labs",
+      "title": "Your TRILHA map",
+      "back": "Back to summary",
+      "printCta": "Print / PDF",
+      "cover": {
+        "for": "Profile for {name} · Completed {date}"
+      },
+      "snapshot": {
+        "title": "Snapshot of your profile",
+        "leadHigh": "{dominant} stands out ({score}/100).",
+        "leadSupport": "Supported by {s1} and {s2}.",
+        "leadLow": "Least present: {weakest} ({score}/100)."
+      },
+      "overall": {
+        "title": "Overall reading"
+      },
+      "pillar": {
+        "behaviors": "Behaviors",
+        "strengths": "Strengths",
+        "shadows": "Shadows",
+        "yourBand": "Your score: {band} · {score}/100",
+        "bands": {
+          "low": "Low",
+          "mid": "Mid",
+          "high": "High"
+        },
+        "growth": "Growth paths",
+        "interactions": "How you relate to people strong in each other pillar",
+        "withValue": "With people strong in {value}"
+      },
+      "closing": {
+        "title": "How to use this report",
+        "body": "This report is a reflection tool, not an evaluation. Read it as a mirror — what you recognise, what surprises you, what you resist. Share with your team as conversation, not classification. Take the test again in 6 months and compare.",
+        "disclaimer": "Backpackers Labs — TRAIL v1. Does not replace clinical psychometric assessment. Profiles evolve with context and experience."
+      }
     }
   },
   "library": {
