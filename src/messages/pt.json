@@ -1139,6 +1139,14 @@
       "deletedToast": "«{name}» removida do catálogo.",
       "hiddenToast": "«{name}» ocultada — deixa de aparecer na biblioteca.",
       "shownToast": "«{name}» visível na biblioteca.",
+      "seed": {
+        "cta": "Importar Synergy",
+        "running": "A importar…",
+        "confirmTitle": "Importar as 17 actividades Synergy?",
+        "confirmDescription": "Vai criar ou actualizar as actividades já em src/data/synergy-seed.ts (gerado a partir dos .md de estratégia). Não elimina actividades existentes fora deste conjunto.",
+        "confirmCta": "Importar",
+        "doneToast": "Import concluído: {inserted} criadas, {updated} actualizadas."
+      },
       "form": {
         "code": "Código (slug)",
         "name": "Nome",

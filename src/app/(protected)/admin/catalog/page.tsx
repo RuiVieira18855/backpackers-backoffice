@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CatalogRows } from "./rows";
+import { SeedSynergyButton } from "./seed-button";
 
 const FAMILY_LABELS: Record<string, string> = {
   wild: "🌿 Wild",
@@ -58,12 +59,15 @@ export default async function AdminCatalogPage() {
               {t("subtitle")}
             </p>
           </div>
-          <Button asChild>
-            <Link href="/admin/catalog/new">
-              <Plus className="mr-2 h-4 w-4" />
-              {t("newActivity")}
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <SeedSynergyButton />
+            <Button asChild>
+              <Link href="/admin/catalog/new">
+                <Plus className="mr-2 h-4 w-4" />
+                {t("newActivity")}
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 

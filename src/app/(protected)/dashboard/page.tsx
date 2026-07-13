@@ -123,7 +123,7 @@ export default async function DashboardPage() {
   //      (prevents one stuck connection from 504'ing the whole dashboard)
   //   3. The underlying promise is fire-and-forget after timeout; postgres-js
   //      releases its connection when the server side finishes.
-  const SAFE_TIMEOUT_MS = 8000;
+  const SAFE_TIMEOUT_MS = 15000;
   function safe<T>(label: string, p: Promise<T>, fallback: T): Promise<T> {
     return Promise.race<T>([
       p,
