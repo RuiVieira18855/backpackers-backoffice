@@ -6,6 +6,7 @@ import {
   CalendarPlus,
   CheckSquare,
   ClipboardList,
+  Compass,
   FileText,
   FolderPlus,
   LayoutDashboard,
@@ -66,6 +67,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
         </SidebarLink>
         <SidebarLink href="/library" icon={Library}>
           {t("library")}
+        </SidebarLink>
+        <SidebarLink href="/trail" icon={Compass}>
+          {t("trail")}
         </SidebarLink>
       </SidebarGroup>
 

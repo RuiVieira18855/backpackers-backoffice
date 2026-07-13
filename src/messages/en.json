@@ -91,6 +91,7 @@
     "calendar": "Calendar",
     "library": "Library",
     "catalog": "Catalog",
+    "trail": "TRAIL",
     "quickActions": "Quick actions",
     "addContact": "Add contact",
     "addLead": "Add lead",
@@ -974,6 +975,64 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
+    }
+  },
+  "trail": {
+    "kicker": "TRAIL assessment · Backpackers Labs",
+    "title": "Discover your TRILHA profile",
+    "subtitle": "42 Likert 1-5 questions. Returns your values profile across 6 axes (Transformation, Respect, Innovation, Freedom, Harmony, Adventure). About 8 minutes.",
+    "noQuestions": "The question bank hasn't been imported yet. If you're a super user, import the 42 base questions to get started.",
+    "start": {
+      "title": "Start a new assessment",
+      "subtitle": "Answers are saved as you go. You can pause and resume later.",
+      "cta": "Start",
+      "starting": "Starting…"
+    },
+    "resume": {
+      "title": "You have an assessment in progress",
+      "subtitle": "Pick up where you left off.",
+      "cta": "Resume"
+    },
+    "empty": {
+      "title": "You don't have a TRAIL profile yet",
+      "subtitle": "Take the assessment to see your values profile."
+    },
+    "history": {
+      "title": "Previous assessments",
+      "dominant": "Dominant trait: {value}"
+    },
+    "seed": {
+      "cta": "Import 42 questions",
+      "running": "Importing…",
+      "doneToast": "Questions imported: {inserted} created, {updated} updated."
+    },
+    "likert": {
+      "v1": "Strongly disagree",
+      "v2": "Disagree",
+      "v3": "Neutral",
+      "v4": "Agree",
+      "v5": "Strongly agree"
+    },
+    "take": {
+      "kicker": "Assessment in progress",
+      "title": "How do you feel about this?",
+      "hint": "Pick how much you agree. There are no right answers — go with your first instinct.",
+      "progress": "Question {done} of {total}",
+      "prev": "Previous",
+      "next": "Next",
+      "finish": "See result",
+      "finishing": "Computing…",
+      "stillMissing": "{count} answers still missing before you can finish."
+    },
+    "result": {
+      "kicker": "TRAIL profile · TRILHA",
+      "dominantHeadline": "{value} — {score}/100",
+      "of": "Profile for {name}",
+      "back": "Back to TRAIL",
+      "rankingTitle": "6 values ranked by strength",
+      "insightTitle": "Short read",
+      "insightBody": "Your dominant trait is {dominant}, supported by {support1} and {support2}. The lowest is {weakest} — not a weakness; it's where conscious effort has the most leverage. Share this profile with the team as reflection, not evaluation.",
+      "disclaimer": "Self-reflection tool by Backpackers Labs. Does not replace clinical psychometric assessment."
     }
   },
   "library": {

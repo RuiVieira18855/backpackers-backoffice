@@ -91,6 +91,7 @@
     "calendar": "Calendário",
     "library": "Biblioteca",
     "catalog": "Catálogo",
+    "trail": "TRAIL",
     "quickActions": "Acções rápidas",
     "addContact": "Adicionar contacto",
     "addLead": "Adicionar lead",
@@ -983,6 +984,64 @@
       "light": "Claro",
       "dark": "Escuro",
       "system": "Sistema"
+    }
+  },
+  "trail": {
+    "kicker": "Assessment TRAIL · Backpackers Labs",
+    "title": "Descobre o teu perfil TRILHA",
+    "subtitle": "42 perguntas Likert 1-5. Devolvemos o teu perfil de valores em 6 eixos (Transformação, Respeito, Inovação, Liberdade, Harmonia, Aventura). Cerca de 8 minutos.",
+    "noQuestions": "O banco de perguntas ainda não foi importado. Se és super-utilizador, importa as 42 perguntas base para começar.",
+    "start": {
+      "title": "Começar um novo assessment",
+      "subtitle": "As respostas são guardadas à medida que avanças. Podes pausar e retomar depois.",
+      "cta": "Começar",
+      "starting": "A começar…"
+    },
+    "resume": {
+      "title": "Tens um assessment em curso",
+      "subtitle": "Continua de onde paraste.",
+      "cta": "Retomar"
+    },
+    "empty": {
+      "title": "Ainda não tens perfil TRAIL",
+      "subtitle": "Faz o assessment para veres o teu perfil de valores."
+    },
+    "history": {
+      "title": "Assessments anteriores",
+      "dominant": "Traço dominante: {value}"
+    },
+    "seed": {
+      "cta": "Importar 42 perguntas",
+      "running": "A importar…",
+      "doneToast": "Perguntas importadas: {inserted} criadas, {updated} actualizadas."
+    },
+    "likert": {
+      "v1": "Discordo totalmente",
+      "v2": "Discordo",
+      "v3": "Neutro",
+      "v4": "Concordo",
+      "v5": "Concordo totalmente"
+    },
+    "take": {
+      "kicker": "Assessment em curso",
+      "title": "Como te sentes acerca disto?",
+      "hint": "Escolhe o quanto concordas. Não há respostas certas — vai com a primeira sensação.",
+      "progress": "Pergunta {done} de {total}",
+      "prev": "Anterior",
+      "next": "Próxima",
+      "finish": "Ver resultado",
+      "finishing": "A calcular…",
+      "stillMissing": "Ainda faltam {count} respostas antes de finalizar."
+    },
+    "result": {
+      "kicker": "Perfil TRAIL · TRILHA",
+      "dominantHeadline": "{value} — {score}/100",
+      "of": "Perfil de {name}",
+      "back": "Voltar ao TRAIL",
+      "rankingTitle": "6 valores por ordem de força",
+      "insightTitle": "Leitura curta",
+      "insightBody": "O teu traço dominante é {dominant}, apoiado por {support1} e {support2}. O menos presente é {weakest} — não é fraqueza; é onde o esforço consciente terá mais efeito. Partilha este perfil com a equipa em contexto de reflexão, não de avaliação.",
+      "disclaimer": "Ferramenta de auto-reflexão da Backpackers Labs. Não substitui avaliação psicométrica clínica."
     }
   },
   "library": {
