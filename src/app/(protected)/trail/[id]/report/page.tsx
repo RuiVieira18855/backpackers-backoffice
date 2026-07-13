@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Printer } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { and, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -20,6 +20,7 @@ import {
   overallReading,
   scoreBandFor,
 } from "@/data/trail-content";
+import { PrintButton } from "./print-button";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -91,18 +92,7 @@ export default async function TrailReportPage({ params }: Props) {
           {t("cover.for", { name, date: dateStr })}
         </p>
         <div className="flex flex-wrap items-center gap-3 pt-4 print:hidden">
-          <Button variant="outline" size="sm" asChild>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                if (typeof window !== "undefined") window.print();
-              }}
-            >
-              <Printer className="mr-2 h-3.5 w-3.5" />
-              {t("printCta")}
-            </a>
-          </Button>
+          <PrintButton label={t("printCta")} />
         </div>
       </header>
 
