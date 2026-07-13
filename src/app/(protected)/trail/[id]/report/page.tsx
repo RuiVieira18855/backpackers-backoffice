@@ -14,12 +14,12 @@ import { requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrailSpiderChart } from "@/components/trail/spider-chart";
-import { sortedByScore } from "@/lib/trail";
+import { sortedByScore } from "@backpackers/trail-core/scoring";
 import {
   TRAIL_CONTENT,
   overallReading,
   scoreBandFor,
-} from "@/data/trail-content";
+} from "@backpackers/trail-core/content";
 import { PrintButton } from "./print-button";
 
 type Props = { params: Promise<{ id: string }> };

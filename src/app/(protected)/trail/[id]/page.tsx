@@ -9,7 +9,7 @@ import { requireProfile } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrailSpiderChart } from "@/components/trail/spider-chart";
-import { sortedByScore } from "@/lib/trail";
+import { sortedByScore } from "@backpackers/trail-core/scoring";
 
 type Props = { params: Promise<{ id: string }> };
 

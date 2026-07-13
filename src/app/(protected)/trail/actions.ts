@@ -11,8 +11,8 @@ import {
   type TrailValueKey,
 } from "@/lib/db/schema";
 import { requireProfile, requireRole } from "@/lib/dal";
-import { computeScores, dominantValue } from "@/lib/trail";
-import { TRAIL_QUESTIONS } from "@/data/trail-questions";
+import { computeScores, dominantValue } from "@backpackers/trail-core/scoring";
+import { TRAIL_QUESTIONS } from "@backpackers/trail-core/questions";
 
 // ---------- Seed (super_user + admin_grupo) --------------------------------
 
