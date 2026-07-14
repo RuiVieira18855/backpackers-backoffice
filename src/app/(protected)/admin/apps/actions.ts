@@ -26,12 +26,27 @@ export async function setAppAccess(formData: FormData): Promise<void> {
   const status = String(formData.get("status") ?? "none");
   const planRaw = String(formData.get("plan") ?? "").trim();
   const expiresRaw = String(formData.get("expiresAt") ?? "").trim();
+  const brandNameRaw = String(formData.get("brandName") ?? "").trim();
+  const brandMarkRaw = String(formData.get("brandMark") ?? "").trim();
+  const brandTagRaw = String(formData.get("brandTag") ?? "").trim();
 
   if (!userId || !appKey) return;
   if (!(STATUSES as readonly string[]).includes(status)) return;
 
   const plan = planRaw || null;
   const expiresAt = expiresRaw ? new Date(expiresRaw) : null;
+
+  // Branding only makes sense for whitelabel apps (currently just Cairn).
+  // Leave null if all fields empty so Cairn falls back to its default.
+  const brandingObj = {
+    ...(brandNameRaw ? { name: brandNameRaw } : {}),
+    ...(brandMarkRaw ? { mark: brandMarkRaw.slice(0, 2) } : {}),
+    ...(brandTagRaw ? { tag: brandTagRaw } : {}),
+  };
+  const branding =
+    appKey === "cairn" && Object.keys(brandingObj).length > 0
+      ? brandingObj
+      : null;
 
   if (status === "none") {
     await db
@@ -46,6 +61,7 @@ export async function setAppAccess(formData: FormData): Promise<void> {
         status: status as Status,
         plan,
         expiresAt,
+        branding,
         grantedBy: profile.id,
       })
       .onConflictDoUpdate({
@@ -54,6 +70,7 @@ export async function setAppAccess(formData: FormData): Promise<void> {
           status: status as Status,
           plan,
           expiresAt,
+          branding,
           grantedBy: profile.id,
           updatedAt: new Date(),
         },
@@ -67,7 +84,13 @@ export async function setAppAccess(formData: FormData): Promise<void> {
       entityType: "app_access",
       entityId: userId,
       action: status === "none" ? "delete" : "update",
-      diff: { app: appKey, status, plan, expiresAt: expiresRaw || null },
+      diff: {
+        app: appKey,
+        status,
+        plan,
+        expiresAt: expiresRaw || null,
+        branding,
+      },
     });
   } catch {
     /* audit best-effort */

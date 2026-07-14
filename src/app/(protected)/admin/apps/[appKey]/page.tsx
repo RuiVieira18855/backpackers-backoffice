@@ -71,6 +71,7 @@ export default async function AppDetailPage({
         status: appAccess.status,
         plan: appAccess.plan,
         expiresAt: appAccess.expiresAt,
+        branding: appAccess.branding,
       })
       .from(appAccess)
       .where(eq(appAccess.app, appKey)),
@@ -315,6 +316,32 @@ export default async function AppDetailPage({
                           className={fieldCls}
                           aria-label={t("expiresLabel")}
                         />
+                        {appKey === "cairn" && (
+                          <>
+                            <input
+                              name="brandName"
+                              defaultValue={a?.branding?.name ?? ""}
+                              placeholder={t("brandNamePlaceholder")}
+                              className={fieldCls + " w-32"}
+                              aria-label={t("brandNameLabel")}
+                            />
+                            <input
+                              name="brandMark"
+                              defaultValue={a?.branding?.mark ?? ""}
+                              placeholder={t("brandMarkPlaceholder")}
+                              maxLength={2}
+                              className={fieldCls + " w-14"}
+                              aria-label={t("brandMarkLabel")}
+                            />
+                            <input
+                              name="brandTag"
+                              defaultValue={a?.branding?.tag ?? ""}
+                              placeholder={t("brandTagPlaceholder")}
+                              className={fieldCls + " w-40"}
+                              aria-label={t("brandTagLabel")}
+                            />
+                          </>
+                        )}
                         <Button type="submit" size="sm" variant="secondary">
                           {t("save")}
                         </Button>

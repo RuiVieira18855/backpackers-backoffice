@@ -1192,6 +1192,12 @@
       "statusLabel": "Status",
       "expiresLabel": "Expires on",
       "planPlaceholder": "plan",
+      "brandNameLabel": "Product name (white-label)",
+      "brandNamePlaceholder": "AcmeFlow",
+      "brandMarkLabel": "Logo letter (1-2 chars)",
+      "brandMarkPlaceholder": "A",
+      "brandTagLabel": "Tagline",
+      "brandTagPlaceholder": "Private flows",
       "save": "Save",
       "statuses": {
         "all": "All",

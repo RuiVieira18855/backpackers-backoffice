@@ -1,0 +1,1 @@
+ALTER TABLE "app_access" ADD COLUMN "branding" jsonb;

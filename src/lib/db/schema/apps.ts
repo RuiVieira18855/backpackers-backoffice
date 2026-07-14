@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   index,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -60,6 +61,13 @@ export const appAccess = pgTable(
     plan: text("plan"),
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     notes: text("notes"),
+    branding: jsonb("branding").$type<{
+      name?: string;
+      mark?: string;
+      tag?: string;
+      link?: string;
+      accent?: string;
+    } | null>(),
     grantedBy: uuid("granted_by").references(() => profiles.id, {
       onDelete: "set null",
     }),
