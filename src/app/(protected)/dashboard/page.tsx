@@ -140,6 +140,15 @@ export default async function DashboardPage() {
     });
   }
 
+  // Warm the Supabase transaction pooler before the parallel block below.
+  // First hit after idle takes 5-10s to establish; subsequent hits reuse the
+  // same warm connection and return in ms. Without this, cold parallel
+  // queries can trip the 15s timeout above (contactsTrend was the usual
+  // offender). We swallow errors — this is best-effort priming.
+  await db
+    .execute(sql`SELECT 1`)
+    .catch(() => undefined);
+
   const weekEndIso = isoDay(weekEnd);
 
   // Declare queries first so Awaited<typeof q> picks up the `with` relations.
