@@ -169,6 +169,13 @@
       "when": 1784063192305,
       "tag": "0023_app_access_branding",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1784234513899,
+      "tag": "0024_ai_usage_app",
+      "breakpoints": true
     }
   ]
 }

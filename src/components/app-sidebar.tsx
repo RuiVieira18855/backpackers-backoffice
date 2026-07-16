@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  BarChart3,
   Book,
   Boxes,
   Calendar,
@@ -192,6 +193,9 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
             </SidebarLink>
             <SidebarLink href="/admin/apps" icon={Boxes}>
               {t("apps")}
+            </SidebarLink>
+            <SidebarLink href="/admin/analytics" icon={BarChart3}>
+              {t("analytics")}
             </SidebarLink>
             <SidebarLink href="/admin/catalog" icon={Book}>
               {t("catalog")}

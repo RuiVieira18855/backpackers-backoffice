@@ -1,0 +1,1 @@
+ALTER TABLE "ai_usage" ADD COLUMN "app" text DEFAULT 'outpost' NOT NULL;

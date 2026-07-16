@@ -116,6 +116,7 @@
     "adminLabel": "Administration",
     "users": "Users",
     "apps": "Apps & Access",
+    "analytics": "Analytics",
     "templates": "Templates",
     "customFields": "Custom fields",
     "workflows": "Automations",
@@ -1145,6 +1146,55 @@
         "docs": "Upload and view documents.",
         "finance": "View and manage financial transactions (income/expense).",
         "admin": "Manage users, roles, skills and pillar access."
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "subtitle": "Platform usage and AI cost. Visible to admin_grupo and super_user only.",
+      "backToAdmin": "Back to admin",
+      "kpi": {
+        "gens30d": "AI generations (30d)",
+        "gens7d": "{n} in the last 7 days",
+        "usersTotal": "Total users",
+        "usersNew": "+{m} in 30d · +{w} in 7d",
+        "activeAccess": "Active access",
+        "trialAccess": "{n} in trial",
+        "cost30d": "AI cost (30d)",
+        "perGeneration": "{v} per generation"
+      },
+      "dailyChart": {
+        "title": "Daily generations (30 days)",
+        "subtitle": "Tallest bar = peak usage. Each bar is a day.",
+        "empty": "No generations recorded yet."
+      },
+      "byModel": {
+        "title": "Usage and cost by model",
+        "empty": "No data in the last 30 days.",
+        "col": {
+          "model": "Model",
+          "app": "App",
+          "gens": "Generations",
+          "tokens": "Tokens",
+          "cost": "Cost EUR"
+        }
+      },
+      "topUsers": {
+        "title": "Top users (30 days)",
+        "subtitle": "Red bar when cost exceeds {threshold} (40% of Cairn Pro plan margin).",
+        "empty": "No generations per user in the last 30 days.",
+        "col": {
+          "user": "User",
+          "kind": "Kind",
+          "gens": "Generations",
+          "tokens": "Tokens",
+          "cost": "Cost",
+          "margin": "% of {plan} margin"
+        },
+        "disclaimer": "Costs computed at Anthropic public rates with an approximate USD/EUR (0.92). Not a substitute for official billing."
+      },
+      "pricing": {
+        "title": "Reference pricing (USD per 1M tokens)",
+        "note": "Source: docs.anthropic.com. Update src/lib/ai/pricing.ts when Anthropic changes rates."
       }
     },
     "apps": {

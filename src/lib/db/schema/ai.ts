@@ -19,6 +19,7 @@ export const aiUsage = pgTable(
     pillarId: uuid("pillar_id").references(() => pillars.id, {
       onDelete: "set null",
     }),
+    app: text("app").notNull().default("outpost"),
     surface: text("surface").notNull(),
     entityType: text("entity_type"),
     entityId: uuid("entity_id"),

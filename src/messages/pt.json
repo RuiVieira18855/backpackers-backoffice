@@ -116,6 +116,7 @@
     "adminLabel": "Administração",
     "users": "Utilizadores",
     "apps": "Apps & Acessos",
+    "analytics": "Analytics",
     "templates": "Templates",
     "customFields": "Custom fields",
     "workflows": "Automações",
@@ -1154,6 +1155,55 @@
         "docs": "Carregar e ver documentos.",
         "finance": "Ver e gerir movimentos financeiros (receitas/despesas).",
         "admin": "Gerir utilizadores, roles, skills e acesso a pilares."
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "subtitle": "Uso da plataforma e custo de IA. Só admin_grupo e super_user vêem.",
+      "backToAdmin": "Voltar à administração",
+      "kpi": {
+        "gens30d": "Gerações IA (30d)",
+        "gens7d": "{n} nos últimos 7 dias",
+        "usersTotal": "Utilizadores totais",
+        "usersNew": "+{m} em 30d · +{w} em 7d",
+        "activeAccess": "Acessos activos",
+        "trialAccess": "{n} em trial",
+        "cost30d": "Custo IA (30d)",
+        "perGeneration": "{v} por geração"
+      },
+      "dailyChart": {
+        "title": "Gerações por dia (30 dias)",
+        "subtitle": "Barras a mais alta = pico de uso. Cada barra é um dia.",
+        "empty": "Ainda sem gerações registadas."
+      },
+      "byModel": {
+        "title": "Uso e custo por modelo",
+        "empty": "Sem dados nos últimos 30 dias.",
+        "col": {
+          "model": "Modelo",
+          "app": "App",
+          "gens": "Gerações",
+          "tokens": "Tokens",
+          "cost": "Custo EUR"
+        }
+      },
+      "topUsers": {
+        "title": "Top utilizadores (30 dias)",
+        "subtitle": "Barra vermelha quando o custo supera {threshold} (40% da margem do plano Cairn Pro).",
+        "empty": "Sem gerações por utilizador nos últimos 30 dias.",
+        "col": {
+          "user": "Utilizador",
+          "kind": "Tipo",
+          "gens": "Gerações",
+          "tokens": "Tokens",
+          "cost": "Custo",
+          "margin": "% da margem {plan}"
+        },
+        "disclaimer": "Custos calculados aos preços públicos da Anthropic e câmbio USD/EUR aproximado (0.92). Não substitui o billing oficial."
+      },
+      "pricing": {
+        "title": "Preços de referência (USD por 1M tokens)",
+        "note": "Fonte: docs.anthropic.com. Actualiza src/lib/ai/pricing.ts quando a Anthropic mudar."
       }
     },
     "apps": {
