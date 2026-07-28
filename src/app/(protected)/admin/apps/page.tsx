@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { NewAppForm } from "./new-app-form";
+import { AppUrl } from "./app-url";
 
 type AppRow = {
   key: string;
@@ -170,17 +171,7 @@ export default async function AppsAdminLanding() {
                         <p className="text-muted-foreground">{t("total")}</p>
                       </div>
                     </div>
-                    {a.url && (
-                      <a
-                        href={a.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="block mt-3 text-xs text-muted-foreground underline-offset-2 hover:underline truncate"
-                      >
-                        {a.url}
-                      </a>
-                    )}
+                    {a.url && <AppUrl url={a.url} />}
                   </CardContent>
                 </Card>
               </Link>
