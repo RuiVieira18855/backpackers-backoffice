@@ -4,7 +4,10 @@
 -- Cairn Pro stores diagrams in the user's account (jsonb) and can expose one
 -- read-only via a random share_id. Customer-owned data: the Outpost does not
 -- manage it, but it lives in the shared database.
--- Idempotent.
+--
+-- Fully idempotent AND safe on a table created by the original cloud-docs
+-- migration that lacked the share columns: the columns are added via ALTER,
+-- not relied on from the CREATE (which is a no-op when the table exists).
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS public.cairn_documents (
@@ -12,16 +15,22 @@ CREATE TABLE IF NOT EXISTS public.cairn_documents (
   user_id    uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title      text,
   doc        jsonb NOT NULL,
-  share_id   text UNIQUE,
-  is_public  boolean NOT NULL DEFAULT false,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
+-- Share-by-link columns (added separately so this works whether the table was
+-- created just now or already existed without them).
+ALTER TABLE public.cairn_documents
+  ADD COLUMN IF NOT EXISTS share_id  text,
+  ADD COLUMN IF NOT EXISTS is_public boolean NOT NULL DEFAULT false;
+
 CREATE INDEX IF NOT EXISTS cairn_documents_user_idx
   ON public.cairn_documents (user_id, updated_at DESC);
-CREATE INDEX IF NOT EXISTS cairn_documents_share_idx
-  ON public.cairn_documents (share_id) WHERE share_id IS NOT NULL;
+-- Unique index enforces uniqueness for non-null share_id (multiple NULLs allowed)
+-- and serves the share lookup.
+CREATE UNIQUE INDEX IF NOT EXISTS cairn_documents_share_uidx
+  ON public.cairn_documents (share_id);
 
 ALTER TABLE public.cairn_documents ENABLE ROW LEVEL SECURITY;
 
