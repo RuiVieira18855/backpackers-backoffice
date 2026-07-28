@@ -2,10 +2,16 @@
 REM ============================================================================
 REM  Outpost — Start dev server + open browser
 REM  Duplo-clique para arrancar o backoffice em http://localhost:3000
+REM
+REM  NOTA: o backoffice e um membro do npm workspace da raiz
+REM  (backpackers-group). As dependencias vivem na RAIZ, nao aqui. Por isso
+REM  este script trabalha a partir da raiz: instala la (se preciso) e arranca
+REM  com `npm run dev:outpost`.
 REM ============================================================================
 
 setlocal
-cd /d "%~dp0"
+REM Sobe da pasta backoffice para a raiz do workspace.
+cd /d "%~dp0.."
 
 REM Verifica se a porta 3000 ja esta ocupada.
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr /R /C:":3000 .*LISTENING"') do (
@@ -25,9 +31,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM Instala dependencias se node_modules nao existir.
+REM Instala dependencias do workspace na RAIZ se node_modules nao existir.
 if not exist "node_modules" (
-    echo A instalar dependencias ^(primeira execucao^)...
+    echo A instalar dependencias do workspace ^(primeira execucao^)...
     call npm install
     if errorlevel 1 (
         echo [ERRO] npm install falhou. Ve o output em cima.
@@ -46,7 +52,7 @@ echo.
 REM Abre o browser 5 segundos depois de arrancar o server.
 start "" cmd /c "timeout /t 5 >nul & start http://localhost:3000"
 
-REM Arranca o dev server em foreground para veres logs.
-call npm run dev
+REM Arranca o dev server do backoffice (via workspace) em foreground.
+call npm run dev:outpost
 
 endlocal
