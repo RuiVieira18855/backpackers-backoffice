@@ -21,8 +21,8 @@ type UserRow = {
   models: string[];
 };
 
-// Cairn Pro price for margin comparison (per handoff: €7/month or €70/year).
-const CAIRN_PRO_MONTHLY_EUR = 7;
+// Cairn Pro price for margin comparison (€9/month or €90/year).
+const CAIRN_PRO_MONTHLY_EUR = 9;
 // Alert threshold: 40% of margin already eaten by AI cost.
 const ALERT_THRESHOLD_EUR = CAIRN_PRO_MONTHLY_EUR * 0.4;
 

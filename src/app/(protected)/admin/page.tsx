@@ -4,6 +4,7 @@ import {
   ClipboardCheck,
   FileText,
   Mail,
+  MessageSquare,
   Settings,
   Shield,
   Webhook,
@@ -30,12 +31,14 @@ type Section = {
     | "workflows"
     | "webhooks"
     | "audit"
-    | "resendTest";
+    | "resendTest"
+    | "feedback";
 };
 
 const SECTIONS: Section[] = [
   { href: "/admin/users", icon: Shield, titleKey: "users" },
   { href: "/admin/apps", icon: Boxes, titleKey: "apps" },
+  { href: "/admin/feedback", icon: MessageSquare, titleKey: "feedback" },
   { href: "/admin/templates", icon: FileText, titleKey: "templates" },
   { href: "/admin/custom-fields", icon: Settings, titleKey: "customFields" },
   { href: "/admin/workflows", icon: Workflow, titleKey: "workflows" },
@@ -55,6 +58,7 @@ export default async function AdminLandingPage() {
   const tWebhooks = await getTranslations("admin.webhooks");
   const tAudit = await getTranslations("admin.audit");
   const tResendTest = await getTranslations("admin.resendTest");
+  const tFeedback = await getTranslations("admin.feedback");
 
   const labels = {
     apps: { title: tApps("title"), subtitle: tApps("cardSubtitle") },
@@ -79,6 +83,10 @@ export default async function AdminLandingPage() {
     resendTest: {
       title: tResendTest("title"),
       subtitle: tResendTest("subtitle"),
+    },
+    feedback: {
+      title: tFeedback("title"),
+      subtitle: tFeedback("subtitle"),
     },
   };
 

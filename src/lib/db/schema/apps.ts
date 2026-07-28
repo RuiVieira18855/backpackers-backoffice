@@ -68,6 +68,10 @@ export const appAccess = pgTable(
       link?: string;
       accent?: string;
     } | null>(),
+    // Set by the Cairn Stripe webhook so renewals/cancellations can find the
+    // row by subscription and keep status/expires_at in sync.
+    stripeCustomerId: text("stripe_customer_id"),
+    stripeSubId: text("stripe_sub_id"),
     grantedBy: uuid("granted_by").references(() => profiles.id, {
       onDelete: "set null",
     }),
@@ -81,6 +85,7 @@ export const appAccess = pgTable(
   (t) => [
     uniqueIndex("app_access_user_app_idx").on(t.userId, t.app),
     index("app_access_app_idx").on(t.app, t.status),
+    index("app_access_stripe_sub_idx").on(t.stripeSubId),
   ],
 );
 

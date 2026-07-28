@@ -1090,6 +1090,15 @@
     }
   },
   "admin": {
+    "feedback": {
+      "title": "Cairn feedback",
+      "subtitle": "What customers report from inside Cairn.",
+      "backToAdmin": "Back to admin",
+      "empty": "No feedback yet.",
+      "total": "Total",
+      "anon": "anonymous",
+      "kinds": { "bug": "Bug", "idea": "Idea", "other": "Other" }
+    },
     "title": "Administration",
     "landing": {
       "title": "Administration",

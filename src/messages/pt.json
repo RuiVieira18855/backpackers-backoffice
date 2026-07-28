@@ -1099,6 +1099,15 @@
     }
   },
   "admin": {
+    "feedback": {
+      "title": "Feedback do Cairn",
+      "subtitle": "O que os clientes reportam dentro do Cairn.",
+      "backToAdmin": "Voltar ao admin",
+      "empty": "Ainda sem feedback.",
+      "total": "Total",
+      "anon": "anónimo",
+      "kinds": { "bug": "Bug", "idea": "Ideia", "other": "Outro" }
+    },
     "title": "Administração",
     "landing": {
       "title": "Administração",
