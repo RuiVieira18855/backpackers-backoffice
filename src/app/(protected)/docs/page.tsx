@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill } from "@/lib/dal";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
 
@@ -39,7 +39,7 @@ export default async function DocsListPage({
   const t = await getTranslations("docs");
   const tTypes = await getTranslations("docs.types");
   const tCommon = await getTranslations("common");
-  await requireProfile();
+  await requireSkill("docs");
 
   const sp = await searchParams;
   const allPillars = await getAllPillars();

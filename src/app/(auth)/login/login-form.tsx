@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,15 +81,9 @@ export function LoginForm() {
       <Button type="submit" disabled={pending} className="w-full">
         {pending ? t("signingIn") : t("signIn")}
       </Button>
-      <p className="text-sm text-muted-foreground text-center">
-        {t("noAccount")}{" "}
-        <Link
-          href="/signup"
-          className="underline underline-offset-4 hover:text-foreground"
-        >
-          {t("createAccountLink")}
-        </Link>
-      </p>
+      {/* The Outpost is invite-only. Public self-signup was removed (security:
+          it could mint internal accounts). Team members are added via
+          /admin/users/new. */}
     </form>
   );
 }

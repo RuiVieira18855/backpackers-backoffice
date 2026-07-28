@@ -12,11 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { events, projects, tasks } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill } from "@/lib/dal";
 
 export default async function OpsPage() {
   const t = await getTranslations("ops");
-  const profile = await requireProfile();
+  const profile = await requireSkill("ops");
 
   const [eventsTotal, projectsTotal, tasksTotal, myOpenTasks] =
     await Promise.all([

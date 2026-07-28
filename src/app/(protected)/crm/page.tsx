@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
-import { getAllPillars, getAllProfiles, requireProfile } from "@/lib/dal";
+import { getAllPillars, getAllProfiles, requireSkill } from "@/lib/dal";
 import { ExportButton } from "@/components/export-button";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
@@ -54,7 +54,7 @@ export default async function CrmPage({
   const tStages = await getTranslations("crm.stages");
   const tTypes = await getTranslations("crm.types");
   const tCommon = await getTranslations("common");
-  const profile = await requireProfile();
+  const profile = await requireSkill("crm");
   const canBulkDelete =
     profile.role === "super_user" || profile.role === "admin_grupo";
   const allOwners = await getAllProfiles();

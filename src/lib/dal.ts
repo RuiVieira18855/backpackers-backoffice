@@ -1,7 +1,8 @@
 import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, inArray, sql, type SQL } from "drizzle-orm";
+import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import { createSupabaseServerClient } from "./supabase/server";
 import { db } from "./db";
 import { profiles } from "./db/schema";
@@ -115,6 +116,26 @@ export async function requireSkill(skill: Skill) {
     redirect("/dashboard");
   }
   return profile;
+}
+
+/**
+ * Row-level pillar restriction for the app layer. The Outpost reads through a
+ * superuser Drizzle connection that BYPASSES RLS, so pillar isolation has to be
+ * enforced here. Returns `undefined` (no restriction) for super_user /
+ * admin_grupo — they see every pillar; otherwise a condition limiting rows to
+ * the profile's pillar_access (empty access → no rows). Pass the table's
+ * pillar_id column, e.g. `pillarScope(profile, contacts.pillarId)`.
+ */
+export function pillarScope(
+  profile: { role: string; pillarAccess?: string[] | null },
+  pillarCol: AnyPgColumn,
+): SQL | undefined {
+  if (profile.role === "super_user" || profile.role === "admin_grupo") {
+    return undefined;
+  }
+  const ids = profile.pillarAccess ?? [];
+  if (ids.length === 0) return sql`false`;
+  return inArray(pillarCol, ids);
 }
 
 /** Returns true if current user has the skill (or is super_user). */

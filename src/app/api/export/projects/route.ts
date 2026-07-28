@@ -1,13 +1,14 @@
 import { desc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { projects } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { csvResponse, rowsToCsv } from "@/lib/csv";
 
 export async function GET() {
-  await requireProfile();
+  const profile = await requireSkill("ops");
 
   const rows = await db.query.projects.findMany({
+    where: pillarScope(profile, projects.pillarId),
     with: { pillar: true, owner: true, clientContact: true },
     orderBy: [desc(projects.createdAt)],
     limit: 5000,

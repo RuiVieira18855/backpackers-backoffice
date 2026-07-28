@@ -1,9 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-
 export type SignupState = {
   error?: string;
   success?: string;
@@ -11,38 +7,12 @@ export type SignupState = {
 
 export async function signUp(
   _prev: SignupState | undefined,
-  formData: FormData,
+  _formData: FormData,
 ): Promise<SignupState> {
-  const tErrors = await getTranslations("auth.errors");
-  const tAuth = await getTranslations("auth");
-
-  const email = String(formData.get("email") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
-  const fullName = String(formData.get("full_name") ?? "").trim();
-
-  if (!email || !password) {
-    return { error: tErrors("emailPasswordRequired") };
-  }
-  if (password.length < 8) {
-    return { error: tErrors("passwordTooShort") };
-  }
-
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { full_name: fullName || null },
-    },
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  if (data.session) {
-    redirect("/dashboard");
-  }
-
-  return { success: tAuth("signupConfirmation") };
+  // SECURITY: the Outpost is invite-only. Public self-signup was removed because
+  // it could mint internal backoffice accounts (and, on the shared Supabase
+  // project, let a customer self-promote to internal). Team members are added
+  // by an admin via /admin/users/new. This action is intentionally disabled;
+  // the handle_new_user trigger is the real backstop (all signups → customer).
+  return { error: "Signup is invite-only. Ask an administrator for access." };
 }

@@ -1,13 +1,14 @@
 import { desc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { events } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { csvResponse, rowsToCsv } from "@/lib/csv";
 
 export async function GET() {
-  await requireProfile();
+  const profile = await requireSkill("ops");
 
   const rows = await db.query.events.findMany({
+    where: pillarScope(profile, events.pillarId),
     with: { pillar: true, owner: true, clientContact: true },
     orderBy: [desc(events.startAt), desc(events.createdAt)],
     limit: 5000,

@@ -1,13 +1,14 @@
 import { desc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { csvResponse, rowsToCsv } from "@/lib/csv";
 
 export async function GET() {
-  await requireProfile();
+  const profile = await requireSkill("crm");
 
   const rows = await db.query.contacts.findMany({
+    where: pillarScope(profile, contacts.pillarId),
     with: { pillar: true, owner: true },
     orderBy: [desc(contacts.createdAt)],
     limit: 5000,
@@ -50,5 +51,5 @@ export async function GET() {
     ]),
   );
 
-  return csvResponse(`contacts-${new Date(2026, 5, 21).toISOString().slice(0, 10)}.csv`, csv);
+  return csvResponse("contacts.csv", csv);
 }

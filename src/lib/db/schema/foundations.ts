@@ -72,7 +72,10 @@ export const profiles = pgTable("profiles", {
   fullName: text("full_name"),
   avatarUrl: text("avatar_url"),
   role: userRoleEnum("role").notNull().default("member"),
-  kind: userKindEnum("kind").notNull().default("internal"),
+  // Least privilege by default: new rows are external customers. Internal team
+  // members are promoted only by an admin via the invite flow. (See migration
+  // 32_signup_least_privilege.sql.)
+  kind: userKindEnum("kind").notNull().default("customer"),
   skills: text("skills")
     .array()
     .notNull()

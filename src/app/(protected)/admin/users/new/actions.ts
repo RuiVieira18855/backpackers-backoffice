@@ -78,11 +78,14 @@ export async function inviteUser(
     return { error: inviteError ?? t("inviteFailed") };
   }
 
-  // The handle_new_user trigger created the profile row. Now update with the chosen role/skills/pillars.
+  // The handle_new_user trigger created the profile row as a least-privilege
+  // 'customer'. This is the ONLY trusted path that promotes to internal — set
+  // kind='internal' explicitly alongside the chosen role/skills/pillars.
   const [updated] = await db
     .update(profiles)
     .set({
       fullName: fullName || null,
+      kind: "internal",
       role,
       skills,
       pillarAccess: pillarAccessRaw,
