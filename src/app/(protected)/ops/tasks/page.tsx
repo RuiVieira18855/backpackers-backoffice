@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { tasks } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, pillarScope } from "@/lib/dal";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
 
@@ -32,7 +32,7 @@ export default async function TasksListPage({
   const tStatuses = await getTranslations("ops.taskStatuses");
   const tPriorities = await getTranslations("ops.taskPriorities");
   const tCommon = await getTranslations("common");
-  const profile = await requireProfile();
+  const profile = await requireSkill("ops");
 
   const sp = await searchParams;
   const mine = sp.mine === "1";
@@ -42,6 +42,7 @@ export default async function TasksListPage({
     : null;
 
   const filters: (SQL | undefined)[] = [
+    pillarScope(profile, tasks.pillarId),
     mine ? eq(tasks.assigneeId, profile.id) : undefined,
     pillarBySlug ? eq(tasks.pillarId, pillarBySlug.id) : undefined,
     sp.status && (STATUSES as readonly string[]).includes(sp.status)

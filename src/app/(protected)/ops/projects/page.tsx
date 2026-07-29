@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { projects } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, pillarScope } from "@/lib/dal";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
 
@@ -27,7 +27,7 @@ export default async function ProjectsListPage({
   const t = await getTranslations("ops.projects");
   const tStatuses = await getTranslations("ops.projectStatuses");
   const tCommon = await getTranslations("common");
-  await requireProfile();
+  const profile = await requireSkill("ops");
 
   const sp = await searchParams;
   const allPillars = await getAllPillars();
@@ -36,6 +36,7 @@ export default async function ProjectsListPage({
     : null;
 
   const filters: (SQL | undefined)[] = [
+    pillarScope(profile, projects.pillarId),
     pillarBySlug ? eq(projects.pillarId, pillarBySlug.id) : undefined,
     sp.status && (STATUSES as readonly string[]).includes(sp.status)
       ? eq(projects.status, sp.status as (typeof STATUSES)[number])

@@ -4,17 +4,22 @@ import { desc } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, deals } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, pillarScope } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { DealsKanban, type KanbanDeal } from "./kanban-board";
 import { inArray } from "drizzle-orm";
 
 export default async function DealsPipelinePage() {
-  await requireProfile();
+  const profile = await requireSkill("crm");
   const t = await getTranslations("deals.pipeline");
 
   const [rows, allPillars] = await Promise.all([
-    db.select().from(deals).orderBy(desc(deals.updatedAt)).limit(500),
+    db
+      .select()
+      .from(deals)
+      .where(pillarScope(profile, deals.pillarId))
+      .orderBy(desc(deals.updatedAt))
+      .limit(500),
     getAllPillars(),
   ]);
 

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { events, pillars, profiles, projects, tasks } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { KanbanBoard, type KanbanTask } from "./kanban-board";
 
@@ -15,7 +15,7 @@ export default async function TasksKanbanPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const profile = await requireProfile();
+  const profile = await requireSkill("ops");
   const sp = await searchParams;
   const mine = sp.mine === "1";
   const t = await getTranslations("ops.kanban");
@@ -25,12 +25,13 @@ export default async function TasksKanbanPage({
     ? await db
         .select()
         .from(tasks)
-        .where(eq(tasks.assigneeId, profile.id))
+        .where(and(eq(tasks.assigneeId, profile.id), pillarScope(profile, tasks.pillarId)))
         .orderBy(desc(tasks.createdAt))
         .limit(300)
     : await db
         .select()
         .from(tasks)
+        .where(pillarScope(profile, tasks.pillarId))
         .orderBy(desc(tasks.createdAt))
         .limit(300);
 

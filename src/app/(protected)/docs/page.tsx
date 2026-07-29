@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
-import { getAllPillars, requireSkill } from "@/lib/dal";
+import { getAllPillars, requireSkill, pillarScope } from "@/lib/dal";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
 
@@ -39,7 +39,7 @@ export default async function DocsListPage({
   const t = await getTranslations("docs");
   const tTypes = await getTranslations("docs.types");
   const tCommon = await getTranslations("common");
-  await requireSkill("docs");
+  const profile = await requireSkill("docs");
 
   const sp = await searchParams;
   const allPillars = await getAllPillars();
@@ -48,6 +48,7 @@ export default async function DocsListPage({
     : null;
 
   const filters: (SQL | undefined)[] = [
+    pillarScope(profile, documents.pillarId),
     pillarBySlug ? eq(documents.pillarId, pillarBySlug.id) : undefined,
     sp.type && (TYPES as readonly string[]).includes(sp.type)
       ? eq(documents.type, sp.type as (typeof TYPES)[number])

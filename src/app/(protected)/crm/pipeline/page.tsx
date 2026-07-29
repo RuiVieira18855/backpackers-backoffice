@@ -4,15 +4,16 @@ import { getTranslations } from "next-intl/server";
 import { desc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { KanbanBoard, type KanbanContact } from "./kanban-board";
 
 export default async function PipelinePage() {
-  await requireProfile();
+  const profile = await requireSkill("crm");
   const t = await getTranslations("crm.pipeline");
 
   const rows = await db.query.contacts.findMany({
+    where: pillarScope(profile, contacts.pillarId),
     with: { pillar: true },
     orderBy: [desc(contacts.createdAt)],
     limit: 300,

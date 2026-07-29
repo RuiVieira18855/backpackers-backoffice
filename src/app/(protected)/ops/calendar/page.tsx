@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { events, tasks } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, pillarScope } from "@/lib/dal";
 import { cn } from "@/lib/utils";
 
 type SearchParams = Promise<{
@@ -78,7 +78,7 @@ export default async function CalendarPage({
   const t = await getTranslations("ops.calendar");
   const tCommon = await getTranslations("common");
   const tStatuses = await getTranslations("ops.taskStatuses");
-  await requireProfile();
+  const profile = await requireSkill("ops");
 
   const sp = await searchParams;
   const view = sp.view === "grid" ? "grid" : "agenda";
@@ -101,6 +101,7 @@ export default async function CalendarPage({
   const eventsRows = await db.query.events.findMany({
     with: { pillar: true },
     where: and(
+      pillarScope(profile, events.pillarId),
       isNotNull(events.startAt),
       gte(events.startAt, start),
       lte(events.startAt, end),
@@ -113,6 +114,7 @@ export default async function CalendarPage({
   const tasksRows = await db.query.tasks.findMany({
     with: { pillar: true },
     where: and(
+      pillarScope(profile, tasks.pillarId),
       isNotNull(tasks.dueDate),
       gte(tasks.dueDate, startStr),
       lte(tasks.dueDate, endStr),

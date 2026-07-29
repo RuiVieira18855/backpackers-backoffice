@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema";
-import { getAllPillars, getAllProfiles, requireSkill } from "@/lib/dal";
+import { getAllPillars, getAllProfiles, requireSkill, pillarScope } from "@/lib/dal";
 import { ExportButton } from "@/components/export-button";
 import { Pagination } from "@/components/pagination";
 import { parsePagination } from "@/lib/pagination";
@@ -80,6 +80,7 @@ export default async function CrmPage({
     : null;
 
   const filters: (SQL | undefined)[] = [
+    pillarScope(profile, contacts.pillarId),
     pillarBySlug ? eq(contacts.pillarId, pillarBySlug.id) : undefined,
     sp.stage && (STAGES as readonly string[]).includes(sp.stage)
       ? eq(contacts.stage, sp.stage as (typeof STAGES)[number])

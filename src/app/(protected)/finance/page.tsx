@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
-import { getAllPillars, requireSkill } from "@/lib/dal";
+import { getAllPillars, requireSkill, pillarScope } from "@/lib/dal";
 import {
   MonthlyCashflow,
   type MonthlyPoint,
@@ -77,7 +77,7 @@ export default async function FinancePage({
 }: {
   searchParams: SearchParams;
 }) {
-  await requireSkill("finance");
+  const profile = await requireSkill("finance");
   const t = await getTranslations("finance");
   const tTypes = await getTranslations("finance.types");
   const tStatuses = await getTranslations("finance.statuses");
@@ -101,6 +101,7 @@ export default async function FinancePage({
     : null;
 
   const filters: (SQL | undefined)[] = [
+    pillarScope(profile, transactions.pillarId),
     pillarBySlug ? eq(transactions.pillarId, pillarBySlug.id) : undefined,
     sp.type && (TYPES as readonly string[]).includes(sp.type)
       ? eq(transactions.type, sp.type as (typeof TYPES)[number])
