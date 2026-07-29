@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
-import { requireProfile } from "@/lib/dal";
+import { requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,7 +29,7 @@ function formatBytes(bytes: number | null): string {
 }
 
 export default async function DocumentDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("docs");
   const { id } = await params;
   const t = await getTranslations("docs.detail");
   const tTypes = await getTranslations("docs.types");
@@ -40,6 +40,7 @@ export default async function DocumentDetailPage({ params }: Props) {
   });
 
   if (!doc) notFound();
+  if (!canAccessPillar(profile, doc.pillarId)) notFound();
 
   // 10 minute signed URL — generated on each page load so links don't leak.
   const { data: signed } = await supabaseAdmin.storage

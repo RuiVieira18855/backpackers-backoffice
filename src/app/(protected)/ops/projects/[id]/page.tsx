@@ -5,7 +5,7 @@ import { eq, asc, desc, inArray, sql } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, profiles, projects, timeEntries } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,7 +27,7 @@ import { ProjectCopilot } from "./ai-copilot";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function ProjectDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("ops");
   const { id } = await params;
   const t = await getTranslations("ops.projects.detail");
   const tStatuses = await getTranslations("ops.taskStatuses");
@@ -48,6 +48,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   });
 
   if (!project) notFound();
+  if (!canAccessPillar(profile, project.pillarId)) notFound();
 
   const [
     pillars,

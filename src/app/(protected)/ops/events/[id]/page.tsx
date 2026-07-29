@@ -5,7 +5,7 @@ import { eq, asc } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, events } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { EventForm } from "@/components/events/event-form";
 import { LinkedFinanceCard } from "@/components/finance/linked-finance-card";
@@ -18,7 +18,7 @@ import { DeleteEventButton } from "./delete-button";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function EventDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("ops");
   const { id } = await params;
   const t = await getTranslations("ops.detail");
 
@@ -28,6 +28,7 @@ export default async function EventDetailPage({ params }: Props) {
   });
 
   if (!event) notFound();
+  if (!canAccessPillar(profile, event.pillarId)) notFound();
 
   const [pillars, allContacts, descriptionTemplates, customFieldDefs] =
     await Promise.all([

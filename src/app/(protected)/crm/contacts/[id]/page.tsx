@@ -5,7 +5,7 @@ import { desc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, events, projects } from "@/lib/db/schema";
-import { getAllPillars, requireProfile } from "@/lib/dal";
+import { getAllPillars, requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +25,7 @@ import { DeleteContactButton } from "./delete-button";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function ContactDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("crm");
   const { id } = await params;
   const t = await getTranslations("crm.detail");
   const tHistory = await getTranslations("crm.history");
@@ -40,6 +40,7 @@ export default async function ContactDetailPage({ params }: Props) {
   if (!contact) {
     notFound();
   }
+  if (!canAccessPillar(profile, contact.pillarId)) notFound();
 
   // Fetch related events + projects in parallel
   const [pillars, relatedEvents, relatedProjects, noteTemplates, customDefs] =

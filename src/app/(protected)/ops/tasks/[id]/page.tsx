@@ -8,7 +8,8 @@ import { events, projects, tasks } from "@/lib/db/schema";
 import {
   getAllPillars,
   getAllProfiles,
-  requireProfile,
+  requireSkill,
+  canAccessPillar,
 } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { TaskForm } from "@/components/tasks/task-form";
@@ -19,7 +20,7 @@ import { DeleteTaskButton } from "./delete-button";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function TaskDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("ops");
   const { id } = await params;
   const t = await getTranslations("ops.tasks.detail");
 
@@ -29,6 +30,7 @@ export default async function TaskDetailPage({ params }: Props) {
   });
 
   if (!task) notFound();
+  if (!canAccessPillar(profile, task.pillarId)) notFound();
 
   const [pillars, profiles, allProjects, allEvents, descriptionTemplates] =
     await Promise.all([

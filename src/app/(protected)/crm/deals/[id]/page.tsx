@@ -5,7 +5,7 @@ import { asc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { contacts, deals } from "@/lib/db/schema";
-import { getAllPillars, hasSkill, requireProfile } from "@/lib/dal";
+import { getAllPillars, hasSkill, requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { DealForm } from "@/components/deals/deal-form";
 import { getTemplatesForScope } from "@/lib/templates";
@@ -18,7 +18,7 @@ import { DealCopilot } from "./ai-copilot";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function DealDetailPage({ params }: Props) {
-  await requireProfile();
+  const profile = await requireSkill("crm");
   const { id } = await params;
   const t = await getTranslations("deals.detail");
 
@@ -26,6 +26,7 @@ export default async function DealDetailPage({ params }: Props) {
     where: eq(deals.id, id),
   });
   if (!deal) notFound();
+  if (!canAccessPillar(profile, deal.pillarId)) notFound();
 
   const [
     pillars,

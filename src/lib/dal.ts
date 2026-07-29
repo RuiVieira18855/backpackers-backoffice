@@ -138,6 +138,23 @@ export function pillarScope(
   return inArray(pillarCol, ids);
 }
 
+/**
+ * True if the profile may access a specific record's pillar. super_user /
+ * admin_grupo see every pillar; others only their pillar_access. A record with
+ * no pillar is treated as accessible. Use on detail ([id]) pages after loading
+ * a record: `if (!canAccessPillar(profile, record.pillarId)) notFound();`.
+ */
+export function canAccessPillar(
+  profile: { role: string; pillarAccess?: string[] | null },
+  pillarId: string | null | undefined,
+): boolean {
+  if (profile.role === "super_user" || profile.role === "admin_grupo") {
+    return true;
+  }
+  if (!pillarId) return true;
+  return (profile.pillarAccess ?? []).includes(pillarId);
+}
+
 /** Returns true if current user has the skill (or is super_user). */
 export async function hasSkill(skill: Skill): Promise<boolean> {
   const profile = await getCurrentProfile();

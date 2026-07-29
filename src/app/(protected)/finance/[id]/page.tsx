@@ -5,7 +5,7 @@ import { asc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { events, projects, transactions } from "@/lib/db/schema";
-import { getAllPillars, requireSkill } from "@/lib/dal";
+import { getAllPillars, requireSkill, canAccessPillar } from "@/lib/dal";
 import { Button } from "@/components/ui/button";
 import { TransactionForm } from "@/components/finance/transaction-form";
 import { updateTransaction } from "./actions";
@@ -14,7 +14,7 @@ import { DeleteTransactionButton } from "./delete-button";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function TransactionDetailPage({ params }: Props) {
-  await requireSkill("finance");
+  const profile = await requireSkill("finance");
   const { id } = await params;
   const t = await getTranslations("finance.detail");
 
@@ -24,6 +24,7 @@ export default async function TransactionDetailPage({ params }: Props) {
   });
 
   if (!tx) notFound();
+  if (!canAccessPillar(profile, tx.pillarId)) notFound();
 
   const [pillars, allEvents, allProjects] = await Promise.all([
     getAllPillars(),
