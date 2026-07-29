@@ -49,6 +49,7 @@ import {
   getAllPillars,
   hasSkill,
   requireProfile,
+  pillarScope,
 } from "@/lib/dal";
 import {
   contactsTrend,
@@ -154,20 +155,35 @@ export default async function DashboardPage() {
   // Declare queries first so Awaited<typeof q> picks up the `with` relations.
   const qContactsCount = db
     .select({ count: sql<number>`count(*)::int` })
-    .from(contacts);
+    .from(contacts)
+    .where(pillarScope(profile, contacts.pillarId));
   const qLeadCount = db
     .select({ count: sql<number>`count(*)::int` })
     .from(contacts)
-    .where(sql`${contacts.stage} IN ('new','qualified','active')`);
+    .where(
+      and(
+        sql`${contacts.stage} IN ('new','qualified','active')`,
+        pillarScope(profile, contacts.pillarId),
+      ),
+    );
   const qUpcomingEventsCount = db
     .select({ count: sql<number>`count(*)::int` })
     .from(events)
-    .where(and(isNotNull(events.startAt), gte(events.startAt, now)));
+    .where(
+      and(
+        isNotNull(events.startAt),
+        gte(events.startAt, now),
+        pillarScope(profile, events.pillarId),
+      ),
+    );
   const qOpenTasksCount = db
     .select({ count: sql<number>`count(*)::int` })
     .from(tasks)
-    .where(ne(tasks.status, "done"));
-  const qDocsCount = db.select({ count: sql<number>`count(*)::int` }).from(documents);
+    .where(and(ne(tasks.status, "done"), pillarScope(profile, tasks.pillarId)));
+  const qDocsCount = db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(documents)
+    .where(pillarScope(profile, documents.pillarId));
   // Plain selects only — avoid db.query.X.findMany / relational query builder.
   // The relational builder (even without `with`) can introduce schema-graph
   // overhead or unexpected joins on Drizzle 0.45 + Supabase pooler that have
@@ -175,6 +191,7 @@ export default async function DashboardPage() {
   const qRecentAudit = db
     .select()
     .from(auditLog)
+    .where(pillarScope(profile, auditLog.pillarId))
     .orderBy(desc(auditLog.createdAt))
     .limit(8);
   const qWeekEvents = db
@@ -182,6 +199,7 @@ export default async function DashboardPage() {
     .from(events)
     .where(
       and(
+        pillarScope(profile, events.pillarId),
         isNotNull(events.startAt),
         gte(events.startAt, today),
         lt(events.startAt, weekEnd),
@@ -194,6 +212,7 @@ export default async function DashboardPage() {
     .from(tasks)
     .where(
       and(
+        pillarScope(profile, tasks.pillarId),
         ne(tasks.status, "done"),
         or(
           and(isNull(tasks.dueDate), eq(tasks.assigneeId, profile.id)),
@@ -209,10 +228,12 @@ export default async function DashboardPage() {
       count: sql<number>`count(*)::int`,
     })
     .from(contacts)
+    .where(pillarScope(profile, contacts.pillarId))
     .groupBy(contacts.stage);
   const qRecentDocs = db
     .select()
     .from(documents)
+    .where(pillarScope(profile, documents.pillarId))
     .orderBy(desc(documents.createdAt))
     .limit(5);
   const qMtdAgg = db
@@ -222,7 +243,11 @@ export default async function DashboardPage() {
     })
     .from(transactions)
     .where(
-      and(eq(transactions.status, "paid"), gte(transactions.date, monthStart)),
+      and(
+        eq(transactions.status, "paid"),
+        gte(transactions.date, monthStart),
+        pillarScope(profile, transactions.pillarId),
+      ),
     )
     .groupBy(transactions.type);
 
@@ -255,17 +280,17 @@ export default async function DashboardPage() {
     safe("weekTasks", qWeekTasks, [] as Awaited<typeof qWeekTasks>),
     safe(
       "contactsTrend",
-      contactsTrend(30),
+      contactsTrend(30, pillarScope(profile, contacts.pillarId)),
       [] as Awaited<ReturnType<typeof contactsTrend>>,
     ),
     safe(
       "eventsTrend",
-      eventsTrend(30),
+      eventsTrend(30, pillarScope(profile, events.pillarId)),
       [] as Awaited<ReturnType<typeof eventsTrend>>,
     ),
     safe(
       "tasksTrend",
-      tasksTrend(30),
+      tasksTrend(30, pillarScope(profile, tasks.pillarId)),
       [] as Awaited<ReturnType<typeof tasksTrend>>,
     ),
     safe(

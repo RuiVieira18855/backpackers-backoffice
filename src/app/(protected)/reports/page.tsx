@@ -25,7 +25,7 @@ import {
   tasks,
   transactions,
 } from "@/lib/db/schema";
-import { hasSkill, requireProfile } from "@/lib/dal";
+import { hasSkill, requireProfile, pillarScope } from "@/lib/dal";
 import { PrintButton } from "@/components/print-button";
 import { SalesFunnel } from "@/components/reports/sales-funnel";
 import { ContactCohort, type CohortRow } from "@/components/reports/contact-cohort";
@@ -44,7 +44,9 @@ function pct(n: number, total: number): number {
 }
 
 export default async function ReportsPage() {
-  await requireProfile();
+  const profile = await requireProfile();
+  const canSeeAll =
+    profile.role === "super_user" || profile.role === "admin_grupo";
   const t = await getTranslations("reports");
   const tDealStages = await getTranslations("deals.stages");
   const tContactStages = await getTranslations("crm.stages");
@@ -78,6 +80,7 @@ export default async function ReportsPage() {
             value: sql<string>`coalesce(sum(${deals.value}), 0)`,
           })
           .from(deals)
+          .where(pillarScope(profile, deals.pillarId))
           .groupBy(deals.stage),
         [] as Array<{ stage: string; count: number; value: string }>,
       )
@@ -106,6 +109,7 @@ export default async function ReportsPage() {
             count: sql<number>`count(*)::int`,
           })
           .from(contacts)
+          .where(pillarScope(profile, contacts.pillarId))
           .groupBy(contacts.stage),
         [] as Array<{ stage: string; count: number }>,
       )
@@ -121,7 +125,12 @@ export default async function ReportsPage() {
             total: sql<number>`count(*)::int`,
           })
           .from(tasks)
-          .where(gte(tasks.createdAt, new Date(yearStart))),
+          .where(
+            and(
+              gte(tasks.createdAt, new Date(yearStart)),
+              pillarScope(profile, tasks.pillarId),
+            ),
+          ),
         [{ done: 0, total: 0 }],
       )
     : [{ done: 0, total: 0 }];
@@ -135,7 +144,12 @@ export default async function ReportsPage() {
         db
           .select({ count: sql<number>`count(*)::int` })
           .from(events)
-          .where(gte(events.createdAt, new Date(yearStart))),
+          .where(
+            and(
+              gte(events.createdAt, new Date(yearStart)),
+              pillarScope(profile, events.pillarId),
+            ),
+          ),
         [{ count: 0 }],
       )
     : [{ count: 0 }];
@@ -154,6 +168,7 @@ export default async function ReportsPage() {
             and(
               eq(transactions.status, "paid"),
               gte(transactions.date, yearStart),
+              pillarScope(profile, transactions.pillarId),
             ),
           )
           .groupBy(transactions.type),
@@ -182,6 +197,7 @@ export default async function ReportsPage() {
                 count(*) FILTER (WHERE ${contacts.stage} = 'closed_lost')::int AS lost
               FROM ${contacts}
               WHERE ${contacts.createdAt} >= (now() - interval '6 months')
+              ${canSeeAll ? sql`` : sql`AND ${contacts.pillarId} = ANY(${profile.pillarAccess}::uuid[])`}
               GROUP BY 1
               ORDER BY 1 DESC
             `,
@@ -213,7 +229,12 @@ export default async function ReportsPage() {
             count: sql<number>`(SELECT count(*)::int FROM public.events WHERE client_contact_id = ${contacts.id})`,
           })
           .from(contacts)
-          .where(sql`(SELECT count(*) FROM public.events WHERE client_contact_id = ${contacts.id}) > 0`)
+          .where(
+            and(
+              sql`(SELECT count(*) FROM public.events WHERE client_contact_id = ${contacts.id}) > 0`,
+              pillarScope(profile, contacts.pillarId),
+            ),
+          )
           .orderBy(sql`(SELECT count(*) FROM public.events WHERE client_contact_id = ${contacts.id}) DESC`)
           .limit(5),
         [] as Array<{

@@ -1,5 +1,5 @@
 import "server-only";
-import { gte, sql } from "drizzle-orm";
+import { and, gte, sql, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { contacts, events, tasks, documents } from "@/lib/db/schema";
 
@@ -36,7 +36,7 @@ function zeroFill(
 
 // Explicit per-table functions — no generics, no `as never` casts, no surprises.
 
-export async function contactsTrend(days = 30): Promise<TrendPoint[]> {
+export async function contactsTrend(days = 30, scope?: SQL): Promise<TrendPoint[]> {
   try {
     const since = getSince(days);
     const rows = await db
@@ -45,7 +45,7 @@ export async function contactsTrend(days = 30): Promise<TrendPoint[]> {
         count: sql<number>`count(*)::int`,
       })
       .from(contacts)
-      .where(gte(contacts.createdAt, since))
+      .where(and(gte(contacts.createdAt, since), scope))
       .groupBy(sql`${contacts.createdAt}::date`);
     return zeroFill(rows, since, days);
   } catch {
@@ -53,7 +53,7 @@ export async function contactsTrend(days = 30): Promise<TrendPoint[]> {
   }
 }
 
-export async function eventsTrend(days = 30): Promise<TrendPoint[]> {
+export async function eventsTrend(days = 30, scope?: SQL): Promise<TrendPoint[]> {
   try {
     const since = getSince(days);
     const rows = await db
@@ -62,7 +62,7 @@ export async function eventsTrend(days = 30): Promise<TrendPoint[]> {
         count: sql<number>`count(*)::int`,
       })
       .from(events)
-      .where(gte(events.createdAt, since))
+      .where(and(gte(events.createdAt, since), scope))
       .groupBy(sql`${events.createdAt}::date`);
     return zeroFill(rows, since, days);
   } catch {
@@ -70,7 +70,7 @@ export async function eventsTrend(days = 30): Promise<TrendPoint[]> {
   }
 }
 
-export async function tasksTrend(days = 30): Promise<TrendPoint[]> {
+export async function tasksTrend(days = 30, scope?: SQL): Promise<TrendPoint[]> {
   try {
     const since = getSince(days);
     const rows = await db
@@ -79,7 +79,7 @@ export async function tasksTrend(days = 30): Promise<TrendPoint[]> {
         count: sql<number>`count(*)::int`,
       })
       .from(tasks)
-      .where(gte(tasks.createdAt, since))
+      .where(and(gte(tasks.createdAt, since), scope))
       .groupBy(sql`${tasks.createdAt}::date`);
     return zeroFill(rows, since, days);
   } catch {
@@ -87,7 +87,7 @@ export async function tasksTrend(days = 30): Promise<TrendPoint[]> {
   }
 }
 
-export async function documentsTrend(days = 30): Promise<TrendPoint[]> {
+export async function documentsTrend(days = 30, scope?: SQL): Promise<TrendPoint[]> {
   try {
     const since = getSince(days);
     const rows = await db
@@ -96,7 +96,7 @@ export async function documentsTrend(days = 30): Promise<TrendPoint[]> {
         count: sql<number>`count(*)::int`,
       })
       .from(documents)
-      .where(gte(documents.createdAt, since))
+      .where(and(gte(documents.createdAt, since), scope))
       .groupBy(sql`${documents.createdAt}::date`);
     return zeroFill(rows, since, days);
   } catch {

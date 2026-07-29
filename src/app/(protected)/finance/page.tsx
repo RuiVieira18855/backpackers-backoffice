@@ -163,6 +163,7 @@ export default async function FinancePage({
         and(
           eq(transactions.status, "paid"),
           gte(transactions.date, yearStart),
+          pillarScope(profile, transactions.pillarId),
         ),
       )
       .groupBy(transactions.type),
@@ -176,6 +177,7 @@ export default async function FinancePage({
         and(
           eq(transactions.status, "paid"),
           gte(transactions.date, monthStart),
+          pillarScope(profile, transactions.pillarId),
         ),
       )
       .groupBy(transactions.type),
@@ -190,6 +192,7 @@ export default async function FinancePage({
         and(
           eq(transactions.status, "paid"),
           gte(transactions.date, chartStart),
+          pillarScope(profile, transactions.pillarId),
         ),
       )
       .groupBy(
@@ -207,6 +210,7 @@ export default async function FinancePage({
         and(
           eq(transactions.status, "paid"),
           gte(transactions.date, yearStart),
+          pillarScope(profile, transactions.pillarId),
         ),
       )
       .groupBy(sql`coalesce(${transactions.category}, '—')`, transactions.type),
