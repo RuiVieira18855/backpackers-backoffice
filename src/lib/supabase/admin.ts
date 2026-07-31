@@ -21,3 +21,5 @@ export const supabaseAdmin = createClient(
 
 export const DOCUMENTS_BUCKET = "documents";
 export const AVATARS_BUCKET = "avatars";
+export const BLOG_BUCKET = "blog";
+export const EVENTS_BUCKET = "events";

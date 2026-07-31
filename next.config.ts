@@ -5,7 +5,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // trail-core is a workspace package shipping raw TypeScript. Next does not
+  // compile anything under node_modules by default, so it must be opted in.
+  transpilePackages: ["@backpackers/trail-core"],
 };
 
 export default withNextIntl(nextConfig);
