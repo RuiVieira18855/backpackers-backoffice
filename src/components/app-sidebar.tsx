@@ -14,6 +14,8 @@ import {
   LayoutGrid,
   Library,
   ListTodo,
+  Mountain,
+  Newspaper,
   Plus,
   Settings,
   Shield,
@@ -199,6 +201,12 @@ export async function AppSidebar({ variant = "desktop" }: Props) {
             </SidebarLink>
             <SidebarLink href="/admin/catalog" icon={Book}>
               {t("catalog")}
+            </SidebarLink>
+            <SidebarLink href="/admin/blog" icon={Newspaper}>
+              Blog
+            </SidebarLink>
+            <SidebarLink href="/admin/adventures" icon={Mountain}>
+              Caminhadas
             </SidebarLink>
             <SidebarLink href="/admin/templates" icon={FileText}>
               {t("templates")}

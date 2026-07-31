@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { asc, eq, inArray, sql } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { NewAppForm } from "./new-app-form";
-import { AppUrl } from "./app-url";
+import { AppCard } from "./app-card";
 
 type AppRow = {
   key: string;
@@ -122,59 +122,21 @@ export default async function AppsAdminLanding() {
               total: 0,
             };
             return (
-              <Link
+              <AppCard
                 key={a.key}
-                href={`/admin/apps/${a.key}`}
-                className="group"
-              >
-                <Card className="h-full transition-colors group-hover:border-accent">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <CardTitle className="text-base flex items-center gap-2">
-                          {a.name}
-                          {!a.isActive && (
-                            <span className="text-[10px] uppercase tracking-wider rounded bg-muted px-1.5 py-0.5 text-muted-foreground">
-                              {t("inactive")}
-                            </span>
-                          )}
-                        </CardTitle>
-                        <CardDescription>
-                          {a.description ?? a.key}
-                        </CardDescription>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-1" />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                      <div>
-                        <p className="text-foreground font-medium tabular-nums">
-                          {c.active}
-                        </p>
-                        <p className="text-muted-foreground">
-                          {t("statuses.active")}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-foreground font-medium tabular-nums">
-                          {c.trial}
-                        </p>
-                        <p className="text-muted-foreground">
-                          {t("statuses.trial")}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-foreground font-medium tabular-nums">
-                          {c.total}
-                        </p>
-                        <p className="text-muted-foreground">{t("total")}</p>
-                      </div>
-                    </div>
-                    {a.url && <AppUrl url={a.url} />}
-                  </CardContent>
-                </Card>
-              </Link>
+                appKey={a.key}
+                name={a.name}
+                description={a.description}
+                isActive={a.isActive}
+                url={a.url}
+                counts={c}
+                labels={{
+                  inactive: t("inactive"),
+                  active: t("statuses.active"),
+                  trial: t("statuses.trial"),
+                  total: t("total"),
+                }}
+              />
             );
           })}
         </section>

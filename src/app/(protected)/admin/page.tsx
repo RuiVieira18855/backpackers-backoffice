@@ -5,6 +5,8 @@ import {
   FileText,
   Mail,
   MessageSquare,
+  Mountain,
+  Newspaper,
   Settings,
   Shield,
   Webhook,
@@ -122,6 +124,44 @@ export default async function AdminLandingPage() {
             </Link>
           );
         })}
+
+        <Link href="/admin/blog" className="group">
+          <Card className="h-full transition-colors group-hover:border-accent">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle className="text-base">Blog</CardTitle>
+                <Newspaper className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <CardDescription>
+                Escreve e publica os artigos do site.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs uppercase tracking-wider text-accent-foreground group-hover:text-foreground">
+                {t("open")} →
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/adventures" className="group">
+          <Card className="h-full transition-colors group-hover:border-accent">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle className="text-base">Caminhadas</CardTitle>
+                <Mountain className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <CardDescription>
+                Cria, edita e arquiva a agenda pública do site.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs uppercase tracking-wider text-accent-foreground group-hover:text-foreground">
+                {t("open")} →
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </section>
     </div>
   );
