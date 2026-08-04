@@ -152,6 +152,20 @@ ON CONFLICT (ref) DO UPDATE SET
                       END,
   updated_at        = now();
 
+-- Limpeza dos que sairam da fonte.
+--
+-- A triagem corrige numeracoes erradas, e corrigir significa por vezes que um
+-- percurso deixa de existir: Porto de Mos renumerou a rede e tres dos que o
+-- agregador listava ja nao estao nela. Sem isto ficavam orfaos na base de
+-- dados para sempre, porque o UPSERT so acrescenta e actualiza.
+--
+-- So apaga o que veio de agregador E continua por triar. Nada em que alguem
+-- tenha trabalhado, nem nada curado a mao, e tocado aqui.
+DELETE FROM public.trail_library
+WHERE estado = 'por triar'
+  AND fonte = 'vadiagem'
+  AND ref NOT IN (${valores.map((v) => v.trim().match(/^\('([^']+)'/)[1]).map((r) => `'${r}'`).join(", ")});
+
 -- ============================================================================
 -- Feito. Verificar (esperado: ${valores.length} linhas):
 --   SELECT regiao, estado, count(*) FROM public.trail_library
