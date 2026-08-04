@@ -53,6 +53,8 @@ const REGIOES: Field["options"] = [
   { value: "aveiro", label: "Aveiro" },
   { value: "faro", label: "Faro" },
   { value: "viseu", label: "Viseu" },
+  { value: "outras", label: "Outras regiões" },
+  { value: "todas", label: "Todo o país" },
   { value: "online", label: "Online" },
 ];
 
@@ -188,15 +190,25 @@ export const COLLECTIONS: CollectionDef[] = [
       "Um telefone errado ou um sítio fechado num momento de urgência destrói a confiança. Confirma antes de publicar.",
     fields: [
       { name: "name", label: "Nome", type: "text", required: true },
+      // Estes valores são os que existem mesmo nos 999 registos do Firestore.
+      // Inventar um valor novo aqui faz o local desaparecer dos filtros da app.
       { name: "type", label: "Tipo", type: "select", required: true, options: [
         { value: "hospital", label: "Hospital" },
+        { value: "urgencia", label: "Urgência pediátrica" },
         { value: "clinica", label: "Clínica" },
         { value: "farmacia", label: "Farmácia" },
         { value: "creche", label: "Creche" },
+        { value: "ama", label: "Ama" },
+        { value: "apoio", label: "Apoio a famílias" },
         { value: "parque", label: "Parque" },
-        { value: "cafe", label: "Café / restaurante" },
+        { value: "praia", label: "Praia" },
+        { value: "piscina", label: "Piscina" },
+        { value: "ginasio", label: "Ginásio" },
+        { value: "cultura", label: "Cultura" },
+        { value: "cafe", label: "Café" },
+        { value: "restaurante", label: "Restaurante" },
+        { value: "hotel", label: "Hotel" },
         { value: "loja", label: "Loja" },
-        { value: "atividade", label: "Atividade" },
       ] },
       { name: "region", label: "Região", type: "select", options: REGIOES, required: true },
       { name: "addr", label: "Morada", type: "text" },
