@@ -1,10 +1,12 @@
 import Link from "next/link";
 import {
+  Baby,
   Boxes,
   ClipboardCheck,
   FileText,
   Mail,
   MessageSquare,
+  Map,
   Mountain,
   Newspaper,
   Settings,
@@ -144,6 +146,25 @@ export default async function AdminLandingPage() {
           </Card>
         </Link>
 
+        <Link href="/admin/babyland" className="group">
+          <Card className="h-full transition-colors group-hover:border-accent">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle className="text-base">BabyLand</CardTitle>
+                <Baby className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <CardDescription>
+                Eventos, parceiros, artigos, receitas e locais da app BabyLand.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs uppercase tracking-wider text-accent-foreground group-hover:text-foreground">
+                {t("open")} →
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
         <Link href="/admin/adventures" className="group">
           <Card className="h-full transition-colors group-hover:border-accent">
             <CardHeader>
@@ -153,6 +174,25 @@ export default async function AdminLandingPage() {
               </div>
               <CardDescription>
                 Cria, edita e arquiva a agenda pública do site.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs uppercase tracking-wider text-accent-foreground group-hover:text-foreground">
+                {t("open")} →
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/trails" className="group">
+          <Card className="h-full transition-colors group-hover:border-accent">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle className="text-base">Biblioteca de trilhos</CardTitle>
+                <Map className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <CardDescription>
+                500 percursos de referência. Cria caminhadas a partir deles.
               </CardDescription>
             </CardHeader>
             <CardContent>
