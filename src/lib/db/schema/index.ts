@@ -18,3 +18,4 @@ export * from "./trail";
 export * from "./cairn";
 export * from "./blog";
 export * from "./site-events";
+export * from "./trail-library";
