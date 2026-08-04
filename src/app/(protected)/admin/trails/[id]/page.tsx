@@ -60,6 +60,8 @@ export default async function EditTrailPage({ params }: Props) {
           distrito: trail.distrito ?? "",
           regiao: trail.regiao ?? "",
           areaProtegida: trail.areaProtegida ?? "",
+          lat: trail.lat === null ? "" : String(trail.lat),
+          lng: trail.lng === null ? "" : String(trail.lng),
           distanciaKm:
             trail.distanciaKm === null ? "" : String(Number(trail.distanciaKm)),
           tipo: trail.tipo ?? "",

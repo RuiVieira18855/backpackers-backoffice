@@ -30,6 +30,8 @@ const schema = z.object({
   concelho: z.string().nullable(),
   regiao: z.string().nullable(),
   areaProtegida: z.string().nullable(),
+  lat: z.number().min(-90).max(90).nullable(),
+  lng: z.number().min(-180).max(180).nullable(),
   distanciaKm: z.number().min(0).max(2000).nullable(),
   tipo: z.string().nullable(),
   duracao: z.string().nullable(),
@@ -95,6 +97,8 @@ export async function updateTrail(
     concelho: textOrNull(formData.get("concelho")),
     regiao: textOrNull(formData.get("regiao")),
     areaProtegida: textOrNull(formData.get("areaProtegida")),
+    lat: numOrNull(formData.get("lat")),
+    lng: numOrNull(formData.get("lng")),
     distanciaKm: numOrNull(formData.get("distanciaKm")),
     tipo: textOrNull(formData.get("tipo")),
     duracao: textOrNull(formData.get("duracao")),
@@ -221,6 +225,9 @@ export async function createEventFromTrail(id: string): Promise<void> {
       location: [trail.concelho, trail.distrito].filter(Boolean).join(", "),
       region: regiaoDoSite(trail),
       distance: km === null ? null : `${String(km).replace(".", ",")} km`,
+      // Sem isto o evento não aparece no mapa interactivo do site.
+      lat: trail.lat,
+      lng: trail.lng,
       difficulty: trail.dificuldade,
       // O limite do ICNF é um tecto, não uma meta: entra como vagas máximas.
       maxParticipants: trail.limiteGrupo ?? 0,

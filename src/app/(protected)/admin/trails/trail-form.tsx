@@ -17,6 +17,8 @@ export type TrailFormValues = {
   distrito: string;
   regiao: string;
   areaProtegida: string;
+  lat: string;
+  lng: string;
   distanciaKm: string;
   tipo: string;
   duracao: string;
@@ -265,6 +267,34 @@ export function TrailForm({ trail }: { trail: TrailFormValues }) {
               <Input id="epoca" name="epoca" defaultValue={trail.epoca} />
             </div>
           </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 sm:max-w-md">
+            <div className="grid gap-2">
+              <Label htmlFor="lat">Latitude</Label>
+              <Input
+                id="lat"
+                name="lat"
+                inputMode="decimal"
+                defaultValue={trail.lat}
+                placeholder="39.5433"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="lng">Longitude</Label>
+              <Input
+                id="lng"
+                name="lng"
+                inputMode="decimal"
+                defaultValue={trail.lng}
+                placeholder="-8.735"
+              />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Ponto de partida. Sem coordenadas, a caminhada criada a partir deste
+            trilho não aparece no mapa do site. Tira-as do Google Maps: botão
+            direito no ponto, o primeiro valor é a latitude.
+          </p>
 
           <div className="grid gap-2 sm:max-w-[200px]">
             <Label htmlFor="confianca">Confiança dos dados</Label>

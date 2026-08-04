@@ -1,4 +1,5 @@
 import {
+  doublePrecision,
   index,
   integer,
   numeric,
@@ -52,6 +53,10 @@ export const trailLibrary = pgTable(
     distrito: text("distrito"),
     regiao: text("regiao"),
     areaProtegida: text("area_protegida"),
+    /** Ponto de partida. Passa para o evento ao criar a caminhada, senão o
+     *  percurso não aparece no mapa interactivo do site. */
+    lat: doublePrecision("lat"),
+    lng: doublePrecision("lng"),
 
     /** NULL quando a fonte não publica. Permite ordenar sem casos especiais. */
     distanciaKm: numeric("distancia_km", { precision: 6, scale: 2 }),
