@@ -45,14 +45,17 @@ export type CollectionDef = {
 };
 
 const REGIOES: Field["options"] = [
+  { value: "leiria", label: "Leiria" },
+  { value: "coimbra", label: "Coimbra" },
+  { value: "aveiro", label: "Aveiro" },
+  { value: "viseu", label: "Viseu" },
+  { value: "santarem", label: "Santarém" },
+  { value: "castelobranco", label: "Castelo Branco" },
+  { value: "guarda", label: "Guarda" },
   { value: "lisboa", label: "Lisboa" },
   { value: "porto", label: "Porto" },
   { value: "braga", label: "Braga" },
-  { value: "coimbra", label: "Coimbra" },
-  { value: "leiria", label: "Leiria" },
-  { value: "aveiro", label: "Aveiro" },
-  { value: "faro", label: "Faro" },
-  { value: "viseu", label: "Viseu" },
+  { value: "faro", label: "Algarve" },
   { value: "outras", label: "Outras regiões" },
   { value: "todas", label: "Todo o país" },
   { value: "online", label: "Online" },
