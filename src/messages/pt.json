@@ -61,7 +61,7 @@
     }
   },
   "metadata": {
-    "title": "Outpost — Backpackers",
+    "title": "Outpost · Backpackers",
     "description": "Outpost, o backoffice do grupo Backpackers. Adventures, Synergy, Labs."
   },
   "footer": {
@@ -433,7 +433,7 @@
   },
   "crm": {
     "title": "CRM",
-    "subtitle": "Contactos, leads e parceiros — transversal aos pilares.",
+    "subtitle": "Contactos, leads e parceiros. Transversal aos pilares.",
     "newContact": "Novo contacto",
     "contactsCount": "{count, plural, =0 {Sem contactos} one {1 contacto} other {# contactos}}",
     "empty": "Ainda não existem contactos.",
@@ -614,7 +614,7 @@
   },
   "ops": {
     "title": "Operações",
-    "subtitle": "Eventos, projectos e tarefas — agenda operacional do grupo.",
+    "subtitle": "Eventos, projectos e tarefas. Agenda operacional do grupo.",
     "openCalendar": "Ver calendário",
     "calendar": {
       "title": "Calendário",
@@ -797,7 +797,7 @@
     },
     "tasks": {
       "title": "Tarefas",
-      "subtitle": "To-dos do grupo — opcionalmente ligadas a projectos ou eventos.",
+      "subtitle": "To-dos do grupo, opcionalmente ligadas a projectos ou eventos.",
       "newTask": "Nova tarefa",
       "openKanban": "Vista kanban",
       "empty": "Ainda não existem tarefas.",
@@ -961,8 +961,8 @@
     },
     "calendarSync": {
       "title": "Sincronizar calendário",
-      "subtitle": "Importa eventos do Google Calendar ou Outlook para o backoffice. One-way por agora — edições locais nunca são sobrepostas.",
-      "note": "Sync manual. Range: 7 dias no passado a 90 dias no futuro. Requer configurar as credenciais OAuth em Vercel — ver INTEGRATIONS.md.",
+      "subtitle": "Importa eventos do Google Calendar ou Outlook para o backoffice. One-way por agora: edições locais nunca são sobrepostas.",
+      "note": "Sync manual. Range: 7 dias no passado a 90 dias no futuro. Requer configurar as credenciais OAuth em Vercel. Ver INTEGRATIONS.md.",
       "notConnected": "Não ligado.",
       "notConfigured": "OAuth ainda não configurado nesta instalação. Ver INTEGRATIONS.md.",
       "connect": "Ligar",
@@ -975,7 +975,7 @@
       "syncFailedAlert": "Sync falhou: {error}",
       "lastSynced": "Última sync:",
       "pillarLabel": "Pilar onde os eventos importados vão parar",
-      "pillarNone": "— não sincronizar —",
+      "pillarNone": "(não sincronizar)",
       "pillarHint": "Obrigatório para poder sincronizar. Os eventos ficam com este pilar por defeito.",
       "readyToSync": "Pronto a sincronizar."
     },
@@ -1026,7 +1026,7 @@
     "take": {
       "kicker": "Assessment em curso",
       "title": "Como te sentes acerca disto?",
-      "hint": "Escolhe o quanto concordas. Não há respostas certas — vai com a primeira sensação.",
+      "hint": "Escolhe o quanto concordas. Não há respostas certas: vai com a primeira sensação.",
       "progress": "Pergunta {done} de {total}",
       "prev": "Anterior",
       "next": "Próxima",
@@ -1036,12 +1036,12 @@
     },
     "result": {
       "kicker": "Perfil TRAIL · TRILHA",
-      "dominantHeadline": "{value} — {score}/100",
+      "dominantHeadline": "{value} · {score}/100",
       "of": "Perfil de {name}",
       "back": "Voltar ao TRAIL",
       "rankingTitle": "6 valores por ordem de força",
       "insightTitle": "Leitura curta",
-      "insightBody": "O teu traço dominante é {dominant}, apoiado por {support1} e {support2}. O menos presente é {weakest} — não é fraqueza; é onde o esforço consciente terá mais efeito. Partilha este perfil com a equipa em contexto de reflexão, não de avaliação.",
+      "insightBody": "O teu traço dominante é {dominant}, apoiado por {support1} e {support2}. O menos presente é {weakest}. Não é fraqueza, é onde o esforço consciente terá mais efeito. Partilha este perfil com a equipa em contexto de reflexão, não de avaliação.",
       "openFullReport": "Abrir relatório extenso",
       "disclaimer": "Ferramenta de auto-reflexão da Backpackers Labs. Não substitui avaliação psicométrica clínica."
     },
@@ -1078,14 +1078,14 @@
       },
       "closing": {
         "title": "Como usar este relatório",
-        "body": "Este relatório é ferramenta de reflexão, não de avaliação. Lê como espelho — o que te reconhece, o que te surpreende, o que te incomoda. Partilha com a equipa em contexto de conversa, não como classificação. Volta a fazer o teste daqui a 6 meses e compara.",
-        "disclaimer": "Backpackers Labs — TRAIL v1. Não substitui avaliação psicométrica clínica. Perfis podem evoluir com contexto e experiência."
+        "body": "Este relatório é ferramenta de reflexão, não de avaliação. Lê como espelho: o que te reconhece, o que te surpreende, o que te incomoda. Partilha com a equipa em contexto de conversa, não como classificação. Volta a fazer o teste daqui a 6 meses e compara.",
+        "disclaimer": "Backpackers Labs · TRAIL v1. Não substitui avaliação psicométrica clínica. Perfis podem evoluir com contexto e experiência."
       }
     }
   },
   "library": {
     "title": "Biblioteca",
-    "subtitle": "Catálogo vivo das actividades Backpackers — briefing, custos, fluxo, público-alvo. Consulta antes de propor.",
+    "subtitle": "Catálogo vivo das actividades Backpackers: briefing, custos, fluxo, público-alvo. Consulta antes de propor.",
     "backToList": "Voltar à biblioteca",
     "editCta": "Editar",
     "empty": "Ainda não há actividades publicadas.",
@@ -1150,7 +1150,7 @@
     "skills": {
       "legend": "Skills (acessos por módulo)",
       "hint": "Cada skill dá acesso a um módulo. Super-utilizador tem todas implicitamente.",
-      "superUserNote": "Este utilizador é super-utilizador — tem todas as skills automaticamente, mesmo sem marcar.",
+      "superUserNote": "Este utilizador é super-utilizador: tem todas as skills automaticamente, mesmo sem marcar.",
       "labels": {
         "crm": "CRM",
         "ops": "Operações",
@@ -1246,7 +1246,7 @@
         "customer": "Clientes"
       },
       "autoAccess": "Auto",
-      "autoAccessHint": "Super-utilizador — acesso automático a todas as apps, sem grant manual.",
+      "autoAccessHint": "Super-utilizador: acesso automático a todas as apps, sem grant manual.",
       "metadata": {
         "title": "Metadata da app",
         "hint": "Nome, ícone e URL pública. O URL é usado pelos atalhos «Minhas apps» no sidebar.",
@@ -1269,7 +1269,7 @@
       "save": "Guardar",
       "statuses": {
         "all": "Todos",
-        "none": "— sem acesso —",
+        "none": "(sem acesso)",
         "trial": "Trial",
         "active": "Activo",
         "expired": "Expirado",
@@ -1279,12 +1279,12 @@
     },
     "catalog": {
       "title": "Catálogo de actividades",
-      "subtitle": "Biblioteca vivível do grupo — actividades Backpackers com custos, fluxo e briefing operacional. Editável por super-utilizadores.",
+      "subtitle": "Biblioteca vivível do grupo: actividades Backpackers com custos, fluxo e briefing operacional. Editável por super-utilizadores.",
       "backToAdmin": "Voltar à administração",
       "backToList": "Voltar ao catálogo",
       "newActivity": "Nova actividade",
       "empty": "Ainda não há actividades no catálogo.",
-      "emptyDescription": "Cria a primeira actividade — nome, família, duração, pax, preços e briefing.",
+      "emptyDescription": "Cria a primeira actividade: nome, família, duração, pax, preços e briefing.",
       "col": {
         "family": "Família",
         "name": "Nome",
@@ -1299,7 +1299,7 @@
       "delete": "Eliminar {name}",
       "deleteConfirm": "Eliminar a actividade «{name}» do catálogo? Não afecta deals já criados.",
       "deletedToast": "«{name}» removida do catálogo.",
-      "hiddenToast": "«{name}» ocultada — deixa de aparecer na biblioteca.",
+      "hiddenToast": "«{name}» ocultada. Deixa de aparecer na biblioteca.",
       "shownToast": "«{name}» visível na biblioteca.",
       "seed": {
         "cta": "Importar Synergy",
@@ -1326,7 +1326,7 @@
         "targetAudience": "Público-alvo",
         "sortOrder": "Ordem",
         "body": "Briefing operacional (markdown)",
-        "bodyHint": "Fluxo minuto-a-minuto, equipamento, riscos, adaptações — em markdown. Aparece na biblioteca para consulta."
+        "bodyHint": "Fluxo minuto-a-minuto, equipamento, riscos, adaptações, em markdown. Aparece na biblioteca para consulta."
       }
     },
     "customFields": {
@@ -1425,7 +1425,7 @@
         "actionsHint": "Executadas por ordem. Falha numa não impede as seguintes.",
         "addAction": "Adicionar acção",
         "taskTitle": "Título da tarefa",
-        "taskUnassigned": "— sem responsável —",
+        "taskUnassigned": "(sem responsável)",
         "dueOffsetPlaceholder": "Prazo: N dias a partir de hoje",
         "taskDescription": "Descrição da tarefa",
         "notifTarget": "Destinatário",
@@ -1435,7 +1435,7 @@
         "notePlaceholder": "Nota a adicionar",
         "emailTo": "Para (deixa vazio = usa email da entidade)",
         "emailSubject": "Assunto (podes usar {{campo}})",
-        "emailBody": "Corpo do email (podes usar {{campo}} — ex: {{fullName}})",
+        "emailBody": "Corpo do email (podes usar {{campo}}, ex: {{fullName}})",
         "webhookEventPlaceholder": "Evento a disparar…",
         "create": "Criar",
         "save": "Guardar",
@@ -1551,7 +1551,7 @@
       "fullName": "Nome completo",
       "role": "Papel",
       "sendInvite": "Enviar convite por e-mail",
-      "sendInviteHint": "Se marcado, o Supabase envia um e-mail com link de definição de palavra-passe. Se desmarcado, a conta é criada já confirmada — defines a palavra-passe depois via recuperação.",
+      "sendInviteHint": "Se marcado, o Supabase envia um e-mail com link de definição de palavra-passe. Se desmarcado, a conta é criada já confirmada, defines a palavra-passe depois via recuperação.",
       "create": "Criar utilizador",
       "creating": "A criar…",
       "errors": {
@@ -1568,7 +1568,7 @@
       "description": "Sumário do estado e sugestão dos próximos 2-3 passos concretos.",
       "cta": "Sugerir próximos passos",
       "regenerate": "Gerar de novo",
-      "disclaimer": "Sugestão gerada por IA — valida antes de agir.",
+      "disclaimer": "Sugestão gerada por IA. Valida antes de agir.",
       "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
     },
     "projectCopilot": {
@@ -1576,7 +1576,7 @@
       "description": "Analisa a lista actual de tarefas e sugere os gaps que faltam.",
       "cta": "Sugerir tarefas em falta",
       "regenerate": "Gerar de novo",
-      "disclaimer": "Sugestão gerada por IA — valida antes de criar tarefas.",
+      "disclaimer": "Sugestão gerada por IA. Valida antes de criar tarefas.",
       "notConfigured": "Copilot desactivado. Define ANTHROPIC_API_KEY para activar."
     }
   }

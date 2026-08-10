@@ -61,7 +61,7 @@
     }
   },
   "metadata": {
-    "title": "Outpost — Backpackers",
+    "title": "Outpost · Backpackers",
     "description": "Outpost, the Backpackers group's backoffice. Adventures, Synergy, Labs."
   },
   "footer": {
@@ -140,7 +140,7 @@
     "mtdHint": "This month: +{income} / −{expense}",
     "monthFilter": "Month",
     "cashflowTitle": "Monthly cashflow",
-    "cashflowSubtitle": "Last 12 months — paid transactions only.",
+    "cashflowSubtitle": "Last 12 months, paid transactions only.",
     "topExpenseCategories": "Top expense categories",
     "topIncomeCategories": "Top income categories",
     "noCategories": "Not enough data to group.",
@@ -433,7 +433,7 @@
   },
   "crm": {
     "title": "CRM",
-    "subtitle": "Contacts, leads and partners — across pillars.",
+    "subtitle": "Contacts, leads and partners. Across pillars.",
     "newContact": "New contact",
     "contactsCount": "{count, plural, =0 {No contacts} one {1 contact} other {# contacts}}",
     "empty": "No contacts yet.",
@@ -614,7 +614,7 @@
   },
   "ops": {
     "title": "Operations",
-    "subtitle": "Events, projects and tasks — group operational agenda.",
+    "subtitle": "Events, projects and tasks. Group operational agenda.",
     "openCalendar": "Open calendar",
     "calendar": {
       "title": "Calendar",
@@ -798,7 +798,7 @@
     },
     "tasks": {
       "title": "Tasks",
-      "subtitle": "Group to-dos — optionally linked to projects or events.",
+      "subtitle": "Group to-dos, optionally linked to projects or events.",
       "newTask": "New task",
       "openKanban": "Kanban view",
       "empty": "No tasks yet.",
@@ -952,8 +952,8 @@
     },
     "calendarSync": {
       "title": "Calendar sync",
-      "subtitle": "Import events from Google Calendar or Outlook into the backoffice. One-way for now — local edits are never overwritten.",
-      "note": "Manual sync. Range: 7 days back to 90 days forward. Requires OAuth credentials in Vercel — see INTEGRATIONS.md.",
+      "subtitle": "Import events from Google Calendar or Outlook into the backoffice. One-way for now: local edits are never overwritten.",
+      "note": "Manual sync. Range: 7 days back to 90 days forward. Requires OAuth credentials in Vercel. See INTEGRATIONS.md.",
       "notConnected": "Not connected.",
       "notConfigured": "OAuth is not configured on this install. See INTEGRATIONS.md.",
       "connect": "Connect",
@@ -966,7 +966,7 @@
       "syncFailedAlert": "Sync failed: {error}",
       "lastSynced": "Last synced:",
       "pillarLabel": "Pillar where imported events land",
-      "pillarNone": "— don't sync —",
+      "pillarNone": "(don't sync)",
       "pillarHint": "Required in order to sync. Imported events default to this pillar.",
       "readyToSync": "Ready to sync."
     },
@@ -1017,7 +1017,7 @@
     "take": {
       "kicker": "Assessment in progress",
       "title": "How do you feel about this?",
-      "hint": "Pick how much you agree. There are no right answers — go with your first instinct.",
+      "hint": "Pick how much you agree. There are no right answers: go with your first instinct.",
       "progress": "Question {done} of {total}",
       "prev": "Previous",
       "next": "Next",
@@ -1027,12 +1027,12 @@
     },
     "result": {
       "kicker": "TRAIL profile · TRILHA",
-      "dominantHeadline": "{value} — {score}/100",
+      "dominantHeadline": "{value} · {score}/100",
       "of": "Profile for {name}",
       "back": "Back to TRAIL",
       "rankingTitle": "6 values ranked by strength",
       "insightTitle": "Short read",
-      "insightBody": "Your dominant trait is {dominant}, supported by {support1} and {support2}. The lowest is {weakest} — not a weakness; it's where conscious effort has the most leverage. Share this profile with the team as reflection, not evaluation.",
+      "insightBody": "Your dominant trait is {dominant}, supported by {support1} and {support2}. The lowest is {weakest}. Not a weakness, it's where conscious effort has the most leverage. Share this profile with the team as reflection, not evaluation.",
       "openFullReport": "Open extended report",
       "disclaimer": "Self-reflection tool by Backpackers Labs. Does not replace clinical psychometric assessment."
     },
@@ -1069,14 +1069,14 @@
       },
       "closing": {
         "title": "How to use this report",
-        "body": "This report is a reflection tool, not an evaluation. Read it as a mirror — what you recognise, what surprises you, what you resist. Share with your team as conversation, not classification. Take the test again in 6 months and compare.",
-        "disclaimer": "Backpackers Labs — TRAIL v1. Does not replace clinical psychometric assessment. Profiles evolve with context and experience."
+        "body": "This report is a reflection tool, not an evaluation. Read it as a mirror: what you recognise, what surprises you, what you resist. Share with your team as conversation, not classification. Take the test again in 6 months and compare.",
+        "disclaimer": "Backpackers Labs · TRAIL v1. Does not replace clinical psychometric assessment. Profiles evolve with context and experience."
       }
     }
   },
   "library": {
     "title": "Library",
-    "subtitle": "Living catalog of Backpackers activities — briefing, costs, flow, target audience. Reference before proposing.",
+    "subtitle": "Living catalog of Backpackers activities: briefing, costs, flow, target audience. Reference before proposing.",
     "backToList": "Back to library",
     "editCta": "Edit",
     "empty": "No activities published yet.",
@@ -1141,7 +1141,7 @@
     "skills": {
       "legend": "Skills (module access)",
       "hint": "Each skill grants access to one module. Super user has them all implicitly.",
-      "superUserNote": "This user is a super user — has all skills automatically, even if unchecked.",
+      "superUserNote": "This user is a super user: has all skills automatically, even if unchecked.",
       "labels": {
         "crm": "CRM",
         "ops": "Operations",
@@ -1237,7 +1237,7 @@
         "customer": "Customers"
       },
       "autoAccess": "Auto",
-      "autoAccessHint": "Super user — automatic access to every app, no manual grant needed.",
+      "autoAccessHint": "Super user: automatic access to every app, no manual grant needed.",
       "metadata": {
         "title": "App metadata",
         "hint": "Name, icon and public URL. The URL is used by the «My apps» shortcuts in the sidebar.",
@@ -1260,7 +1260,7 @@
       "save": "Save",
       "statuses": {
         "all": "All",
-        "none": "— no access —",
+        "none": "(no access)",
         "trial": "Trial",
         "active": "Active",
         "expired": "Expired",
@@ -1270,12 +1270,12 @@
     },
     "catalog": {
       "title": "Activity catalog",
-      "subtitle": "The group's living library — Backpackers activities with costs, flow and operational briefing. Editable by super users.",
+      "subtitle": "The group's living library: Backpackers activities with costs, flow and operational briefing. Editable by super users.",
       "backToAdmin": "Back to admin",
       "backToList": "Back to catalog",
       "newActivity": "New activity",
       "empty": "No activities in the catalog yet.",
-      "emptyDescription": "Create the first activity — name, family, duration, pax, prices and briefing.",
+      "emptyDescription": "Create the first activity: name, family, duration, pax, prices and briefing.",
       "col": {
         "family": "Family",
         "name": "Name",
@@ -1317,7 +1317,7 @@
         "targetAudience": "Target audience",
         "sortOrder": "Sort order",
         "body": "Operational briefing (markdown)",
-        "bodyHint": "Minute-by-minute flow, equipment, risks, adaptations — in markdown. Shown in the library for reference."
+        "bodyHint": "Minute-by-minute flow, equipment, risks, adaptations, in markdown. Shown in the library for reference."
       }
     },
     "customFields": {
@@ -1416,7 +1416,7 @@
         "actionsHint": "Executed in order. Failure on one doesn't stop the rest.",
         "addAction": "Add action",
         "taskTitle": "Task title",
-        "taskUnassigned": "— unassigned —",
+        "taskUnassigned": "(unassigned)",
         "dueOffsetPlaceholder": "Due: N days from today",
         "taskDescription": "Task description",
         "notifTarget": "Recipient",
@@ -1426,7 +1426,7 @@
         "notePlaceholder": "Note to append",
         "emailTo": "To (empty = use entity email)",
         "emailSubject": "Subject (supports {{field}})",
-        "emailBody": "Email body (supports {{field}} — e.g. {{fullName}})",
+        "emailBody": "Email body (supports {{field}}, e.g. {{fullName}})",
         "webhookEventPlaceholder": "Event to trigger…",
         "create": "Create",
         "save": "Save",
@@ -1542,7 +1542,7 @@
       "fullName": "Full name",
       "role": "Role",
       "sendInvite": "Send invite email",
-      "sendInviteHint": "If checked, Supabase sends an email with a password-setup link. If unchecked, the account is created already confirmed — set the password later via password recovery.",
+      "sendInviteHint": "If checked, Supabase sends an email with a password-setup link. If unchecked, the account is created already confirmed, set the password later via password recovery.",
       "create": "Create user",
       "creating": "Creating…",
       "errors": {
@@ -1559,7 +1559,7 @@
       "description": "Summary of the current state and 2-3 concrete next actions.",
       "cta": "Suggest next steps",
       "regenerate": "Regenerate",
-      "disclaimer": "AI-generated suggestion — validate before acting.",
+      "disclaimer": "AI-generated suggestion. Validate before acting.",
       "notConfigured": "Copilot disabled. Set ANTHROPIC_API_KEY to enable."
     },
     "projectCopilot": {
@@ -1567,7 +1567,7 @@
       "description": "Reads the current task list and suggests the gaps still missing.",
       "cta": "Suggest missing tasks",
       "regenerate": "Regenerate",
-      "disclaimer": "AI-generated suggestion — validate before creating tasks.",
+      "disclaimer": "AI-generated suggestion. Validate before creating tasks.",
       "notConfigured": "Copilot disabled. Set ANTHROPIC_API_KEY to enable."
     }
   }
