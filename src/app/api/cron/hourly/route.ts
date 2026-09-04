@@ -11,7 +11,17 @@ import { pullExternalEvents } from "@/lib/oauth/sync";
 import { runWorkflows } from "@/lib/workflows";
 
 /**
- * Hourly maintenance cron.
+ * Maintenance cron.
+ *
+ * NOTA sobre a frequência: a rota chama-se "hourly" e foi desenhada para correr
+ * de hora a hora, mas o plano Hobby do Vercel só permite um disparo por dia, e
+ * era isso que estava a fazer FALHAR todos os deploys do Outpost desde Julho de
+ * 2026. O agendamento em vercel.json passou para 07:00 UTC diário. Se um dia
+ * houver plano Pro, volta a "0 * * * *" e o nome da rota deixa de mentir.
+ *
+ * Consequência prática do diário: o calendário externo sincroniza uma vez por
+ * dia, e os avisos de tarefa a vencer saem de manhã em vez de à hora certa.
+ * Nenhum dos dois trabalhos perde informação, só frescura.
  *
  * Runs two jobs, best-effort in sequence:
  *   1. Pull external calendar events for every user with a default_pillar set.
