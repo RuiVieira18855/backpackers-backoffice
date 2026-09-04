@@ -7,6 +7,7 @@ import {
   Mail,
   MessageSquare,
   Map,
+  Leaf,
   Mountain,
   Newspaper,
   Settings,
@@ -136,6 +137,25 @@ export default async function AdminLandingPage() {
               </div>
               <CardDescription>
                 Escreve e publica os artigos do site.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs uppercase tracking-wider text-accent-foreground group-hover:text-foreground">
+                {t("open")} →
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/herbarium" className="group">
+          <Card className="h-full transition-colors group-hover:border-accent">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle className="text-base">Herbarium</CardTitle>
+                <Leaf className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <CardDescription>
+                Fichas de flora ibérica do guia de campo e do deck Flora.
               </CardDescription>
             </CardHeader>
             <CardContent>
